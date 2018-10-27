@@ -1,7 +1,7 @@
 /**
  * @file entity.c
  * @author Name (username)
- * @date 10/26/18
+ * @date 10/27/18
  * @brief Entity implementation
  * @addtogroup Components
  * @{
@@ -31,21 +31,11 @@ Entity *Entity_new(const char *scriptName) {
     this->comp.collides = false;
     this->comp.coll_resolve = _Entity_coll_resolve;
 
-    lua_State *L = luaL_newstate();
-    luaL_openlibs(L);
-    if (luaL_loadfile(L, scriptName) || lua_pcall(L, 0, 0, 0)) {
-        fprintf(stderr, "Failed to load script \"%s\"", scriptName);
+    this->script = initEntityLuaState(this, scriptName);
+    if (!this->script) {
         _Entity_delete(this);
         return NULL;
     }
-
-    lua_pushstring(L, "Entity");
-    lua_pushlightuserdata(L, this);
-    lua_settable(L, LUA_REGISTRYINDEX);
-
-    register_entluafuncs(L);
-
-    this->script = L;
 
     return this;
 }
@@ -64,8 +54,7 @@ void _Entity_delete(Entity *this) {
  * @param this Entity to update
  */
 void _Entity_update(Entity *this) {
-    //lua_getglobal(this->script, "update");
-    //lua_call(this->script, 0, 0);
+    setCountHook(this->script);
     luaU_call(this->script, "update", ">");
 }
 

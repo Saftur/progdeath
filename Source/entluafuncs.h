@@ -8,4 +8,8 @@
 
 #include <lua.h>
 
-void register_entluafuncs(lua_State *L);
+typedef struct Entity Entity;
+
+lua_State *initEntityLuaState(Entity *ent, const char *scriptName);
+
+void setCountHook(lua_State *L);

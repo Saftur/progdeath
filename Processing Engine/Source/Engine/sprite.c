@@ -1,7 +1,7 @@
 /**
  * @file sprite.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/22/18
+ * @date 10/27/18
  * @brief Sprite implementation
  * @addtogroup Components
  * @{
@@ -28,6 +28,7 @@ Sprite *Sprite_new(const char *fileName, Vector2D size) {
 
     this->image = loadImage(fileName);
     this->size = size;
+    this->alpha = 1.f;
 
     return this;
 }
@@ -50,7 +51,7 @@ void _Sprite_draw(Sprite *this) {
     Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
     if (!trs) return;
 
-    image(this->image, trs->pos.x, trs->pos.y, this->size.x, this->size.y);
+    imageAlpha(this->image, trs->pos.x, trs->pos.y, this->size.x, this->size.y, this->alpha);
 }
 
 /// @}

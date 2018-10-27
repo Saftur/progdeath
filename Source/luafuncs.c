@@ -5,3 +5,9 @@
  * Lua Functions implementation
  */
 #include "luafuncs.h"
+
+#include <lauxlib.h>
+#include <C_Processing.h>
+
+void register_luafuncs(lua_State *L) {
+}

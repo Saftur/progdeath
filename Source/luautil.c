@@ -1,24 +1,52 @@
 /**
  * @file luautil.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/26/18
+ * @date 10/27/18
  * Lua Utilities implementation
  */
 #include "luautil.h"
+
+#include <lauxlib.h>
+
+static int l_defaultpanic(lua_State *L) {
+    fprintf(stderr, "%s\n", luaL_checkstring(L, 1));
+    lua_close(L);
+    exit(EXIT_FAILURE);
+}
+
+void luaU_setdefaultpanic(lua_State *L) {
+    luaU_setpanic(L, l_defaultpanic);
+}
+
+void luaU_setpanic(lua_State *L, lua_CFunction f) {
+    lua_atpanic(L, f);
+    lua_pushstring(L, "PANIC");
+    lua_pushcfunction(L, f);
+    lua_settable(L, LUA_REGISTRYINDEX);
+}
 
 /**
  * @brief Print a Lua error
  * @param L   Lua state
  * @param fmt Error format string
  * @param ... Things to print
+ * @return EXIT_FAILURE
  */
-void luaU_error(lua_State *L, const char *fmt, ...) {
+int luaU_error(lua_State *L, const char *fmt, ...) {
+    char error[100];
     va_list argp;
     va_start(argp, fmt);
-    vfprintf(stderr, fmt, argp);
+    //vfprintf(stderr, fmt, argp);
+    vsprintf(error, fmt, argp);
     va_end(argp);
-    lua_close(L);
-    exit(EXIT_FAILURE);
+    //exit(EXIT_FAILURE);
+    lua_pushstring(L, "PANIC");
+    lua_gettable(L, LUA_REGISTRYINDEX);
+    //lua_getglobal(L, "error");
+    lua_pushstring(L, error);
+    lua_pcall(L, 1, 0, 0);
+    //lua_error(L);
+    return EXIT_FAILURE;
 }
 
 /**
@@ -30,7 +58,7 @@ void luaU_error(lua_State *L, const char *fmt, ...) {
  *             Specifiers are d->double, i->int, and s->string
  * @param ...  Arguments to pass in, and pointers to store results in
  */
-void luaU_call(lua_State *L, const char *func, const char *sig, ...) {
+int luaU_call(lua_State *L, const char *func, const char *sig, ...) {
     va_list vl;
     int narg, nres;  /* number of arguments and results */
   
@@ -57,7 +85,7 @@ void luaU_call(lua_State *L, const char *func, const char *sig, ...) {
             goto endwhile;
   
         default:
-            luaU_error(L, "invalid option (%c)", *(sig - 1));
+            return luaU_error(L, "invalid option (%c)", *(sig - 1));
         }
         narg++;
         luaL_checkstack(L, 1, "too many arguments");

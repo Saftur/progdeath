@@ -1,7 +1,7 @@
 /**
  * @file sprite.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/22/18
+ * @date 10/27/18
  * @brief Sprite Component
  * @addtogroup Components
  * @{
@@ -20,8 +20,9 @@
 typedef struct Sprite {
     Component comp; ///< @brief Component data
 
-    PImage image;  ///< @brief Image
-    Vector2D size; ///< @brief Size of Sprite
+    PImage image; ///< @brief Image
+    vec2_t size;  ///< @brief Size of Sprite
+    float alpha;  ///< @brief Sprite alpha value
 } Sprite;
 
 /**

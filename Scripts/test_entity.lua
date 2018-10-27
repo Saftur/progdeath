@@ -1,3 +1,5 @@
 function update()
-    Move({10, 10})
+    for i=1,1000 do
+        
+    end
 end

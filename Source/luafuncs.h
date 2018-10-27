@@ -5,3 +5,7 @@
  * Lua Functions
  */
 #pragma once
+
+#include <lua.h>
+
+void register_luafuncs(lua_State *L);
