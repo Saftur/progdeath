@@ -1,0 +1,164 @@
+/*! @page ch1 1 - Components
+  @tableofcontents
+
+  @section ch1_1 1.1 - Component Structure
+
+  Component s are the building blocks of a game in Processing Engine. Most of a
+  game's code will be in Component s.
+
+  First of all, Component s are all "substructs" of the Component struct. Now,
+  this isn't true inheritance, since Processing Engine works with C. Processing
+  Engine uses pseudo-inheritance, where Component s contain a Component part as
+  their first variable, such that pointers to those Component s can be cast to
+  a Component pointer and be used as a Component struct.
+
+  Here is a sample Component that has everything required for a basic
+  Component:
+
+  samplecomp.h:
+  @include Source\samplecomp.h
+  samplecomp.c:
+  @include Source\samplecomp.c
+
+  @section ch1_2 1.2 - Component Functions
+
+  Another element of C++ classes that is emulated in Processing Engine is
+  member functions, using function pointers. The Component struct contains
+  several function pointers that are set in substructs to define the behavior
+  of Component s. Some examples of these functions are a delete function, or
+  destructor, and an update function.
+
+  Note that the functions (except `_[CompName]_new()`) all take a pointer called
+  `this`. This is equivalent to the implicit `this` parameter in C++ member
+  functions. Now, the difference is that you have to use `this` to access member
+  data, you cannot omit it.
+
+  Any of these functions (except `_[CompName]_new()`) can be removed from the
+  Component: simply delete it from both the header and source file, and make
+  sure to set the appropriate var of Component in the `new` function to `NULL`.
+
+  @subsection newfunc New Function
+
+  The `_[CompName]_new()` function is the only function that does not take a
+  `this` parameter. The reason is that it creates an instance of the Component
+  and returns it.
+
+  See @ref ch1_3 for more info.
+
+  @subsection delfunc Delete Function
+
+  If you allocate any memory for the Component, or just have to cleanup
+  something after a Component gets destroyed, put it in the
+  `_[CompName]_delete()` function. You must always also free the Component
+  itself after any other cleanup.
+
+  @subsection updatefunc Update Function
+
+  Any code that updates a Component should be put in the `_[CompName]_update()`
+  function. This function will be called each game update loop. Use `dt()` to
+  get delta time in seconds.
+
+  @subsection drawfunc Draw Function
+
+  Render code should be in the `_[CompName]_draw()` function. This will also be
+  called each game update, though after everything in the engine has been
+  updated first.
+
+  @subsection collresfunc Collision Resolution Function
+
+  `_[CompName]_coll_resolve()` is a function that gets called whenever this
+  Component collides with another Component. It takes a Component pointer which
+  is the Component that is collided with. This function is never used if
+  `this->comp.collides` is `false` (see @ref ch1_4).
+
+  @section ch1_3 1.3 - Component New Function
+
+  This function initializes all of the "superstruct" Component 's data. It sets
+  function pointers, as well as type identification. Other than function
+  pointers, this is all the data it sets:
+
+  `typeName` is the stringified name of the Component.<BR>
+  `typeId` is a unique id number for the Component (see @ref typeid).<BR>
+  `collides` tells whether this Component should check for collisions.
+
+  @subsection typeid Type Id
+
+  A Component 's `typeId` is a unique identification number defined either in
+  Component.h or gamecomps.h. This is what the game-side enum looks like:
+
+  @code{.c}
+  enum _Game_Comp_TypeId {
+      COMPTYPE1 = NUM_ENGINE_COMPS,
+      COMPTYPE2,
+
+      NUM_TOTAL_COMPS
+  };
+  @endcode
+
+  Game Component type ids start counting right after the last Engine Component.
+
+  Now, in the `_[CompName]_new()` function, `typeId` should be set to the enum
+  value defined in this enum, so for example, if the Component is called
+  `Player`, then the `typeId` line in the new function should be
+  `this->comp.typeId = PLAYER;`.
+
+  @section ch1_4 1.4 - Component Collisions
+
+  Only Component s with the `collides` value set to `true` will check collisions.
+
+  Component collisions are handled with functions separate from the Component s
+  themselves. These collision functions are defined in gamecolls.c. To be used
+  by the Engine, these functions must be registered in the Engine.
+
+  You can also have collision resolution functions that handle collisions
+  between two given Component s arbitrarily. These also need to be registered
+  in the Engine.
+
+  @subsection collcheck Collision Checking Functions
+
+  Collision checking functions take the form of
+  `static bool CollCheck_[CompName1]_[CompName2](Component *comp1, Component *comp2)`.
+  It is important to note that <VAR>comp1 and comp2 aren't necessarily of the
+  corresponding types</VAR>. This is where `INITCOLLCOMPS` comes in handy
+  (see @ref initcollcomps).  Once that is taken care of, you can use the two
+  pointers however you need, and return `true` if collision happened, or `false`
+  if it didn't.
+
+  @subsection collresolve Collision Resolving Functions
+
+  Collision resolving functions take the form of
+  `static bool CollResolve_[CompName1]_[CompName2](Component *comp1, Component *comp2)`.
+  Collision resolving functions are similar to checking functions, except you
+  do not need to return anything (see @ref initcollcomps).
+
+  @subsection initcollcomps INITCOLLCOMPS
+
+  Here is an example collision checking function template:
+
+  @code{.c}
+  static bool CollCheck_CompType1_CompType2(Component *comp1, Component *comp2) {
+      CompType1 *type1;
+      CompType2 *type2;
+      INITCOLLCOMPS(COMPTYPE1, type1, type2, comp1, comp2);
+
+  }
+  @endcode
+
+  INITCOLLCOMPS takes the Component type id of the first Component type
+  (`CompType1` in this case), the two pointers you want to initialize, and the
+  two Component pointers passed into the function. It then sorts the two
+  Component s, such that the first variable pointer passed in is set to the one
+  of the two Component pointers whose type id is equal to the given type id.
+
+  @subsection collfuncreg Registering Collision Functions
+
+  To register collision checking or resolving functions with the Engine, you
+  need to use two different functions in gamecolls.c, like so:
+
+  @code{.c}
+  void listColls() {
+      Engine_addCollCheckFunc(COMPTYPE1, COMPTYPE2, CollCheck_CompType1_CompType2);
+      Engine_addCollResolveFunc(COMPTYPE1, COMPTYPE2, CollResolve_CompType1_CompType2);
+  }
+  @endcode
+ */

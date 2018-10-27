@@ -1,0 +1,21 @@
+/// @defgroup Engine
+/// @brief %Engine functionality.
+/// Non-game-specific functionality.
+/// @{
+	/// @defgroup Objects
+	/// @brief Game Object functionality.
+	/// %Engine functionality related to Object.
+	/// @{
+		/// @defgroup Components
+		/// @brief Object Component s.
+		/// Component s to add to Object s
+		/// @{
+		/// @}
+	/// @}
+
+	/// @defgroup Util
+	/// @brief Math functionality.
+	/// Math structures and operations.
+	/// @{
+	/// @}
+/// @}

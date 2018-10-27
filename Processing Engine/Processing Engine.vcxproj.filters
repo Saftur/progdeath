@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Source\Engine\button.c">
+      <Filter>Engine\Objects\Components\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\component.c">
+      <Filter>Engine\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\emptycomp.c">
+      <Filter>Engine\Objects\Components\EmptyComp</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\engine.c">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\gamelayer.c">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\level.c">
+      <Filter>Engine\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\levelmngr.c">
+      <Filter>Engine\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\list.c">
+      <Filter>Engine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\object.c">
+      <Filter>Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\objectmngr.c">
+      <Filter>Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\listener.c">
+      <Filter>Engine\Objects\Components\Listener</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\physics.c">
+      <Filter>Engine\Objects\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\samplecomp.c">
+      <Filter>Engine\Objects\Components\SampleComp</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\sprite.c">
+      <Filter>Engine\Objects\Components\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\text.c">
+      <Filter>Engine\Objects\Components\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\transform.c">
+      <Filter>Engine\Objects\Components\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\util.c">
+      <Filter>Engine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\vector2d.c">
+      <Filter>Engine\Util</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Engine\button.h">
+      <Filter>Engine\Objects\Components\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\component.h">
+      <Filter>Engine\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\emptycomp.h">
+      <Filter>Engine\Objects\Components\EmptyComp</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\engine.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\gamelayer.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\initcollcomps.h">
+      <Filter>Engine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\level.h">
+      <Filter>Engine\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\levelmngr.h">
+      <Filter>Engine\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\list.h">
+      <Filter>Engine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\object.h">
+      <Filter>Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\objectmngr.h">
+      <Filter>Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\listener.h">
+      <Filter>Engine\Objects\Components\Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\physics.h">
+      <Filter>Engine\Objects\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\samplecomp.h">
+      <Filter>Engine\Objects\Components\SampleComp</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\sprite.h">
+      <Filter>Engine\Objects\Components\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\text.h">
+      <Filter>Engine\Objects\Components\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\transform.h">
+      <Filter>Engine\Objects\Components\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\util.h">
+      <Filter>Engine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\vector2d.h">
+      <Filter>Engine\Util</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{b3bcc837-3c69-4504-a2a3-d1dee1c42331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Objects">
+      <UniqueIdentifier>{e1326889-7cb5-4c9f-ad64-e1e0ca4ed318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Objects\Components">
+      <UniqueIdentifier>{fe7a9585-41bf-4af1-9b49-e916239825f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Objects\Components\Button">
+      <UniqueIdentifier>{43903897-c189-459e-80bc-e64d67887f78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Objects\Components\EmptyComp">
+      <UniqueIdentifier>{874e1398-15ee-4eb3-a00e-10a260696c8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Objects\Components\Transform">
+      <UniqueIdentifier>{7befaac4-7498-4e74-94ae-cc5ec71a550e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Objects\Components\Physics">
+      <UniqueIdentifier>{1ebc3bba-8e19-45bc-992a-7a59f621d7d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Util">
+      <UniqueIdentifier>{c4355352-7e9b-4123-95da-e65954e08cb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Levels">
+      <UniqueIdentifier>{961a3a76-0f86-4417-969e-2710ded68f67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Objects\Components\Listener">
+      <UniqueIdentifier>{6289ba6e-31c3-4cc9-b04b-f695d88e678c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Objects\Components\Text">
+      <UniqueIdentifier>{e336dcb9-92f0-4bf9-ac65-d9eebb53a565}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Objects\Components\Sprite">
+      <UniqueIdentifier>{8d4a3124-cc58-4a59-934d-f672647a74d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Objects\Components\SampleComp">
+      <UniqueIdentifier>{045ed04b-0594-4e23-ab17-79b697f505bd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

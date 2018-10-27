@@ -1,0 +1,36 @@
+/*! @page ch2 2 - Levels
+  @tableofcontents
+
+  @section ch2_1 2.1 - Level Structure
+
+  Level s are groupings of different Object s that define parts of a game.
+
+  The one part of a Level that is always necessary is a level init function,
+  which initializes an ObjectMngr with all the Object s in the Level.
+  
+  Here is a sample empty Level:
+
+  samplelevel.h:
+  @include samplelevel.h
+  samplelevel.c:
+  @include samplelevel.c
+
+  @section ch2_2 2.2 - Level Initialization
+
+  Level initialization is done by creating Object s, adding Component s to
+  them, and then adding those Object s to the ObjectMngr. Here is an example
+  Object initialization:
+
+  @code{.c}
+  void sampleLevelInit(ObjectMngr *objMngr) {
+      Object *playerObj = Object_new();
+      Transform *playerTrs = Transform_new();
+      PlayerComp *player = PlayerComp_new();
+
+      Object_addComp(playerObj, playerTrs);
+      Object_addComp(playerObj, player);
+
+      ObjectMngr_addObj(objMngr, playerObj);
+  }
+  @endcode
+ */
