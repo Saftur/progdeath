@@ -1,7 +1,7 @@
 /**
  * @file gamescreen.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/26/18
+ * @date 10/27/18
  * @brief Game screen level
  * @addtogroup Game-Levels
  * @{

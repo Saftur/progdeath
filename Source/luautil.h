@@ -11,7 +11,16 @@
 #include <stdlib.h>
 #include <lua.h>
 
+/**
+ * @brief Set Lua panic function to default
+ * @param L Lua state
+ */
 void luaU_setdefaultpanic(lua_State *L);
+/**
+ * @brief Set Lua panic function
+ * @param L Lua state
+ * @param f Panic function
+ */
 void luaU_setpanic(lua_State *L, lua_CFunction f);
 
 /**

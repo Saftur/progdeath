@@ -135,6 +135,10 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       </SubType>
     </ClCompile>
     <ClCompile Include="Source\luautil.c" />
+    <ClCompile Include="Source\luavector2d.c">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Source\main.c" />
     <ClCompile Include="Source\splashscreen.c">
       <SubType>
@@ -174,6 +178,10 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       </SubType>
     </ClInclude>
     <ClInclude Include="Source\luautil.h" />
+    <ClInclude Include="Source\luavector2d.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Source\splashscreen.h">
       <SubType>
       </SubType>
@@ -185,6 +193,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\test_entity.lua" />
+    <None Include="Scripts\test_player.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

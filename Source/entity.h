@@ -19,7 +19,9 @@
 typedef struct Entity {
     Component comp; ///< @brief Component data
 
-    lua_State *script;
+    lua_State *script; ///< @brief Entity Lua script
+
+    float detectRange; ///< @brief Entity detection range
 } Entity;
 
 /**

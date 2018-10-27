@@ -14,6 +14,7 @@
 #include <Engine/transform.h>
 
 #include "luautil.h"
+#include "luafuncs.h"
 #include "entluafuncs.h"
 
 /**
@@ -24,18 +25,21 @@
 Entity *Entity_new(const char *scriptName) {
     Entity *this = malloc(sizeof(Entity));
     this->comp.typeName = "Entity";
-    this->comp.typeId = ILLEGAL_COMP;
+    this->comp.typeId = ENTITY;
     this->comp.delete = _Entity_delete;
     this->comp.update = _Entity_update;
     this->comp.draw = _Entity_draw;
     this->comp.collides = false;
     this->comp.coll_resolve = _Entity_coll_resolve;
 
-    this->script = initEntityLuaState(this, scriptName);
+    initEntityLuaState(this, scriptName);
     if (!this->script) {
         _Entity_delete(this);
         return NULL;
     }
+    register_luafuncs(this->script);
+
+    this->detectRange = 300.f;
 
     return this;
 }
@@ -54,7 +58,7 @@ void _Entity_delete(Entity *this) {
  * @param this Entity to update
  */
 void _Entity_update(Entity *this) {
-    setCountHook(this->script);
+    resetTimeoutHook(this->script);
     luaU_call(this->script, "update", ">");
 }
 
@@ -64,6 +68,7 @@ void _Entity_update(Entity *this) {
  */
 void _Entity_draw(Entity *this) {
     Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
+    if (!trs) return;
     circle(trs->pos.x, trs->pos.y, 20);
 }
 

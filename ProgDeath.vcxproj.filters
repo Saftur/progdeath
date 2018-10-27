@@ -23,7 +23,7 @@
       <Filter>Game\Components\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Source\luautil.c">
-      <Filter>Game\Lua Utility</Filter>
+      <Filter>Game\Lua\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Source\main.c">
       <Filter>Game</Filter>
@@ -32,10 +32,13 @@
       <Filter>Game\Levels</Filter>
     </ClCompile>
     <ClCompile Include="Source\luafuncs.c">
-      <Filter>Game\Lua Functions</Filter>
+      <Filter>Game\Lua\Functions</Filter>
     </ClCompile>
     <ClCompile Include="Source\entluafuncs.c">
       <Filter>Game\Components\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\luavector2d.c">
+      <Filter>Game\Lua\Userdata</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,16 +67,19 @@
       <Filter>Game\Components\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Source\luautil.h">
-      <Filter>Game\Lua Utility</Filter>
+      <Filter>Game\Lua\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\gamescreen.h">
       <Filter>Game\Levels</Filter>
     </ClInclude>
     <ClInclude Include="Source\luafuncs.h">
-      <Filter>Game\Lua Functions</Filter>
+      <Filter>Game\Lua\Functions</Filter>
     </ClInclude>
     <ClInclude Include="Source\entluafuncs.h">
       <Filter>Game\Components\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\luavector2d.h">
+      <Filter>Game\Lua\Userdata</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -92,15 +98,24 @@
     <Filter Include="Game\Scripts">
       <UniqueIdentifier>{08c508a5-40c2-4713-8c78-55e2986f7098}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Lua Utility">
+    <Filter Include="Game\Lua">
+      <UniqueIdentifier>{1f71f01e-8b36-448e-a28e-f2561c33e37c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Lua\Functions">
+      <UniqueIdentifier>{d5bc0bd8-f5fb-4ccc-b317-5c092c15daba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Lua\Utility">
       <UniqueIdentifier>{d9f5ed69-be39-4172-b768-d2131ce71245}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Lua Functions">
-      <UniqueIdentifier>{d5bc0bd8-f5fb-4ccc-b317-5c092c15daba}</UniqueIdentifier>
+    <Filter Include="Game\Lua\Userdata">
+      <UniqueIdentifier>{c9e2683e-1f67-4f40-a36b-c284e38325d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\test_entity.lua">
+      <Filter>Game\Scripts</Filter>
+    </None>
+    <None Include="Scripts\test_player.lua">
       <Filter>Game\Scripts</Filter>
     </None>
   </ItemGroup>

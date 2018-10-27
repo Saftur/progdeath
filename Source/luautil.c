@@ -8,16 +8,29 @@
 
 #include <lauxlib.h>
 
+/**
+ * @brief Default Lua panic function
+ * @param 1 Error object
+ */
 static int l_defaultpanic(lua_State *L) {
     fprintf(stderr, "%s\n", luaL_checkstring(L, 1));
     lua_close(L);
     exit(EXIT_FAILURE);
 }
 
+/**
+ * @brief Set Lua panic function to default
+ * @param L Lua state
+ */
 void luaU_setdefaultpanic(lua_State *L) {
     luaU_setpanic(L, l_defaultpanic);
 }
 
+/**
+ * @brief Set Lua panic function
+ * @param L Lua state
+ * @param f Panic function
+ */
 void luaU_setpanic(lua_State *L, lua_CFunction f) {
     lua_atpanic(L, f);
     lua_pushstring(L, "PANIC");
@@ -33,19 +46,13 @@ void luaU_setpanic(lua_State *L, lua_CFunction f) {
  * @return EXIT_FAILURE
  */
 int luaU_error(lua_State *L, const char *fmt, ...) {
-    char error[100];
     va_list argp;
     va_start(argp, fmt);
-    //vfprintf(stderr, fmt, argp);
-    vsprintf(error, fmt, argp);
-    va_end(argp);
-    //exit(EXIT_FAILURE);
     lua_pushstring(L, "PANIC");
     lua_gettable(L, LUA_REGISTRYINDEX);
-    //lua_getglobal(L, "error");
-    lua_pushstring(L, error);
+    lua_pushvfstring(L, fmt, argp);
     lua_pcall(L, 1, 0, 0);
-    //lua_error(L);
+    va_end(argp);
     return EXIT_FAILURE;
 }
 

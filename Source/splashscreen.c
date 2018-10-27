@@ -21,14 +21,14 @@ static float countdown = 3.f;
 static void logoUpdate(Component *comp) {
     Sprite *spr = (Sprite*)comp;
     countdown -= dt();
-    if (countdown > 2.f)
+    if (countdown < 0.f || keyPressed(KEY_SPACE))
+        LevelMngr_setNextLevel(comp->owner->objMngr->gLayer->lvlMngr, "Menu Screen");
+    else if (countdown > 2.f)
         spr->alpha = 1.f - (countdown - 2.f);
     else if (countdown > 0.25f)
         spr->alpha = 1.f;
     else if (countdown > 0.f)
         spr->alpha = countdown*4.f;
-    else
-        LevelMngr_setNextLevel(comp->owner->objMngr->gLayer->lvlMngr, "Menu Screen");
 }
 
 /**
