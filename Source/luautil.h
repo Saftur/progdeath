@@ -30,13 +30,3 @@ void luaU_setpanic(lua_State *L, lua_CFunction f);
  * @param ... Things to print
  */
 int luaU_error(lua_State *L, const char *fmt, ...);
-/**
- * @brief Call a Lua function
- * @param L    Lua state
- * @param func Lua function name
- * @param sig  Function signature.
- *             ie. "dd>d" means takes two doubles, returns a double.
- *             Specifiers are d->double, i->int, and s->string
- * @param ...  Arguments to pass in, and pointers to store results in
- */
-int luaU_call(lua_State *L, const char *func, const char *sig, ...);

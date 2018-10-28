@@ -1,7 +1,7 @@
 /**
  * @file entity.c
  * @author Name (username)
- * @date 10/27/18
+ * @date 10/28/18
  * @brief Entity implementation
  * @addtogroup Components
  * @{
@@ -62,7 +62,9 @@ void _Entity_delete(Entity *this) {
  */
 void _Entity_update(Entity *this) {
     resetTimeoutHook(this->script);
-    luaU_call(this->script, "update", ">");
+    //luaU_call(this->script, "update", ">");
+    lua_getglobal(this->script, "update");
+    lua_call(this->script, 0, 0);
 
     Transform *trs;
     if ((this->type == ET_PLAYER) && (trs = Object_getComp(this->comp.owner, TRANSFORM))) {
