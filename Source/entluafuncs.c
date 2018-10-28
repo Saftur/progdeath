@@ -98,6 +98,7 @@ static int l_getnearby(lua_State *L) {
 
 /**
  * @brief Get nearest Entity
+ * @param 1 EntityType OR table of EntityType s (default: any)
  * @return Nearest Entity
  */
 static int l_getnearest(lua_State *L) {
@@ -105,6 +106,24 @@ static int l_getnearest(lua_State *L) {
     Transform *trs = Object_getComp(ent->comp.owner, TRANSFORM);
     if (!trs)
         return 0;
+    //int type = (lua_isnumber(L, 1)) ? (lua_tonumber(L, 1)) : -1;
+    List *types = List_new(4, NULL);
+    switch (lua_type(L, 1)) {
+    case LUA_TNUMBER:
+        List_push_back(types, (int)lua_tonumber(L, 1));
+        break;
+    case LUA_TTABLE:
+        lua_len(L, 1);
+        int len = lua_tonumber(L, -1);
+        lua_pop(L, 1);
+        for (int i = 1; i <= len; i++) {
+            lua_geti(L, 1, i);
+            List_push_back(types, (int)lua_tonumber(L, 1));
+        }
+        break;
+    case LUA_TNONE:
+        break;
+    }
     List *objs = ent->comp.owner->objMngr->objs;
     float nearestDist = -1.f;
     Entity *nearest = NULL;
@@ -114,6 +133,14 @@ static int l_getnearest(lua_State *L) {
         Transform *objTrs;
         if (!(objEnt = Object_getComp(obj, ENTITY)) || objEnt == ent || !(objTrs = Object_getComp(obj, TRANSFORM)))
             continue;
+        int found = (types->size == 0) ? 1 : 0;
+        for (unsigned i = 0; !found && i < types->size; i++) {
+            if (objEnt->type == types->items[i]) {
+                found = 1;
+            }
+        }
+        if (!found)
+            continue;
         float dist = vec2_distance(trs->pos, objTrs->pos);
         if (dist < ent->detectRange && (!nearest || dist < nearestDist)) {
             nearest = objEnt;
@@ -122,6 +149,7 @@ static int l_getnearest(lua_State *L) {
     if (nearest)
         lua_pushlightuserdata(L, nearest);
     else lua_pushnil(L);
+    List_delete(types);
     return 1;
 }
 
@@ -131,9 +159,11 @@ static int l_getnearest(lua_State *L) {
  * @param vec2_t position of Entity
  */
 static int l_getpos(lua_State *L) {
-    Entity *ent = lua_touserdata(L, 1);
-    if (!ent)
+    Entity *ent;
+    if (lua_isnone(L, 1))
         ent = getEntity(L);
+    else if (!(ent = lua_touserdata(L, 1)))
+        luaL_argcheck(L, false, 1, "'Entity' or 'none' expected");
     Transform *trs;
     if (!ent || !(trs = Object_getComp(ent->comp.owner, TRANSFORM)))
         return 0;
@@ -145,6 +175,46 @@ static int l_getpos(lua_State *L) {
     lua_pushnumber(L, trs->pos.y);
     //lua_rawseti(L, -2, 2);
     lua_call(L, 2, 1);
+    return 1;
+}
+
+/**
+ * @brief Get type of Entity
+ * @param 1 Entity to get type of (default: self)
+ * @param EntityType of Entity
+ */
+static int l_gettype(lua_State *L) {
+    Entity *ent;
+    if (lua_isnone(L, 1))
+        ent = getEntity(L);
+    else if (!(ent = lua_touserdata(L, 1)))
+        luaL_argcheck(L, false, 1, "'Entity' or 'none' expected");
+    lua_pushnumber(L, ent->type);
+    return 1;
+}
+
+static const char *typenames[] ={
+    "Player",
+    "Enemy",
+};
+
+/**
+ * @brief Get type name of type OR Entity
+ * @param 1 Type OR Entity to get type name of (default: self)
+ * @return Type name
+ */
+static int l_gettypename(lua_State *L) {
+    Entity *ent;
+    int type;
+    if (lua_isnone(L, 1))
+        type = getEntity(L)->type;
+    else if (lua_isnumber(L, 1))
+        type = lua_tonumber(L, 1);
+    else if (ent = lua_touserdata(L, 1))
+        type = ent->type;
+    else
+        luaL_argcheck(L, false, 1, "'Entity', 'number', or 'none' expected");
+    lua_pushfstring(L, typenames[type]);
     return 1;
 }
 
@@ -192,8 +262,19 @@ void initEntityLuaState(Entity *ent, const char *scriptName) {
     lua_pushcfunction(L, l_getnearest);
     lua_setglobal(L, "GetNearest");
 
+    lua_pushcfunction(L, l_gettype);
+    lua_setglobal(L, "GetType");
+
+    lua_pushcfunction(L, l_gettypename);
+    lua_setglobal(L, "GetTypeName");
+
     lua_pushcfunction(L, l_getpos);
     lua_setglobal(L, "GetPos");
+
+    lua_pushnumber(L, ET_PLAYER);
+    lua_setglobal(L, "ET_PLAYER");
+    lua_pushnumber(L, ET_ENEMY);
+    lua_setglobal(L, "ET_ENEMY");
 
     ent->script = L;
 }

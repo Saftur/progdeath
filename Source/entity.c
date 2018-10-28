@@ -20,9 +20,10 @@
 /**
  * @brief Create new Entity
  * @param scriptName Lua script name
+ * @param type       Entity type
  * @return New Entity
  */
-Entity *Entity_new(const char *scriptName) {
+Entity *Entity_new(const char *scriptName, EntityType type) {
     Entity *this = malloc(sizeof(Entity));
     this->comp.typeName = "Entity";
     this->comp.typeId = ENTITY;
@@ -38,6 +39,8 @@ Entity *Entity_new(const char *scriptName) {
         return NULL;
     }
     register_luafuncs(this->script);
+
+    this->type = type;
 
     this->detectRange = 300.f;
 

@@ -13,6 +13,11 @@
 
 #include <lua.h>
 
+typedef enum EntityType {
+    ET_PLAYER,
+    ET_ENEMY,
+} EntityType;
+
 /**
  * @brief Entity Component
  */
@@ -20,6 +25,7 @@ typedef struct Entity {
     Component comp; ///< @brief Component data
 
     lua_State *script; ///< @brief Entity Lua script
+    EntityType type;   ///< @brief Entity type
 
     float detectRange; ///< @brief Entity detection range
 } Entity;
@@ -27,9 +33,10 @@ typedef struct Entity {
 /**
  * @brief Create new Entity
  * @param scriptName Lua script name
+ * @param type       Entity type
  * @return New Entity
  */
-Entity *Entity_new(const char *scriptName);
+Entity *Entity_new(const char *scriptName, EntityType type);
 
 /**
  * @brief Delete Entity

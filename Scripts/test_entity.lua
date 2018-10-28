@@ -1,5 +1,16 @@
 function update()
     nearest = GetNearest()
+    if not nearest then
+        print(type(nearest))
+    else
+        print(GetTypeName(nearest))
+    end
+    nearest = GetNearest(ET_PLAYER)
+    if not nearest then
+        print(type(nearest))
+    else
+        print(GetTypeName(nearest))
+    end
     if nearest then
         local pos = GetPos()
         local otherPos = GetPos(nearest)

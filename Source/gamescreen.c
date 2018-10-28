@@ -48,7 +48,7 @@ void gameScreenInit(ObjectMngr *objMngr) {
     entObj = Object_new("Test Player");
     entTrs = Transform_new();
     entTrs->pos = (vec2_t){ canvasWidth / 2, canvasHeight / 2 };
-    ent = Entity_new("Scripts/test_player.lua");
+    ent = Entity_new("Scripts/test_player.lua", ET_PLAYER);
     Object_addComp(entObj, entTrs);
     Object_addComp(entObj, ent);
     ObjectMngr_addObj(objMngr, entObj);
@@ -56,7 +56,15 @@ void gameScreenInit(ObjectMngr *objMngr) {
     entObj = Object_new("Test Entity");
     entTrs = Transform_new();
     entTrs->pos = (vec2_t){ canvasWidth / 4, canvasHeight / 4 };
-    ent = Entity_new("Scripts/test_entity.lua");
+    ent = Entity_new("Scripts/test_entity.lua", ET_ENEMY);
+    Object_addComp(entObj, entTrs);
+    Object_addComp(entObj, ent);
+    ObjectMngr_addObj(objMngr, entObj);
+
+    entObj = Object_new("Test Entity");
+    entTrs = Transform_new();
+    entTrs->pos = (vec2_t){ canvasWidth / 4, canvasHeight / 4 + 100 };
+    ent = Entity_new("Scripts/test_entity.lua", ET_ENEMY);
     Object_addComp(entObj, entTrs);
     Object_addComp(entObj, ent);
     ObjectMngr_addObj(objMngr, entObj);
