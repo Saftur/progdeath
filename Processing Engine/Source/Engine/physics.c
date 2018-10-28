@@ -31,9 +31,9 @@ Physics *Physics_new(float maxVel, float deccel) {
     this->maxVel = maxVel;
     this->deccel = deccel;
 
-    this->vel = (Vector2D){0.f, 0.f};
-    this->pVel = (Vector2D){0.f, 0.f};
-    this->accel = (Vector2D){0.f, 0.f};
+    this->vel = (vec2_t){0.f, 0.f};
+    this->pVel = (vec2_t){0.f, 0.f};
+    this->accel = (vec2_t){0.f, 0.f};
 
     return this;
 }
@@ -51,16 +51,16 @@ void _Physics_delete(Physics *this) {
  * @param this Physics to update
  */
 void _Physics_update(Physics *this) {
-    this->vel = Vector2D_add(this->vel, this->accel);
-    float len = Vector2D_length(this->vel);
-    if (Vector2D_equals(this->vel, this->pVel)) {
+    this->vel = vec2_add(this->vel, this->accel);
+    float len = vec2_mag(this->vel);
+    if (vec2_equals(this->vel, this->pVel)) {
         // Velocity hasn't changed
-        Vector2D dec = (Vector2D) { 0.f, 0.f };
+        vec2_t dec = (vec2_t) { 0.f, 0.f };
         if (len > 0.f) {
-            dec = Vector2D_scale(-this->deccel / len, this->vel);
+            dec = vec2_scale(this->vel, -this->deccel / len);
         }
 
-        this->vel = Vector2D_add(this->vel, Vector2D_scale(dt(), dec));
+        this->vel = vec2_add(this->vel, vec2_scale(dec, dt()));
 
         if ((dec.x > 0.f && this->vel.x > 0.f) || (dec.x < 0.f && this->vel.x < 0.f))
             this->vel.x = 0.f;
@@ -69,12 +69,12 @@ void _Physics_update(Physics *this) {
     }
     if (len > this->maxVel) {
         // Limit max velocity
-        this->vel = Vector2D_scale(this->maxVel / len, this->vel);
+        this->vel = vec2_scale(this->vel, this->maxVel / len);
     }
     this->pVel = this->vel;
     Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
     if (!trs) return;
-    trs->pos = Vector2D_add(trs->pos, Vector2D_scale(dt(), this->vel));
+    trs->pos = vec2_add(trs->pos, vec2_scale(this->vel, dt()));
 }
 
 /// @}

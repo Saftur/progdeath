@@ -1,7 +1,7 @@
 /**
  * @file levels.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/26/18
+ * @date 10/27/18
  * @brief List of game Level s
  * @addtogroup Game-Levels
  * @{
@@ -21,7 +21,7 @@
  */
 void listLevels() {
     Level *splashLevel = Level_new("Splash Screen", splashScreenInit, NULL);
-    Level *menuLevel = Level_new("Menu Screen", menuScreenInit, NULL);
+    Level *menuLevel = Level_new("Menu", menuScreenInit, NULL);
     Level *gameLevel = Level_new("Game", gameScreenInit, NULL);
     Level *deathLevel = Level_new("Death Screen", deathScreenInit, NULL);
 

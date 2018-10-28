@@ -52,9 +52,6 @@
     <ClCompile Include="Source\Engine\util.c">
       <Filter>Engine\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Engine\vector2d.c">
-      <Filter>Engine\Util</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine\button.h">
@@ -109,9 +106,6 @@
       <Filter>Engine\Objects\Components\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\util.h">
-      <Filter>Engine\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Engine\vector2d.h">
       <Filter>Engine\Util</Filter>
     </ClInclude>
   </ItemGroup>

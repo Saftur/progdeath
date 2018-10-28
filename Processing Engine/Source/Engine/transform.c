@@ -22,7 +22,7 @@ Transform *Transform_new() {
     this->comp.collides = false;
     this->comp.coll_resolve = NULL;
 
-    this->pos = (Point){0.f, 0.f};
+    this->pos = (vec2_t){0.f, 0.f};
     this->posUpdate = NULL;
 
     return this;

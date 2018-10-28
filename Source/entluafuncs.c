@@ -13,7 +13,7 @@
 #include <Engine/transform.h>
 
 #include "luautil.h"
-#include "luavector2d.h"
+#include "luavec2.h"
 #include "entity.h"
 
 #define SCRIPT_TIMEOUT 1000
@@ -50,47 +50,29 @@ static int l_counthook(lua_State *L) {
 
 
 /**
- * @brief Move Entity by Vector2D v
+ * @brief Move Entity by vec2_t v
  * @param ent Entity to move
- * @param v   Vector2D to move by
+ * @param v   vec2_t to move by
  */
-static void move(Entity *ent, Vector2D v) {
+static void move(Entity *ent, vec2_t v) {
     Transform *trs = Object_getComp(ent->comp.owner, TRANSFORM);
-    trs->pos = Vector2D_add(trs->pos, v);
+    trs->pos = vec2_add(trs->pos, v);
 }
 
 /**
- * @brief Move by Vector2D
- * @param 1 Vector2D to move by
+ * @brief Move by vec2_t
+ * @param 1 vec2_t to move by
  */
 static int l_move(lua_State *L) {
     Entity *ent = getEntity(L);
-    Vector2D v;
-    switch (lua_type(L, 1)) {
-    case LUA_TNUMBER:
-        luaL_argcheck(L, lua_isnumber(L, 2), 2, "'number' expected");
-        v.y = luaL_checknumber(L, 2);
-        v.x = lua_tonumber(L, 1);
-        break;
-
-    case LUA_TTABLE:
-        lua_rawgeti(L, 1, 1);
-        v.x = luaL_checknumber(L, -1);
-        lua_pop(L, 1);
-        lua_rawgeti(L, 1, 2);
-        v.y = luaL_checknumber(L, -1);
-        lua_pop(L, 1);
-        break;
-
-    default:
-        luaL_argcheck(L, false, 1, "'table' or 'number' expected");
-    }
+    luaL_argcheck(L, lua_isuserdata(L, 1), 1, "'vec2' expected");
+    vec2_t v = *(vec2_t*)luaL_checkudata(L, 1, "vec2");
     move(ent, v);
 }
 
 /**
  * @brief Get nearby Entity s
- * @return Table of Entity s
+ * @return Table of nearby Entity s
  */
 static int l_getnearby(lua_State *L) {
     Entity *ent = getEntity(L);
@@ -106,7 +88,7 @@ static int l_getnearby(lua_State *L) {
         Transform *objTrs;
         if (!(objEnt = Object_getComp(obj, ENTITY)) || objEnt == ent || !(objTrs = Object_getComp(obj, TRANSFORM)))
             continue;
-        if (Vector2D_dist(trs->pos, objTrs->pos) < ent->detectRange) {
+        if (vec2_distance(trs->pos, objTrs->pos) < ent->detectRange) {
             lua_pushlightuserdata(L, objEnt);
             lua_rawseti(L, -2, ++count);
         }
@@ -115,9 +97,38 @@ static int l_getnearby(lua_State *L) {
 }
 
 /**
+ * @brief Get nearest Entity
+ * @return Nearest Entity
+ */
+static int l_getnearest(lua_State *L) {
+    Entity *ent = getEntity(L);
+    Transform *trs = Object_getComp(ent->comp.owner, TRANSFORM);
+    if (!trs)
+        return 0;
+    List *objs = ent->comp.owner->objMngr->objs;
+    float nearestDist = -1.f;
+    Entity *nearest = NULL;
+    for (unsigned i = 0; i < objs->size; i++) {
+        Object *obj = objs->items[i];
+        Entity *objEnt;
+        Transform *objTrs;
+        if (!(objEnt = Object_getComp(obj, ENTITY)) || objEnt == ent || !(objTrs = Object_getComp(obj, TRANSFORM)))
+            continue;
+        float dist = vec2_distance(trs->pos, objTrs->pos);
+        if (dist < ent->detectRange && (!nearest || dist < nearestDist)) {
+            nearest = objEnt;
+        }
+    }
+    if (nearest)
+        lua_pushlightuserdata(L, nearest);
+    else lua_pushnil(L);
+    return 1;
+}
+
+/**
  * @brief Get position of Entity
  * @param 1 Entity to get position of (default: self)
- * @param Vector2D position of Entity
+ * @param vec2_t position of Entity
  */
 static int l_getpos(lua_State *L) {
     Entity *ent = lua_touserdata(L, 1);
@@ -126,11 +137,14 @@ static int l_getpos(lua_State *L) {
     Transform *trs;
     if (!ent || !(trs = Object_getComp(ent->comp.owner, TRANSFORM)))
         return 0;
-    lua_newtable(L);
+    lua_getglobal(L, "vec2");
+    lua_getfield(L, -1, "new");
+    //lua_newtable(L);
     lua_pushnumber(L, trs->pos.x);
-    lua_rawseti(L, -2, 1);
+    //lua_rawseti(L, -2, 1);
     lua_pushnumber(L, trs->pos.y);
-    lua_rawseti(L, -2, 2);
+    //lua_rawseti(L, -2, 2);
+    lua_call(L, 2, 1);
     return 1;
 }
 
@@ -145,7 +159,7 @@ void initEntityLuaState(Entity *ent, const char *scriptName) {
     luaL_requiref(L, "string", luaopen_string, 1);
     luaL_requiref(L, "table", luaopen_table, 1);
     luaL_requiref(L, "math", luaopen_math, 1);
-    luaL_requiref(L, "Vector2D", luaopen_Vector2D, 1);
+    luaL_requiref(L, "vec2", luaopen_vec2, 1);
     lua_pop(L, 5);
 
     lua_pushstring(L, "debug");
@@ -174,6 +188,9 @@ void initEntityLuaState(Entity *ent, const char *scriptName) {
 
     lua_pushcfunction(L, l_getnearby);
     lua_setglobal(L, "GetNearby");
+
+    lua_pushcfunction(L, l_getnearest);
+    lua_setglobal(L, "GetNearest");
 
     lua_pushcfunction(L, l_getpos);
     lua_setglobal(L, "GetPos");

@@ -1,7 +1,7 @@
 /**
  * @file util.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
+ * @date 10/27/18
  * @brief Utilities
  * @addtogroup Util
  * @{
@@ -10,23 +10,6 @@
 
 #include <stdbool.h>
 #include <C_Processing.h>
-
-/**
- * @brief Get distance between two points
- * @param x1 X of point 1
- * @param y1 Y of point 1
- * @param x2 X of point 2
- * @param y2 Y of point 2
- * @return Distance between (x1, y1) and (x2, y2)
- */
-float dist(float x1, float y1, float x2, float y2);
-/**
- * @brief Get length of vector
- * @param x X of vector
- * @param y Y of vector
- * @return Length of (x, y)
- */
-float length(float x, float y);
 
 /**
  * @brief Check if two floats are within a given range of each other
@@ -65,5 +48,14 @@ void swapInt(int *a, int *b);
  * @param b Pointer to second value
  */
 void swapUnsigned(unsigned *a, unsigned *b);
+
+/**
+ * @brief Check if a Vector2D is in a given range (rectangle)
+ * @param v The Vector2D
+ * @param range1 First range endpoint
+ * @param range2 Second range endpoint
+ * @return If the Vector2D is in given range
+ */
+bool vec2_in_range(vec2_t v, vec2_t range1, vec2_t range2);
 
 /// @}

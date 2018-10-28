@@ -19,7 +19,7 @@
  * @param text       Button text
  * @return New Button
  */
-Button *Button_new(Vector2D buttonSize, ButtonEffect effect, const char *text) {
+Button *Button_new(vec2_t buttonSize, ButtonEffect effect, const char *text) {
     Button *this = malloc(sizeof(Button));
     this->comp.typeName = "Button";
     this->comp.typeId = BUTTON;
@@ -52,9 +52,9 @@ void _Button_delete(Button *this) {
  * @param bSize Button size
  * @return If mouse is on Button
  */
-static bool mouseOnButton(Point bPos, Vector2D bSize) {
-    Vector2D bHalfSize = Vector2D_scale(0.5f, bSize);
-    return Vector2D_inRange((Point){ mouseX, mouseY }, Vector2D_sub(bPos, bHalfSize), Vector2D_add(bPos, bHalfSize));
+static bool mouseOnButton(vec2_t bPos, vec2_t bSize) {
+    vec2_t bHalfSize = vec2_scale(bSize, 0.5f);
+    return vec2_in_range((vec2_t){ mouseX, mouseY }, vec2_sub(bPos, bHalfSize), vec2_add(bPos, bHalfSize));
 }
 
 /**
@@ -87,13 +87,13 @@ void _Button_draw(Button *this) {
         fill(200, 200, 200, 255);
     else fill(100, 100, 100, 255);
 
-    Point *pos = &trs->pos;
-    Vector2D halfSize = Vector2D_scale(0.5f, this->buttonSize);
+    vec2_t *pos = &trs->pos;
+    vec2_t halfSize = vec2_scale(this->buttonSize, 0.5f);
     rect(pos->x - halfSize.x, pos->y - halfSize.y, this->buttonSize.x, this->buttonSize.y);
 
-    *pos = (Point){ pos->x - halfSize.x + BUTTON_TEXT_OFFSET, pos->y + halfSize.y - BUTTON_TEXT_OFFSET };
+    *pos = (vec2_t){ pos->x - halfSize.x + BUTTON_TEXT_OFFSET, pos->y + halfSize.y - BUTTON_TEXT_OFFSET };
     _Text_draw(this->text);
-    *pos = (Point){ pos->x + halfSize.x - BUTTON_TEXT_OFFSET, pos->y - halfSize.y + BUTTON_TEXT_OFFSET };
+    *pos = (vec2_t){ pos->x + halfSize.x - BUTTON_TEXT_OFFSET, pos->y - halfSize.y + BUTTON_TEXT_OFFSET };
 }
 
 /// @}

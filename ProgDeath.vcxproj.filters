@@ -37,7 +37,7 @@
     <ClCompile Include="Source\entluafuncs.c">
       <Filter>Game\Components\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Source\luavector2d.c">
+    <ClCompile Include="Source\luavec2.c">
       <Filter>Game\Lua\Userdata</Filter>
     </ClCompile>
   </ItemGroup>
@@ -78,7 +78,7 @@
     <ClInclude Include="Source\entluafuncs.h">
       <Filter>Game\Components\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Source\luavector2d.h">
+    <ClInclude Include="Source\luavec2.h">
       <Filter>Game\Lua\Userdata</Filter>
     </ClInclude>
   </ItemGroup>

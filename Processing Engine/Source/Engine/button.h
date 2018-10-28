@@ -10,7 +10,6 @@
 
 #include "component.h"
 
-#include "vector2d.h"
 #include "text.h"
 
 typedef struct Button Button; ///< @brief Button forward declaration
@@ -23,7 +22,7 @@ typedef void (*ButtonEffect)(Button*); ///< @brief Button effect function signat
 typedef struct Button {
     Component comp; ///< @brief Component data
 
-    Vector2D buttonSize; ///< @brief Width & height of Button
+    vec2_t buttonSize; ///< @brief Width & height of Button
     ButtonEffect effect; ///< @brief What happens when the Button is pressed
     Text *text;          ///< @brief Button text
 } Button;
@@ -35,7 +34,7 @@ typedef struct Button {
  * @param text       Button text
  * @return New Button
  */
-Button *Button_new(Vector2D buttonSize, ButtonEffect effect, const char *text);
+Button *Button_new(vec2_t buttonSize, ButtonEffect effect, const char *text);
 
 /**
  * @brief Delete Button

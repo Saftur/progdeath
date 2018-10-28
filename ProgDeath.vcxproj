@@ -135,7 +135,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       </SubType>
     </ClCompile>
     <ClCompile Include="Source\luautil.c" />
-    <ClCompile Include="Source\luavector2d.c">
+    <ClCompile Include="Source\luavec2.c">
       <SubType>
       </SubType>
     </ClCompile>
@@ -178,7 +178,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       </SubType>
     </ClInclude>
     <ClInclude Include="Source\luautil.h" />
-    <ClInclude Include="Source\luavector2d.h">
+    <ClInclude Include="Source\luavec2.h">
       <SubType>
       </SubType>
     </ClInclude>

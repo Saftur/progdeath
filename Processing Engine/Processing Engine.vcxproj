@@ -139,7 +139,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Source\Engine\util.c" />
-    <ClCompile Include="Source\Engine\vector2d.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine\button.h">
@@ -190,7 +189,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Source\Engine\util.h" />
-    <ClInclude Include="Source\Engine\vector2d.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

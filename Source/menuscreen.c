@@ -33,7 +33,7 @@ void menuScreenInit(ObjectMngr *objMngr) {
     for (unsigned i = 0; i < sizeof(tutorialText) / sizeof(const char*); i++) {
         Object *obj = Object_new("Text");
         Transform *trs = Transform_new();
-        trs->pos = (Point){ 0.f, (float)(i+1) * 50.f };
+        trs->pos = (vec2_t){ 0.f, (float)(i+1) * 50.f };
         Text *text = Text_new(tutorialText[i], 50);
         Object_addComp(obj, trs);
         Object_addComp(obj, text);
@@ -46,16 +46,16 @@ void menuScreenInit(ObjectMngr *objMngr) {
 
     buttonObj = Object_new("Play Button");
     buttonTrs = Transform_new();
-    buttonTrs->pos = (Point){ canvasWidth/2, canvasHeight/2 - 60 };
-    button = Button_new((Vector2D){ 150, 60 }, playButtonEffect, "Play");
+    buttonTrs->pos = (vec2_t){ canvasWidth/2, canvasHeight/2 - 60 };
+    button = Button_new((vec2_t){ 150, 60 }, playButtonEffect, "Play");
     Object_addComp(buttonObj, buttonTrs);
     Object_addComp(buttonObj, button);
     ObjectMngr_addObj(objMngr, buttonObj);
 
     buttonObj = Object_new("Quit Button");
     buttonTrs = Transform_new();
-    buttonTrs->pos = (Point){ canvasWidth/2, canvasHeight/2 + 60 };
-    button = Button_new((Vector2D){ 150, 60 }, quitButtonEffect, "Quit");
+    buttonTrs->pos = (vec2_t){ canvasWidth/2, canvasHeight/2 + 60 };
+    button = Button_new((vec2_t){ 150, 60 }, quitButtonEffect, "Quit");
     Object_addComp(buttonObj, buttonTrs);
     Object_addComp(buttonObj, button);
     ObjectMngr_addObj(objMngr, buttonObj);
@@ -66,7 +66,7 @@ void menuScreenInit(ObjectMngr *objMngr) {
 
     textObj = Object_new("Author Text");
     textTrs = Transform_new();
-    textTrs->pos = (Vector2D){ 0, canvasHeight - 120 };
+    textTrs->pos = (vec2_t){ 0, canvasHeight - 120 };
     text = Text_new("Programmer & Designer: Arthur Bouvier", 50);
     Object_addComp(textObj, textTrs);
     Object_addComp(textObj, text);
@@ -74,7 +74,7 @@ void menuScreenInit(ObjectMngr *objMngr) {
 
     textObj = Object_new("Instructor Text");
     textTrs = Transform_new();
-    textTrs->pos = (Vector2D){ 0, canvasHeight - 70 };
+    textTrs->pos = (vec2_t){ 0, canvasHeight - 70 };
     text = Text_new("Instructor: Justin Chambers", 50);
     Object_addComp(textObj, textTrs);
     Object_addComp(textObj, text);
@@ -82,7 +82,7 @@ void menuScreenInit(ObjectMngr *objMngr) {
 
     textObj = Object_new("Copyright Text");
     textTrs = Transform_new();
-    textTrs->pos = (Vector2D){ 0, canvasHeight - 20 };
+    textTrs->pos = (vec2_t){ 0, canvasHeight - 20 };
     text = Text_new("Copyright 2018 DigiPen Institute of Technology and DigiPen (USA) Corporation", 50);
     Object_addComp(textObj, textTrs);
     Object_addComp(textObj, text);

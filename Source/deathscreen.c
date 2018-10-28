@@ -28,7 +28,7 @@ static void drawFrownyFace(Component *comp) {
     Transform *trs = Object_getComp(comp->owner, TRANSFORM);
     if (!trs) return;
 
-    Point pos = trs->pos;
+    vec2_t pos = trs->pos;
 
     stroke(127, 127, 127, 255);
     fill(255, 255, 0, 255);
@@ -67,7 +67,7 @@ void deathScreenInit(ObjectMngr *objMngr) {
 
     obj = Object_new("You Lost Text");
     trs = Transform_new();
-    trs->pos = (Point){ canvasWidth / 2 - 175, 200.f };
+    trs->pos = (vec2_t){ canvasWidth / 2 - 175, 200.f };
     text = Text_new("You Lost", 100);
     Object_addComp(obj, trs);
     Object_addComp(obj, text);
@@ -78,7 +78,7 @@ void deathScreenInit(ObjectMngr *objMngr) {
 
     obj = Object_new("Score Text");
     trs = Transform_new();
-    trs->pos = (Point){ canvasWidth / 2 - 140, 300.f };
+    trs->pos = (vec2_t){ canvasWidth / 2 - 140, 300.f };
     text = Text_new(str, 75);
     Object_addComp(obj, trs);
     Object_addComp(obj, text);
@@ -88,7 +88,7 @@ void deathScreenInit(ObjectMngr *objMngr) {
 
     obj = Object_new("Time Text");
     trs = Transform_new();
-    trs->pos = (Point){ canvasWidth / 2 - 140, 400.f };
+    trs->pos = (vec2_t){ canvasWidth / 2 - 140, 400.f };
     text = Text_new(str, 75);
     Object_addComp(obj, trs);
     Object_addComp(obj, text);
@@ -100,31 +100,31 @@ void deathScreenInit(ObjectMngr *objMngr) {
 
     buttonObj = Object_new("Menu Button");
     buttonTrs = Transform_new();
-    buttonTrs->pos = (Point){ canvasWidth/2 - 500, canvasHeight/2 };
-    button = Button_new((Vector2D){ 200, 60 }, menuButtonEffect, "Menu");
+    buttonTrs->pos = (vec2_t){ canvasWidth/2 - 500, canvasHeight/2 };
+    button = Button_new((vec2_t){ 200, 60 }, menuButtonEffect, "Menu");
     Object_addComp(buttonObj, buttonTrs);
     Object_addComp(buttonObj, button);
     ObjectMngr_addObj(objMngr, buttonObj);
 
     buttonObj = Object_new("Restart Button");
     buttonTrs = Transform_new();
-    buttonTrs->pos = (Point){ canvasWidth/2, canvasHeight/2 };
-    button = Button_new((Vector2D){ 200, 60 }, playButtonEffect, "Restart");
+    buttonTrs->pos = (vec2_t){ canvasWidth/2, canvasHeight/2 };
+    button = Button_new((vec2_t){ 200, 60 }, playButtonEffect, "Restart");
     Object_addComp(buttonObj, buttonTrs);
     Object_addComp(buttonObj, button);
     ObjectMngr_addObj(objMngr, buttonObj);
 
     buttonObj = Object_new("Quit Button");
     buttonTrs = Transform_new();
-    buttonTrs->pos = (Point){ canvasWidth/2 + 500, canvasHeight/2 };
-    button = Button_new((Vector2D){ 200, 60 }, quitButtonEffect, "Quit");
+    buttonTrs->pos = (vec2_t){ canvasWidth/2 + 500, canvasHeight/2 };
+    button = Button_new((vec2_t){ 200, 60 }, quitButtonEffect, "Quit");
     Object_addComp(buttonObj, buttonTrs);
     Object_addComp(buttonObj, button);
     ObjectMngr_addObj(objMngr, buttonObj);
 
     obj = Object_new("Frowny Face");
     trs = Transform_new();
-    trs->pos = (Point){ canvasWidth / 2, 800 };
+    trs->pos = (vec2_t){ canvasWidth / 2, 800 };
     EmptyComp *comp = EmptyComp_new();
     comp->comp.draw = drawFrownyFace;
     Object_addComp(obj, trs);

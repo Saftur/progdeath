@@ -16,7 +16,7 @@
  * @param size     Size of Sprite
  * @return New Sprite
  */
-Sprite *Sprite_new(const char *fileName, Vector2D size) {
+Sprite *Sprite_new(const char *fileName, vec2_t size) {
     Sprite *this = malloc(sizeof(Sprite));
     this->comp.typeName = "Sprite";
     this->comp.typeId = ILLEGAL_COMP;

@@ -22,7 +22,7 @@ static void logoUpdate(Component *comp) {
     Sprite *spr = (Sprite*)comp;
     countdown -= dt();
     if (countdown < 0.f || keyPressed(KEY_SPACE))
-        LevelMngr_setNextLevel(comp->owner->objMngr->gLayer->lvlMngr, "Menu Screen");
+        LevelMngr_setNextLevel(comp->owner->objMngr->gLayer->lvlMngr, "Menu");
     else if (countdown > 2.f)
         spr->alpha = 1.f - (countdown - 2.f);
     else if (countdown > 0.25f)
@@ -38,8 +38,8 @@ static void logoUpdate(Component *comp) {
 void splashScreenInit(ObjectMngr *objMngr) {
     Object *logoObj = Object_new("Logo");
     Transform *logoTrs = Transform_new();
-    logoTrs->pos = (Point){ canvasWidth / 2, canvasHeight / 2 };
-    Sprite *logoSprite = Sprite_new("Assets\\DigiPen_RED_1024px.png", (Vector2D){ 1024, 247 });
+    logoTrs->pos = (vec2_t){ canvasWidth / 2, canvasHeight / 2 };
+    Sprite *logoSprite = Sprite_new("Assets\\DigiPen_RED_1024px.png", (vec2_t){ 1024, 247 });
     logoSprite->comp.update = logoUpdate;
     Object_addComp(logoObj, logoTrs);
     Object_addComp(logoObj, logoSprite);

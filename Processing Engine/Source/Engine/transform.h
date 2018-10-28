@@ -10,8 +10,6 @@
 
 #include "component.h"
 
-#include "vector2d.h"
-
 typedef struct Transform Transform; ///< @brief Transform forward declaration
 
 /**
@@ -20,7 +18,7 @@ typedef struct Transform Transform; ///< @brief Transform forward declaration
 typedef struct Transform {
     Component comp; ///< @brief Component data
 
-    Point pos; ///< @brief Position
+    vec2_t pos; ///< @brief Position
 
     void (*posUpdate)(Transform*); ///< @brief Position updating function
 } Transform;

@@ -1,8 +1,17 @@
 function update()
-    v = Vector2D.New({10, 12})
-    print(v[1]..", "..v[2])
-
-    nearby = GetNearby()
+    nearest = GetNearest()
+    if nearest then
+        local pos = GetPos()
+        local otherPos = GetPos(nearest)
+        print(vec2.distance(pos, otherPos))
+        local dir = (otherPos - pos):norm() * 5
+        --[[local dir = otherPos - pos
+        print(tostring(dir))
+        dir = dir / #dir * 5--]]
+        print(dir.x..", "..dir.y)
+        Move(dir)
+    end
+    --[[nearby = GetNearby()
     for i,other in ipairs(nearby) do
         --print(tostring(k).." - "..tostring(v))
         print(tostring(other))
@@ -20,5 +29,5 @@ function update()
         dir[2] = dir[2] / len * 10
         print(dir[1]..", "..dir[2])
         Move(dir)
-    end
+    end--]]
 end

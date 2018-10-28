@@ -10,8 +10,6 @@
 
 #include "component.h"
 
-#include "vector2d.h"
-
 /**
  * @brief Physics Component
  */
@@ -21,9 +19,9 @@ typedef struct Physics {
     float maxVel;   ///< @brief Maximum velocity
     float deccel;   ///< @brief Decceleration speed
 
-    Vector2D vel;   ///< @brief Current velocity
-    Vector2D pVel;  ///< @brief Previous velocity
-    Vector2D accel; ///< @brief Current acceleration
+    vec2_t vel;   ///< @brief Current velocity
+    vec2_t pVel;  ///< @brief Previous velocity
+    vec2_t accel; ///< @brief Current acceleration
 } Physics;
 
 /**
