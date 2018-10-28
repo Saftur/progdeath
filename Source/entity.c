@@ -63,6 +63,11 @@ void _Entity_delete(Entity *this) {
 void _Entity_update(Entity *this) {
     resetTimeoutHook(this->script);
     luaU_call(this->script, "update", ">");
+
+    Transform *trs;
+    if ((this->type == ET_PLAYER) && (trs = Object_getComp(this->comp.owner, TRANSFORM))) {
+        translate(canvasWidth / 2 - trs->pos.x, canvasHeight / 2 - trs->pos.y);
+    }
 }
 
 /**
