@@ -53,7 +53,7 @@ void gameScreenInit(ObjectMngr *objMngr) {
     Object_addComp(entObj, ent);
     ObjectMngr_addObj(objMngr, entObj);
 
-    entObj = Object_new("Test Entity");
+    /*entObj = Object_new("Test Entity");
     entTrs = Transform_new();
     entTrs->pos = (vec2_t){ canvasWidth / 4, canvasHeight / 4 };
     ent = Entity_new("Scripts/test_entity.lua", ET_ENEMY);
@@ -67,17 +67,19 @@ void gameScreenInit(ObjectMngr *objMngr) {
     ent = Entity_new("Scripts/test_entity.lua", ET_ENEMY);
     Object_addComp(entObj, entTrs);
     Object_addComp(entObj, ent);
-    ObjectMngr_addObj(objMngr, entObj);
+    ObjectMngr_addObj(objMngr, entObj);*/
 
-    /*for (unsigned i = 0; i < 100; i++) {
+    for (unsigned i = 0; i < 100; i++) {
         entObj = Object_new("Test Entity");
         entTrs = Transform_new();
-        entTrs->pos = (vec2_t){ canvasWidth / 4, canvasHeight / 4 };
-        ent = Entity_new("Scripts/test_entity.lua");
+        //entTrs->pos = (vec2_t){ canvasWidth / 4, canvasHeight / 4 + 50*i };
+        float angle = map((float)i, 0.f, 100.f, 0.f, TWO_PI);
+        entTrs->pos = (vec2_t){ canvasWidth / 2 + 400 * cosf(angle), canvasHeight / 2 + 400 * sinf(angle) };
+        ent = Entity_new("Scripts/test_entity.lua", ET_ENEMY);
         Object_addComp(entObj, entTrs);
         Object_addComp(entObj, ent);
         ObjectMngr_addObj(objMngr, entObj);
-    }*/
+    }
 }
 
 /// @}

@@ -72,6 +72,8 @@ void _Entity_update(Entity *this) {
 void _Entity_draw(Entity *this) {
     Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
     if (!trs) return;
+    fill(255, 255, 255, 255);
+    noStroke();
     circle(trs->pos.x, trs->pos.y, 20);
 }
 
