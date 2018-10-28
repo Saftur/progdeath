@@ -11,6 +11,12 @@
 
 #include "luautil.h"
 
+/**
+ * @brief Create new vec2
+ * @param 1 X position OR table of X & Y values
+ * @param 2 Y position
+ * @return New vec2
+ */
 static int l_new(lua_State *L) {
     vec2_t *v = lua_newuserdata(L, sizeof(vec2_t));
     luaL_getmetatable(L, "vec2");
@@ -60,11 +66,16 @@ static int l_new(lua_State *L) {
     return 1;
 }
 
+/**
+ * @brief Get X or Y pointer from vec2
+ * @param 1 vec2 to get from
+ * @param 2 Key to determine X or Y
+ * @return Pointer to X or Y OR NULL for incorrect keys
+ */
 static float *getXY(lua_State *L) {
     vec2_t *v = lua_touserdata(L, 1);
     if (!lua_isstring(L, 2))
         return NULL;
-    //luaL_argcheck(L, lua_isstring(L, 2), 2, "'number' or 'string' expected");
     const char *i = luaL_checkstring(L, 2);
     switch (*i) {
     case 'x': case 'X': case '1':
@@ -75,10 +86,15 @@ static float *getXY(lua_State *L) {
         break;
     default:
         return NULL;
-        //luaL_argcheck(L, 0, 2, "'x', 'X', 1, 'y', 'Y', or 2 expected");
     }
 }
 
+/**
+ * @brief Get X or Y OR get other member data from vec2
+ * @param 1 vec2 to get from
+ * @param 2 Key to index
+ * @return X or Y OR other member data
+ */
 static int l_index(lua_State *L) {
     float *f = getXY(L);
     if (f) {
@@ -93,15 +109,29 @@ static int l_index(lua_State *L) {
     return 1;
 }
 
+/**
+ * @brief Set X or Y on vec2
+ * @param 1 vec2 to set on
+ * @param 2 Key to determine X or Y
+ * @param 3 Value to set
+ * @return Value set
+ */
 static int l_newindex(lua_State *L) {
     float *f = getXY(L);
     if (!f)
         luaL_argcheck(L, 0, 2, "'x', 'X', 1, 'y', 'Y', or 2 expected");
     luaL_argcheck(L, lua_isnumber(L, 3), 3, "'number' expected");
     *f = luaL_checknumber(L, 3);
-    return 0;
+    lua_pushnumber(L, *f);
+    return 1;
 }
 
+/**
+ * @brief Create new vec2
+ * @param 1 X position OR table of X & Y values
+ * @param 2 Y position
+ * @return New vec2
+ */
 static int l_call(lua_State *L) {
     lua_getglobal(L, "vec2");
     lua_getfield(L, -1, "new");
@@ -116,6 +146,9 @@ static int l_call(lua_State *L) {
     }
 }
 
+/**
+ * @brief vec2 unary negation
+ */
 static int l_unm(lua_State *L) {
     vec2_t *v = luaL_checkudata(L, 1, "vec2");
     vec2_t nv = vec2_neg(*v);
@@ -127,6 +160,9 @@ static int l_unm(lua_State *L) {
         return 1;
 }
 
+/**
+ * @brief vec2 addition
+ */
 static int l_add(lua_State *L) {
     vec2_t a = *(vec2_t*)luaL_checkudata(L, 1, "vec2");
     luaL_argcheck(L, lua_isuserdata(L, 2), 2, "'vec2' expected");
@@ -140,6 +176,9 @@ static int l_add(lua_State *L) {
         return 1;
 }
 
+/**
+ * @brief vec2 subtraction
+ */
 static int l_sub(lua_State *L) {
     vec2_t a = *(vec2_t*)luaL_checkudata(L, 1, "vec2");
     luaL_argcheck(L, lua_isuserdata(L, 2), 2, "'vec2' expected");
@@ -153,6 +192,9 @@ static int l_sub(lua_State *L) {
         return 1;
 }
 
+/**
+ * @brief vec2 scaling
+ */
 static int l_mul(lua_State *L) {
     if (lua_isnumber(L, 1)) {
         lua_pushvalue(L, 1);
@@ -170,6 +212,9 @@ static int l_mul(lua_State *L) {
         return 1;
 }
 
+/**
+ * @brief vec2 inverse scaling
+ */
 static int l_div(lua_State *L) {
     int swap = 0;
     if (lua_isnumber(L, 1)) {
@@ -193,6 +238,9 @@ static int l_div(lua_State *L) {
         return 1;
 }
 
+/**
+ * @brief vec2 normalized
+ */
 static int l_norm(lua_State *L) {
     vec2_t v = *(vec2_t*)luaL_checkudata(L, 1, "vec2");
     vec2_t nv = vec2_norm(v);
@@ -204,12 +252,18 @@ static int l_norm(lua_State *L) {
         return 1;
 }
 
+/**
+ * @brief vec2 length
+ */
 static int l_length(lua_State *L) {
     vec2_t *v = luaL_checkudata(L, 1, "vec2");
     lua_pushnumber(L, vec2_length(*v));
     return 1;
 }
 
+/**
+ * @brief vec2 distance
+ */
 static int l_distance(lua_State *L) {
     vec2_t a = *(vec2_t*)luaL_checkudata(L, 1, "vec2");
     luaL_argcheck(L, lua_isuserdata(L, 2), 2, "'vec2' expected");
@@ -218,6 +272,9 @@ static int l_distance(lua_State *L) {
     return 1;
 }
 
+/**
+ * @brief vec2 dot product
+ */
 static int l_dot(lua_State *L) {
     vec2_t a = *(vec2_t*)luaL_checkudata(L, 1, "vec2");
     luaL_argcheck(L, lua_isuserdata(L, 2), 2, "'vec2' expected");
@@ -226,6 +283,9 @@ static int l_dot(lua_State *L) {
     return 1;
 }
 
+/**
+ * @brief vec2 cross product
+ */
 static int l_cross(lua_State *L) {
     vec2_t a = *(vec2_t*)luaL_checkudata(L, 1, "vec2");
     luaL_argcheck(L, lua_isuserdata(L, 2), 2, "'vec2' expected");
@@ -234,6 +294,9 @@ static int l_cross(lua_State *L) {
     return 1;
 }
 
+/**
+ * @brief vec2 angle between
+ */
 static int l_angle(lua_State *L) {
     vec2_t a = *(vec2_t*)luaL_checkudata(L, 1, "vec2");
     luaL_argcheck(L, lua_isuserdata(L, 2), 2, "'vec2' expected");
@@ -242,6 +305,9 @@ static int l_angle(lua_State *L) {
     return 1;
 }
 
+/**
+ * @brief Functions shared between lib and userdata
+ */
 static const struct luaL_Reg shared_funcs[] ={
     {"length", l_length},
     {"norm", l_norm},
@@ -252,16 +318,25 @@ static const struct luaL_Reg shared_funcs[] ={
     {NULL, NULL}
 };
 
+/**
+ * @brief Lib functions
+ */
 static const struct luaL_Reg lib_funcs[] = {
     {"new", l_new},
     {NULL, NULL}
 };
 
+/**
+ * @brief Lib meta functions
+ */
 static const struct luaL_Reg lib_metafuncs[] = {
     {"__call", l_call},
     {NULL, NULL}
 };
 
+/**
+ * @brief Userdata meta functions
+ */
 static const struct luaL_Reg ud_metafuncs[] = {
     {"__index", l_index},
     {"__newindex", l_newindex},
