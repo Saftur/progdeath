@@ -1,6 +1,6 @@
 function update()
     local dir = vec2()
-    nearest = GetNearest(ET_PLAYER)
+    nearest = GetNearest(ENT_PLAYER)
     if nearest then
         local pos = GetPos()
         local otherPos = GetPos(nearest)

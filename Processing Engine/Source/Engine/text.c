@@ -1,7 +1,7 @@
 /**
  * @file text.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
+ * @date 10/28/18
  * @brief Text implementation
  * @addtogroup Components
  * @{
@@ -29,7 +29,7 @@ Text *Text_new(const char *text, int textSize) {
     this->text = NULL;
     Text_setText(this, text);
     this->textSize = textSize;
-    this->textColor = color(255, 255, 255, 255);
+    this->textColor = color(0, 0, 0, 255);
 
     return this;
 }

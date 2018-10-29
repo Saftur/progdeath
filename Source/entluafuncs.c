@@ -328,10 +328,10 @@ void initEntityLuaState(Entity *ent, const char *scriptName) {
     lua_rawgeti(L, LUA_REGISTRYINDEX, LUA_RIDX_GLOBALS);
     luaL_setfuncs(L, funcs, 0);
 
-    lua_pushnumber(L, ET_PLAYER);
-    lua_setglobal(L, "ET_PLAYER");
-    lua_pushnumber(L, ET_ENEMY);
-    lua_setglobal(L, "ET_ENEMY");
+    lua_pushnumber(L, ENT_PLAYER);
+    lua_setglobal(L, "ENT_PLAYER");
+    lua_pushnumber(L, ENT_ENEMY);
+    lua_setglobal(L, "ENT_ENEMY");
 
     ent->script = L;
 }

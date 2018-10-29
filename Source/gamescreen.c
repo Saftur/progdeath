@@ -51,7 +51,7 @@ void gameScreenInit(ObjectMngr *objMngr) {
     entTrs = Transform_new();
     entTrs->pos = (vec2_t){ canvasWidth / 2, canvasHeight / 2 };
     entPhys = Physics_new(300.f, 900.f);
-    ent = Entity_new("Scripts/test_player.lua", ET_PLAYER);
+    ent = Entity_new("Scripts/test_player.lua", ENT_PLAYER);
     Object_addComp(entObj, entTrs);
     Object_addComp(entObj, entPhys);
     Object_addComp(entObj, ent);
@@ -63,7 +63,7 @@ void gameScreenInit(ObjectMngr *objMngr) {
         float angle = map((float)i, 0.f, 100.f, 0.f, TWO_PI);
         entTrs->pos = (vec2_t){ canvasWidth / 2 + 400 * cosf(angle), canvasHeight / 2 + 400 * sinf(angle) };
         entPhys = Physics_new(200.f, 900.f);
-        ent = Entity_new("Scripts/test_entity.lua", ET_ENEMY);
+        ent = Entity_new("Scripts/test_entity.lua", ENT_ENEMY);
         Object_addComp(entObj, entTrs);
         Object_addComp(entObj, entPhys);
         Object_addComp(entObj, ent);

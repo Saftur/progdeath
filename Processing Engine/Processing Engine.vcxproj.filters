@@ -31,9 +31,6 @@
     <ClCompile Include="Source\Engine\physics.c">
       <Filter>Engine\Objects\Components\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Engine\samplecomp.c">
-      <Filter>Engine\Objects\Components\SampleComp</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Engine\sprite.c">
       <Filter>Engine\Objects\Components\Sprite</Filter>
     </ClCompile>
@@ -87,9 +84,6 @@
     <ClInclude Include="Source\Engine\physics.h">
       <Filter>Engine\Objects\Components\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Engine\samplecomp.h">
-      <Filter>Engine\Objects\Components\SampleComp</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Engine\sprite.h">
       <Filter>Engine\Objects\Components\Sprite</Filter>
     </ClInclude>
@@ -142,9 +136,6 @@
     </Filter>
     <Filter Include="Engine\Objects\Components\Sprite">
       <UniqueIdentifier>{8d4a3124-cc58-4a59-934d-f672647a74d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Objects\Components\SampleComp">
-      <UniqueIdentifier>{045ed04b-0594-4e23-ab17-79b697f505bd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Screens">
       <UniqueIdentifier>{961a3a76-0f86-4417-969e-2710ded68f67}</UniqueIdentifier>

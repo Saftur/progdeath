@@ -122,10 +122,6 @@
     <ClCompile Include="Source\Engine\object.c" />
     <ClCompile Include="Source\Engine\objectmngr.c" />
     <ClCompile Include="Source\Engine\physics.c" />
-    <ClCompile Include="Source\Engine\samplecomp.c">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="Source\Engine\sprite.c">
       <SubType>
       </SubType>
@@ -172,10 +168,6 @@
     <ClInclude Include="Source\Engine\object.h" />
     <ClInclude Include="Source\Engine\objectmngr.h" />
     <ClInclude Include="Source\Engine\physics.h" />
-    <ClInclude Include="Source\Engine\samplecomp.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="Source\Engine\sprite.h">
       <SubType>
       </SubType>

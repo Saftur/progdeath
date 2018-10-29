@@ -14,8 +14,8 @@
 #include <lua.h>
 
 typedef enum EntityType {
-    ET_PLAYER,
-    ET_ENEMY,
+    ENT_PLAYER,
+    ENT_ENEMY,
 } EntityType;
 
 /**

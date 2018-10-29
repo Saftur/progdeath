@@ -68,7 +68,7 @@ void _Entity_update(Entity *this) {
     lua_call(this->script, 0, 0);
 
     Transform *trs;
-    if (List_find(this->types, ET_PLAYER, NULL) && (trs = Object_getComp(this->comp.owner, TRANSFORM))) {
+    if (List_find(this->types, ENT_PLAYER, NULL) && (trs = Object_getComp(this->comp.owner, TRANSFORM))) {
         translate(canvasWidth / 2 - trs->pos.x, canvasHeight / 2 - trs->pos.y);
     }
 }
@@ -80,7 +80,7 @@ void _Entity_update(Entity *this) {
 void _Entity_draw(Entity *this) {
     Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
     if (!trs) return;
-    fill(255, 255, 255, 255);
+    fill(0, 0, 0, 255);
     noStroke();
     circle(trs->pos.x, trs->pos.y, 20);
 }

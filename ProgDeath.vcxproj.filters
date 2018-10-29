@@ -43,6 +43,12 @@
     <ClCompile Include="Source\screens.c">
       <Filter>Game\Screens</Filter>
     </ClCompile>
+    <ClCompile Include="Source\codeblock.c">
+      <Filter>Game\Components\Code Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\codeblocktypes.c">
+      <Filter>Game\Components\Code Block</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -87,6 +93,12 @@
     <ClInclude Include="Source\screens.h">
       <Filter>Game\Screens</Filter>
     </ClInclude>
+    <ClInclude Include="Source\codeblock.h">
+      <Filter>Game\Components\Code Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\codeblocktypes.h">
+      <Filter>Game\Components\Code Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -130,6 +142,9 @@
     </Filter>
     <Filter Include="Game\Screens\Editor Screen">
       <UniqueIdentifier>{d4b5d4b0-61ac-4aa0-a541-9b2108e34bd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block">
+      <UniqueIdentifier>{fc97b877-ef6c-428a-a978-40d2d3063d93}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

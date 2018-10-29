@@ -36,7 +36,7 @@ void init()
 // when used with Run() this function will be called repeatedly every frame
 void update()
 {
-    background(0, 0, 0);
+    background(255, 255, 255);
     Engine_update();
 }
 

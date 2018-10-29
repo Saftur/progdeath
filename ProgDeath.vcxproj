@@ -108,6 +108,14 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\codeblock.c">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Source\codeblocktypes.c">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Source\deathscreen.c">
       <SubType>
       </SubType>
@@ -154,6 +162,14 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\codeblock.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Source\codeblocktypes.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Source\deathscreen.h">
       <SubType>
       </SubType>
