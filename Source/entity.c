@@ -22,9 +22,10 @@
  * @param script     Lua script code or filename
  * @param scriptType Lua script type (code or filename)
  * @param baseType   Entity base type
+ * @param maxHp	     Maximum Health
  * @return New Entity
  */
-Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseType) {
+Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseType, float maxHp) {
     Entity *this = malloc(sizeof(Entity));
     this->comp.typeName = "Entity";
     this->comp.typeId = ENTITY;
@@ -48,6 +49,9 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
 
     this->detectRange = 300.f;
     this->actualEnt = this;
+
+    this->hp = maxHp;
+    this->maxHp = maxHp;
 
     return this;
 }

@@ -38,6 +38,9 @@ typedef struct Entity {
 
     float detectRange; ///< @brief Entity detection range
     Entity *actualEnt; ///< @brief Pointer to actual Entity on Entity lua clones
+
+    float hp;	 ///< @brief Current Health 
+    float maxHp; ///< @brief Maximum Health 
 } Entity;
 
 /**
@@ -45,9 +48,10 @@ typedef struct Entity {
  * @param script     Lua script code or filename
  * @param scriptType Lua script type (code or filename)
  * @param baseType   Entity base type
+ * @param maxHp	     Maximum Health
  * @return New Entity
  */
-Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseType);
+Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseType, float maxHp);
 
 /**
  * @brief Clone Entity

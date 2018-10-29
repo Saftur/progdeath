@@ -241,16 +241,32 @@ static int l_getpos(lua_State *L) {
     Entity *ent;
     if (lua_isnone(L, 1))
         ent = getEntity(L);
-    else if (!(ent = lua_touserdata(L, 1)))
-        luaL_argcheck(L, false, 1, "'Entity' or 'none' expected");
+    else
+        luaL_argcheck(L, ent = lua_touserdata(L, 1), 1, "'Entity' or 'none' expected");
     Transform *trs;
     if (!ent || !(trs = Object_getComp(ent->comp.owner, TRANSFORM)))
         return 0;
+	// vec2.new(x, y)
     lua_getglobal(L, "vec2");
     lua_getfield(L, -1, "new");
     lua_pushnumber(L, trs->pos.x);
     lua_pushnumber(L, trs->pos.y);
     lua_call(L, 2, 1);
+    return 1;
+}
+
+/**
+ * @brief Get health of Entity
+ * @param 1 Entity to get health of (default: self)
+ * @return health of Entity
+ */
+static int l_gethp(lua_State *L) {
+    Entity *ent;
+    if (lua_isnone(L, 1))
+        ent = getEntity(L);
+    else
+        luaL_argcheck(L, ent = lua_touserdata(L, 1), 1, "'Entity' or 'none' expected");
+    lua_pushnumber(L, ent->hp);
     return 1;
 }
 
@@ -334,6 +350,7 @@ static const luaL_Reg funcs[] = {
     {"GetTypeName", l_gettypename},
 
     {"GetPos", l_getpos},
+    {"GetHp", l_gethp},
     {NULL, NULL}
 };
 
@@ -361,7 +378,7 @@ void initEntityLuaState(Entity *ent, const char *script, ScriptType scriptType) 
     if ((scriptType == ST_FILENAME) ? luaL_dofile(L, script) : luaL_dostring(L, script)) {
         char c = (scriptType == ST_FILENAME) ? '\"' : '\n';
         fprintf(stderr, "Failed to load script %c%s%c", c, script, c);
-        return NULL;
+        return;
     }
 
     lua_pushstring(L, "Entity");
