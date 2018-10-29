@@ -40,6 +40,9 @@
     <ClCompile Include="Source\menuscreen.c">
       <Filter>Game\Levels\Menu Screen</Filter>
     </ClCompile>
+    <ClCompile Include="Source\editorscreen.c">
+      <Filter>Game\Levels\Editor Screen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -81,6 +84,9 @@
     <ClInclude Include="Source\splashscreen.h">
       <Filter>Game\Levels\Splash Screen</Filter>
     </ClInclude>
+    <ClInclude Include="Source\editorscreen.h">
+      <Filter>Game\Levels\Editor Screen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -121,6 +127,9 @@
     </Filter>
     <Filter Include="Game\Levels\Splash Screen">
       <UniqueIdentifier>{aea7b011-35c4-414f-85a5-87f0ee970faf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Levels\Editor Screen">
+      <UniqueIdentifier>{d4b5d4b0-61ac-4aa0-a541-9b2108e34bd2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

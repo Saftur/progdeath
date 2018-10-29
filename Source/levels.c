@@ -13,6 +13,7 @@
 
 #include "splashscreen.h"
 #include "menuscreen.h"
+#include "editorscreen.h"
 #include "gamescreen.h"
 #include "deathscreen.h"
 
@@ -22,11 +23,13 @@
 void listLevels() {
     Level *splashLevel = Level_new("Splash Screen", splashScreenInit, NULL);
     Level *menuLevel = Level_new("Menu", menuScreenInit, NULL);
+    Level *editorLevel = Level_new("Editor", editorScreenInit, NULL);
     Level *gameLevel = Level_new("Game", gameScreenInit, NULL);
     Level *deathLevel = Level_new("Death Screen", deathScreenInit, NULL);
 
     LevelMngr_addLevel(Engine_getLayer(0)->lvlMngr, splashLevel);
     LevelMngr_addLevel(Engine_getLayer(0)->lvlMngr, menuLevel);
+    LevelMngr_addLevel(Engine_getLayer(0)->lvlMngr, editorLevel);
     LevelMngr_addLevel(Engine_getLayer(0)->lvlMngr, gameLevel);
     LevelMngr_addLevel(Engine_getLayer(0)->lvlMngr, deathLevel);
 }

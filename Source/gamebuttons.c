@@ -24,7 +24,7 @@ void playButtonEffect(Button *button) {
  * @param button Effect's Button
  */
 void menuButtonEffect(Button *button) {
-    LevelMngr_setNextLevel(button->comp.owner->objMngr->gLayer->lvlMngr, "Menu Screen");
+    LevelMngr_setNextLevel(button->comp.owner->objMngr->gLayer->lvlMngr, "Menu");
 }
 
 /**
@@ -33,6 +33,14 @@ void menuButtonEffect(Button *button) {
  */
 void quitButtonEffect(Button *button) {
     Terminate();
+}
+
+/**
+ * @brief Go to Editor level
+ * @param button Effect's Button
+ */
+void editorButtonEffect(Button *button) {
+    LevelMngr_setNextLevel(button->comp.owner->objMngr->gLayer->lvlMngr, "Editor");
 }
 
 /// @}

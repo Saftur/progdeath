@@ -1,7 +1,7 @@
 /**
  * @file menuscreen.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/26/18
+ * @date 10/28/18
  * @brief Menu Screen implementation
  * @addtogroup Game-Levels
  * @{
@@ -52,9 +52,17 @@ void menuScreenInit(ObjectMngr *objMngr) {
     Object_addComp(buttonObj, button);
     ObjectMngr_addObj(objMngr, buttonObj);
 
-    buttonObj = Object_new("Quit Button");
+    buttonObj = Object_new("Editor Button");
     buttonTrs = Transform_new();
     buttonTrs->pos = (vec2_t){ canvasWidth/2, canvasHeight/2 + 60 };
+    button = Button_new((vec2_t){ 150, 60 }, editorButtonEffect, "Editor");
+    Object_addComp(buttonObj, buttonTrs);
+    Object_addComp(buttonObj, button);
+    ObjectMngr_addObj(objMngr, buttonObj);
+
+    buttonObj = Object_new("Quit Button");
+    buttonTrs = Transform_new();
+    buttonTrs->pos = (vec2_t){ canvasWidth/2, canvasHeight/2 + 180 };
     button = Button_new((vec2_t){ 150, 60 }, quitButtonEffect, "Quit");
     Object_addComp(buttonObj, buttonTrs);
     Object_addComp(buttonObj, button);
