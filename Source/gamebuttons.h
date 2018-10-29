@@ -11,13 +11,13 @@
 typedef struct Button Button; ///< @brief Button forward declaration
 
 /**
- * @brief Go to Game level
+ * @brief Go to Game screen
  * @param button Effect's Button
  */
 void playButtonEffect(Button *button);
 
 /**
- * @brief Go to Menu level
+ * @brief Go to Menu screen
  * @param button Effect's Button
  */
 void menuButtonEffect(Button *button);
@@ -29,7 +29,7 @@ void menuButtonEffect(Button *button);
 void quitButtonEffect(Button *button);
 
 /**
- * @brief Go to Editor level
+ * @brief Go to Editor screen
  * @param button Effect's Button
  */
 void editorButtonEffect(Button *button);

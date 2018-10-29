@@ -3,7 +3,7 @@
  * @author Arthur Bouvier (a.bouvier)
  * @date 10/18/18
  * @brief Death screen implementation
- * @addtogroup Game-Levels
+ * @addtogroup Game-Screens
  * @{
  */
 #include "deathscreen.h"
@@ -58,7 +58,7 @@ static void drawFrownyFace(Component *comp) {
 
 /**
  * @brief Initialize Death Screen
- * @param objMngr ObjectMngr to load level on
+ * @param objMngr ObjectMngr to load screen on
  */
 void deathScreenInit(ObjectMngr *objMngr) {
     Object *obj;

@@ -10,7 +10,7 @@
 
 #include <stdbool.h>
 
-#include "levelmngr.h"
+#include "screenmngr.h"
 #include "objectmngr.h"
 
 /**
@@ -18,7 +18,7 @@
  * Example: Layer 0 is game, Layer 1 is hud.
  */
 typedef struct GameLayer {
-    LevelMngr *lvlMngr;  ///< @brief GameLayer's LevelMngr
+    ScreenMngr *scrMngr;  ///< @brief GameLayer's ScreenMngr
     ObjectMngr *objMngr; ///< @brief GameLayer's ObjectMngr
 
     bool updateLower; ///< @brief Update lower layers

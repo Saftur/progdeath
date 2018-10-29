@@ -3,7 +3,7 @@
  * @author Arthur Bouvier (a.bouvier)
  * @date 10/28/18
  * @brief Menu Screen implementation
- * @addtogroup Game-Levels
+ * @addtogroup Game-Screens
  * @{
  */
 #include "menuscreen.h"
@@ -19,7 +19,7 @@
 
 /**
  * @brief Initialize Menu Screen
- * @param objMngr ObjectMngr to load level on
+ * @param objMngr ObjectMngr to load screen on
  */
 void menuScreenInit(ObjectMngr *objMngr) {
     const char *tutorialText[] ={

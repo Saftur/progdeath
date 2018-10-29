@@ -4,9 +4,6 @@
     <ClCompile Include="Source\gamecolls.c">
       <Filter>Game\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\levels.c">
-      <Filter>Game\Levels</Filter>
-    </ClCompile>
     <ClCompile Include="Source\gamebuttons.c">
       <Filter>Game\Components</Filter>
     </ClCompile>
@@ -29,19 +26,22 @@
       <Filter>Game\Lua\Userdata</Filter>
     </ClCompile>
     <ClCompile Include="Source\deathscreen.c">
-      <Filter>Game\Levels\Death Screen</Filter>
+      <Filter>Game\Screens\Death Screen</Filter>
     </ClCompile>
     <ClCompile Include="Source\gamescreen.c">
-      <Filter>Game\Levels\Game Screen</Filter>
+      <Filter>Game\Screens\Game Screen</Filter>
     </ClCompile>
     <ClCompile Include="Source\splashscreen.c">
-      <Filter>Game\Levels\Splash Screen</Filter>
+      <Filter>Game\Screens\Splash Screen</Filter>
     </ClCompile>
     <ClCompile Include="Source\menuscreen.c">
-      <Filter>Game\Levels\Menu Screen</Filter>
+      <Filter>Game\Screens\Menu Screen</Filter>
     </ClCompile>
     <ClCompile Include="Source\editorscreen.c">
-      <Filter>Game\Levels\Editor Screen</Filter>
+      <Filter>Game\Screens\Editor Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\screens.c">
+      <Filter>Game\Screens</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,9 +50,6 @@
     </ClInclude>
     <ClInclude Include="Source\gamecomps.h">
       <Filter>Game\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\levels.h">
-      <Filter>Game\Levels</Filter>
     </ClInclude>
     <ClInclude Include="Source\gamebuttons.h">
       <Filter>Game\Components</Filter>
@@ -73,19 +70,22 @@
       <Filter>Game\Lua\Userdata</Filter>
     </ClInclude>
     <ClInclude Include="Source\deathscreen.h">
-      <Filter>Game\Levels\Death Screen</Filter>
+      <Filter>Game\Screens\Death Screen</Filter>
     </ClInclude>
     <ClInclude Include="Source\gamescreen.h">
-      <Filter>Game\Levels\Game Screen</Filter>
+      <Filter>Game\Screens\Game Screen</Filter>
     </ClInclude>
     <ClInclude Include="Source\menuscreen.h">
-      <Filter>Game\Levels\Menu Screen</Filter>
+      <Filter>Game\Screens\Menu Screen</Filter>
     </ClInclude>
     <ClInclude Include="Source\splashscreen.h">
-      <Filter>Game\Levels\Splash Screen</Filter>
+      <Filter>Game\Screens\Splash Screen</Filter>
     </ClInclude>
     <ClInclude Include="Source\editorscreen.h">
-      <Filter>Game\Levels\Editor Screen</Filter>
+      <Filter>Game\Screens\Editor Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\screens.h">
+      <Filter>Game\Screens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -94,9 +94,6 @@
     </Filter>
     <Filter Include="Game\Components">
       <UniqueIdentifier>{c9516fd3-cbd2-4e63-8e05-443250bd496c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Levels">
-      <UniqueIdentifier>{748da6c0-9fd6-4054-a740-bd488932baa4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Components\Entity">
       <UniqueIdentifier>{73708247-049c-43fa-89c5-cecae9cf5ded}</UniqueIdentifier>
@@ -116,19 +113,22 @@
     <Filter Include="Game\Lua\Userdata">
       <UniqueIdentifier>{c9e2683e-1f67-4f40-a36b-c284e38325d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Levels\Death Screen">
+    <Filter Include="Game\Screens">
+      <UniqueIdentifier>{748da6c0-9fd6-4054-a740-bd488932baa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Screens\Death Screen">
       <UniqueIdentifier>{d993c51d-3153-42a6-a3b6-dc70f3beb880}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Levels\Game Screen">
+    <Filter Include="Game\Screens\Game Screen">
       <UniqueIdentifier>{47de1080-5b3d-4c7b-9f3b-7390737cc8b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Levels\Menu Screen">
+    <Filter Include="Game\Screens\Menu Screen">
       <UniqueIdentifier>{6f961e0d-7848-4b40-9c44-fc774d8e6907}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Levels\Splash Screen">
+    <Filter Include="Game\Screens\Splash Screen">
       <UniqueIdentifier>{aea7b011-35c4-414f-85a5-87f0ee970faf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Levels\Editor Screen">
+    <Filter Include="Game\Screens\Editor Screen">
       <UniqueIdentifier>{d4b5d4b0-61ac-4aa0-a541-9b2108e34bd2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

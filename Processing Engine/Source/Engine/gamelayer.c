@@ -17,7 +17,7 @@
  */
 GameLayer *GameLayer_new(bool updateLower, bool drawLower) {
     GameLayer *gLayer = malloc(sizeof(GameLayer));
-    gLayer->lvlMngr = LevelMngr_new(gLayer);
+    gLayer->scrMngr = ScreenMngr_new(gLayer);
     gLayer->objMngr = ObjectMngr_new(gLayer);
     gLayer->updateLower = updateLower;
     gLayer->drawLower = drawLower;
@@ -29,7 +29,7 @@ GameLayer *GameLayer_new(bool updateLower, bool drawLower) {
  * @param gLayer GameLayer to delete
  */
 void GameLayer_delete(GameLayer *gLayer) {
-    LevelMngr_delete(gLayer->lvlMngr);
+    ScreenMngr_delete(gLayer->scrMngr);
     ObjectMngr_delete(gLayer->objMngr);
 }
 
@@ -38,7 +38,7 @@ void GameLayer_delete(GameLayer *gLayer) {
  * @param gLayer GameLayer to update
  */
 void GameLayer_update(GameLayer *gLayer) {
-    LevelMngr_update(gLayer->lvlMngr);
+    ScreenMngr_update(gLayer->scrMngr);
     ObjectMngr_update(gLayer->objMngr);
 }
 

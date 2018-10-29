@@ -3,7 +3,7 @@
  * @author Arthur Bouvier (a.bouvier)
  * @date 10/27/18
  * @brief Splash Screen implementation
- * @addtogroup Game-Levels
+ * @addtogroup Game-Screens
  * @{
  */
 #include "splashscreen.h"
@@ -22,7 +22,7 @@ static void logoUpdate(Component *comp) {
     Sprite *spr = (Sprite*)comp;
     countdown -= dt();
     if (countdown < 0.f || keyPressed(KEY_SPACE))
-        LevelMngr_setNextLevel(comp->owner->objMngr->gLayer->lvlMngr, "Menu");
+        ScreenMngr_setNextScreen(comp->owner->objMngr->gLayer->scrMngr, "Menu");
     else if (countdown > 2.f)
         spr->alpha = 1.f - (countdown - 2.f);
     else if (countdown > 0.25f)
@@ -33,7 +33,7 @@ static void logoUpdate(Component *comp) {
 
 /**
  * @brief Initialize Splash Screen
- * @param objMngr ObjectMngr to load level on
+ * @param objMngr ObjectMngr to load screen on
  */
 void splashScreenInit(ObjectMngr *objMngr) {
     Object *logoObj = Object_new("Logo");

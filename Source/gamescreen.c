@@ -3,7 +3,7 @@
  * @author Arthur Bouvier (a.bouvier)
  * @date 10/28/18
  * @brief Game screen implementation
- * @addtogroup Game-Levels
+ * @addtogroup Game-Screens
  * @{
  */
 #include "gamescreen.h"
@@ -24,14 +24,14 @@ static bool menuEvent(Listener *listener) {
 }
 
 static void menuEffect(Listener *listener) {
-    LevelMngr_setNextLevel(listener->comp.owner->objMngr->gLayer->lvlMngr, "Menu");
+    ScreenMngr_setNextScreen(listener->comp.owner->objMngr->gLayer->scrMngr, "Menu");
 }
 
 //  LEVEL INIT
 
 /**
  * @brief Initialize Game Screen
- * @param objMngr ObjectMngr to load level on
+ * @param objMngr ObjectMngr to load screen on
  */
 void gameScreenInit(ObjectMngr *objMngr) {
     Object *listenObj;

@@ -18,7 +18,7 @@
 
 #include "gamecomps.h"
 #include "gamecolls.h"
-#include "levels.h"
+#include "screens.h"
 
 // when used with Run() this function will be called once at the beginning of the program
 void init()
@@ -29,8 +29,8 @@ void init()
     Engine_initLayer(0, true, true);
     Engine_initCollFuncList(NUM_TOTAL_COMPS);
     listColls();
-    listLevels();
-    LevelMngr_setNextLevel(Engine_getLayer(0)->lvlMngr, "Splash Screen");
+    listScreens();
+    ScreenMngr_setNextScreen(Engine_getLayer(0)->scrMngr, "Splash Screen");
 }
 
 // when used with Run() this function will be called repeatedly every frame

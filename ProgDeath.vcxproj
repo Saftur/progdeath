@@ -133,7 +133,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       </SubType>
     </ClCompile>
     <ClCompile Include="Source\gamescreen.c" />
-    <ClCompile Include="Source\levels.c" />
+    <ClCompile Include="Source\screens.c" />
     <ClCompile Include="Source\luafuncs.c">
       <SubType>
       </SubType>
@@ -180,7 +180,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </ClInclude>
     <ClInclude Include="Source\gamecomps.h" />
     <ClInclude Include="Source\gamescreen.h" />
-    <ClInclude Include="Source\levels.h" />
+    <ClInclude Include="Source\screens.h" />
     <ClInclude Include="Source\luafuncs.h">
       <SubType>
       </SubType>

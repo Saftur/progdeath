@@ -12,19 +12,19 @@
 #include <Engine/button.h>
 
 /**
- * @brief Go to Game level
+ * @brief Go to Game screen
  * @param button Effect's Button
  */
 void playButtonEffect(Button *button) {
-    LevelMngr_setNextLevel(button->comp.owner->objMngr->gLayer->lvlMngr, "Game");
+    ScreenMngr_setNextScreen(button->comp.owner->objMngr->gLayer->scrMngr, "Game");
 }
 
 /**
- * @brief Go to Menu level
+ * @brief Go to Menu screen
  * @param button Effect's Button
  */
 void menuButtonEffect(Button *button) {
-    LevelMngr_setNextLevel(button->comp.owner->objMngr->gLayer->lvlMngr, "Menu");
+    ScreenMngr_setNextScreen(button->comp.owner->objMngr->gLayer->scrMngr, "Menu");
 }
 
 /**
@@ -36,11 +36,11 @@ void quitButtonEffect(Button *button) {
 }
 
 /**
- * @brief Go to Editor level
+ * @brief Go to Editor screen
  * @param button Effect's Button
  */
 void editorButtonEffect(Button *button) {
-    LevelMngr_setNextLevel(button->comp.owner->objMngr->gLayer->lvlMngr, "Editor");
+    ScreenMngr_setNextScreen(button->comp.owner->objMngr->gLayer->scrMngr, "Editor");
 }
 
 /// @}
