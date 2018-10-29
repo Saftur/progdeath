@@ -1,7 +1,7 @@
 /**
  * @file list.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
+ * @date 10/28/18
  * @brief List implementation
  * @addtogroup Util
  * @{
@@ -95,6 +95,20 @@ void List_clear(List *list) {
         if (list->delFunc)
             list->delFunc(list->items[i]);
     list->size = 0;
+}
+
+/**
+ * @brief Find an item in a List
+ * @param list  List to search in
+ * @param item  Item to search for
+ * @param equal Function to check if equal (regular check if NULL)
+ * @return Pointer to item in list
+ */
+void **List_find(List *list, void *item, int (*equal)(void*, void*)) {
+    for (unsigned i = 0; i < list->size; i++)
+        if (equal ? equal(list->items[i], item) : list->items[i] == item)
+            return list->items+i;
+    return NULL;
 }
 
 /// @}

@@ -1,7 +1,7 @@
 /**
  * @file list.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
+ * @date 10/28/18
  * @brief C++-vector-style array
  * @addtogroup Util
  * @{
@@ -62,5 +62,14 @@ void List_remove(List *list, unsigned i);
  * @param list List to delete from
  */
 void List_clear(List *list);
+
+/**
+ * @brief Find an item in a List
+ * @param list  List to search in
+ * @param item  Item to search for
+ * @param equal Function to check if equal (regular check if NULL)
+ * @return Pointer to item
+ */
+void **List_find(List *list, void *item, int (*equal)(void*, void*));
 
 /// @}

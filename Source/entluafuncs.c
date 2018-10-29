@@ -1,7 +1,7 @@
 /**
  * @file entluafuncs.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/27/18
+ * @date 10/28/18
  * Entity Lua Functions implementation
  */
 #include "entluafuncs.h"
@@ -167,7 +167,7 @@ static int l_getnearest(lua_State *L) {
             continue;
         int found = (types->size == 0) ? 1 : 0;
         for (unsigned i = 0; !found && i < types->size; i++) {
-            if (objEnt->type == types->items[i]) {
+            if (Entity_isType(objEnt, (EntityType)types->items[i])) {
                 found = 1;
             }
         }
@@ -188,7 +188,7 @@ static int l_getnearest(lua_State *L) {
 /**
  * @brief Get position of Entity
  * @param 1 Entity to get position of (default: self)
- * @param vec2_t position of Entity
+ * @return vec2_t position of Entity
  */
 static int l_getpos(lua_State *L) {
     Entity *ent;
@@ -208,45 +208,70 @@ static int l_getpos(lua_State *L) {
 }
 
 /**
- * @brief Get type of Entity
+ * @brief Get types of Entity
  * @param 1 Entity to get type of (default: self)
- * @param EntityType of Entity
+ * @return table of EntityType s of Entity
  */
-static int l_gettype(lua_State *L) {
+static int l_gettypes(lua_State *L) {
     Entity *ent;
     if (lua_isnone(L, 1))
         ent = getEntity(L);
     else if (!(ent = lua_touserdata(L, 1)))
         luaL_argcheck(L, false, 1, "'Entity' or 'none' expected");
-    lua_pushnumber(L, ent->type);
+    lua_newtable(L);
+    for (unsigned i = 0; i < ent->types->size; i++)
+        lua_rawseti(L, -1, ent->types->items[i]);
     return 1;
 }
 
-static const char *typenames[] ={
+/**
+ * @brief Check if Entity is of a certain EntityType
+ * @param 1 Entity to get type of (default: self)
+ * @param 2 Type to check
+ * @return If Entity has given EntityType
+ */
+static int l_istype(lua_State *L) {
+    Entity *ent = NULL;
+    int typeArg = 1;
+    switch (lua_type(L, 1)) {
+    case LUA_TNUMBER:
+        ent = getEntity(L);
+        break;
+    case LUA_TUSERDATA:
+        ent = lua_touserdata(L, 1);
+        typeArg = 2;
+        break;
+    default:
+        luaL_argcheck(L, false, 1, "'number' or 'Entity' expected");
+    }
+    luaL_argcheck(L, lua_isnumber(L, typeArg), typeArg, "'number' expected");
+    int type = lua_tonumber(L, typeArg);
+    lua_pushboolean(L, Entity_isType(ent, type));
+    return 1;
+}
+
+/**
+ * @brief List of EntityType names
+ */
+static const char *typenames[] = {
     "Player",
     "Enemy",
 };
 
 /**
- * @brief Get type name of type OR Entity
- * @param 1 Type OR Entity to get type name of (default: self)
+ * @brief Get type name of type
+ * @param 1 EntityType
  * @return Type name
  */
 static int l_gettypename(lua_State *L) {
-    Entity *ent;
-    int type;
-    if (lua_isnone(L, 1))
-        type = getEntity(L)->type;
-    else if (lua_isnumber(L, 1))
-        type = lua_tonumber(L, 1);
-    else if (ent = lua_touserdata(L, 1))
-        type = ent->type;
-    else
-        luaL_argcheck(L, false, 1, "'Entity', 'number', or 'none' expected");
-    lua_pushfstring(L, typenames[type]);
+    luaL_argcheck(L, lua_tonumber(L, 1), 1, "'Entity', 'number', or 'none' expected");
+    lua_pushfstring(L, typenames[(int)lua_tonumber(L, 1)]);
     return 1;
 }
 
+/**
+ * @brief List of Entity Lua functions
+ */
 static const luaL_Reg funcs[] = {
     {"Move", l_move},
     {"SetAccel", l_setaccel},
@@ -257,7 +282,8 @@ static const luaL_Reg funcs[] = {
     {"GetNearby", l_getnearby},
     {"GetNearest", l_getnearest},
 
-    {"GetType", l_gettype},
+    {"GetTypes", l_gettypes},
+    {"IsType", l_istype},
     {"GetTypeName", l_gettypename},
 
     {"GetPos", l_getpos},

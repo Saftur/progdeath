@@ -1,7 +1,7 @@
 /**
  * @file entity.h
  * @author Name (username)
- * @date 10/26/18
+ * @date 10/28/18
  * @brief Entity Component
  * @addtogroup Components
  * @{
@@ -25,7 +25,7 @@ typedef struct Entity {
     Component comp; ///< @brief Component data
 
     lua_State *script; ///< @brief Entity Lua script
-    EntityType type;   ///< @brief Entity type
+    List *types;       ///< @brief List of Entity types
 
     float detectRange; ///< @brief Entity detection range
 } Entity;
@@ -33,10 +33,10 @@ typedef struct Entity {
 /**
  * @brief Create new Entity
  * @param scriptName Lua script name
- * @param type       Entity type
+ * @param baseType   Entity base type
  * @return New Entity
  */
-Entity *Entity_new(const char *scriptName, EntityType type);
+Entity *Entity_new(const char *scriptName, EntityType baseType);
 
 /**
  * @brief Delete Entity
@@ -61,5 +61,19 @@ void _Entity_draw(Entity *this);
  * @param other Other Component
  */
 void _Entity_coll_resolve(Entity *this, Component *other);
+
+/**
+ * @brief Add type to this Entity 's type list
+ * @param this Entity to add to
+ * @param type EntityType to add
+ */
+void Entity_addType(Entity *this, EntityType type);
+/**
+ * @brief Check if Entity is of given EntityType
+ * @param this Entity to check
+ * @param type EntityType to check
+ * @return If this is of given type
+ */
+int Entity_isType(Entity *this, EntityType type);
 
 /// @}
