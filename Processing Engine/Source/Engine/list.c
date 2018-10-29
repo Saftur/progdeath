@@ -1,7 +1,7 @@
 /**
  * @file list.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/28/18
+ * @date 10/29/18
  * @brief List implementation
  * @addtogroup Util
  * @{
@@ -46,6 +46,26 @@ void List_reserve(List *list, size_t size) {
         list->items = malloc(list->max * sizeof(void*));
         memcpy(list->items, oldItems, list->size * sizeof(void*));
         free(oldItems);
+    }
+}
+
+/**
+ * @brief Resize array, setting all new values to given value
+ * @param list List to resize
+ * @param size New size
+ * @param item Value to initialize new items to
+ */
+void List_resize(List *list, size_t size, void *item) {
+    if (size > list->size) {
+        List_reserve(list, size);
+        for (unsigned i = list->size; i < size; i++)
+            list->items[i] = item;
+        list->size = size;
+    } else if (size < list->size) {
+        for (unsigned i = size; i < list->size; i++)
+            if (list->delFunc)
+                list->delFunc(list->items[i]);
+        list->size = size;
     }
 }
 

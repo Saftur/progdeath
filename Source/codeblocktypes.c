@@ -1,7 +1,7 @@
 /**
  * @file codeblocktypes.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/28/18
+ * @date 10/29/18
  * CodeBlock types implementation
  */
 #include "codeblocktypes.h"
@@ -17,6 +17,7 @@
 #define TEXT_YOFFSET 6
 
 #define COLOR_TEXT      (PColor){  0,   0,   0, 255}
+#define COLOR_EMPTY     (PColor){255, 255, 255, 255}
 #define COLOR_CONTROL   (PColor){255, 255,   0, 255}
 #define COLOR_DIRECTIVE (PColor){ 47,  47, 255, 255}
 #define COLOR_ARG       (PColor){255, 191, 127, 255}
@@ -57,14 +58,34 @@ static void addTabs(char *txt) {
     }
 }
 
+
+static vec2_t empty_getsize(CodeBlock *block) {
+    return (vec2_t){ 100, INNER_HEIGHT };
+}
+
+static vec2_t empty_draw(CodeBlock *block, vec2_t pos) {
+    vec2_t size = empty_getsize(block);
+    noStroke();
+    fillColor(COLOR_EMPTY);
+    rect(pos.x, pos.y, size.x, size.y);
+    return size;
+}
+
+static char *empty_text(CodeBlock *block) {
+    char *txt = malloc(1 * sizeof(char));
+    txt[0] = 0;
+    return txt;
+}
+
+
 static vec2_t setvar_getsize(CodeBlock *block) {
-    return (vec2_t){ 312, HEIGHT };
+    return (vec2_t){ 226, HEIGHT };
 }
 
 static vec2_t setvar_draw(CodeBlock *block, vec2_t pos) {
     CodeBlock *var = (block->blocks->size >= 1) ? block->blocks->items[0] : NULL;
     CodeBlock *val = (block->blocks->size >= 2) ? block->blocks->items[1] : NULL;
-    vec2_t size = (vec2_t){ 312, HEIGHT };
+    vec2_t size = setvar_getsize(block);
     noStroke();
     fillColor(COLOR_DIRECTIVE);
     rect(pos.x, pos.y, size.x, size.y);
@@ -74,7 +95,7 @@ static vec2_t setvar_draw(CodeBlock *block, vec2_t pos) {
     fillColor(COLOR_TEXT);
     text("=", pos.x + 104, pos.y + size.y - TEXT_YOFFSET);
     if (val)
-        CodeBlock_draw(val, vec2_add(pos, (vec2_t){206, 2}));
+        CodeBlock_draw(val, vec2_add(pos, (vec2_t){120, 2}));
     return size;
 }
 
@@ -101,12 +122,13 @@ static char *setvar_text(CodeBlock *block) {
     return txt;
 }
 
+
 static vec2_t var_getsize(CodeBlock *block) {
     return (vec2_t){ 100, INNER_HEIGHT };
 }
 
 static vec2_t var_draw(CodeBlock *block, vec2_t pos) {
-    vec2_t size = (vec2_t){ 100, INNER_HEIGHT };
+    vec2_t size = var_getsize(block);
     noStroke();
     fillColor(COLOR_ARG);
     rect(pos.x, pos.y, size.x, size.y);
@@ -123,6 +145,7 @@ static char *var_text(CodeBlock *block) {
     txt[len] = 0;
     return txt;
 }
+
 
 static vec2_t if_gettopsize(CodeBlock *block) {
     vec2_t size = (vec2_t){ 100, HEIGHT };
@@ -244,19 +267,29 @@ static char *if_text(CodeBlock *block) {
     return txt;
 }
 
+size_t CodeBlock_numargs[] = {
+    0, // empty
+    2, // setvar
+    0, // var
+    1, // if
+};
+
 CodeBlock_getsizefunc CodeBlock_getsizefuncs[] = {
+    empty_getsize,
     setvar_getsize,
     var_getsize,
     if_getsize,
 };
 
 CodeBlock_drawfunc CodeBlock_drawfuncs[] = {
+    empty_draw,
     setvar_draw,
     var_draw,
     if_draw,
 };
 
 CodeBlock_textfunc CodeBlock_textfuncs[] = {
+    empty_text,
     setvar_text,
     var_text,
     if_text,

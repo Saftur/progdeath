@@ -52,18 +52,18 @@ void editorScreenInit(ObjectMngr *objMngr) {
     trs->pos = (vec2_t){ canvasWidth / 2, canvasHeight / 2 };
 
     cb = CodeBlock_new(CB_IF, NULL, 0);
-    List_push_back(cb->blocks, CodeBlock_new(CB_VAR, "test", 5));
-    List_push_back(cb->blocks, cb2 = CodeBlock_new(CB_SETVAR, NULL, 0));
-    List_push_back(cb2->blocks, CodeBlock_new(CB_VAR, "a", 2));
-    List_push_back(cb2->blocks, CodeBlock_new(CB_VAR, "b", 2));
-    List_push_back(cb->blocks, cb2 = CodeBlock_new(CB_SETVAR, NULL, 0));
-    List_push_back(cb2->blocks, CodeBlock_new(CB_VAR, "c", 2));
-    List_push_back(cb2->blocks, CodeBlock_new(CB_VAR, "d", 2));
-    List_push_back(cb->blocks, cb2 = CodeBlock_new(CB_IF, NULL, 0));
-    List_push_back(cb2->blocks, CodeBlock_new(CB_VAR, "test2", 6));
-    List_push_back(cb2->blocks, cb3 = CodeBlock_new(CB_SETVAR, NULL, 0));
-    List_push_back(cb3->blocks, CodeBlock_new(CB_VAR, "e", 2));
-    List_push_back(cb3->blocks, CodeBlock_new(CB_VAR, "f", 2));
+    CodeBlock_setblock(cb, 0, CodeBlock_new(CB_VAR, "test", 5));
+    CodeBlock_addblock(cb, cb2 = CodeBlock_new(CB_SETVAR, NULL, 0));
+    CodeBlock_setblock(cb2, 0, CodeBlock_new(CB_VAR, "a", 2));
+    CodeBlock_setblock(cb2, 1, CodeBlock_new(CB_VAR, "b", 2));
+    CodeBlock_addblock(cb, cb2 = CodeBlock_new(CB_SETVAR, NULL, 0));
+    CodeBlock_setblock(cb2, 0, CodeBlock_new(CB_VAR, "c", 2));
+    CodeBlock_setblock(cb2, 1, CodeBlock_new(CB_VAR, "d", 2));
+    CodeBlock_addblock(cb, cb2 = CodeBlock_new(CB_IF, NULL, 0));
+    CodeBlock_setblock(cb2, 0, CodeBlock_new(CB_VAR, "test2", 6));
+    CodeBlock_addblock(cb2, cb3 = CodeBlock_new(CB_SETVAR, NULL, 0));
+    CodeBlock_setblock(cb3, 0, CodeBlock_new(CB_VAR, "e", 2));
+    //CodeBlock_setblock(cb3, 1, CodeBlock_new(CB_VAR, "f", 2));
 
     char *txt = CodeBlock_text(cb);
     printf(txt);

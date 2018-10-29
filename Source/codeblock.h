@@ -9,6 +9,7 @@
 #pragma once
 
 #include <Engine/component.h>
+#include "gamecomps.h"
 
 #include "codeblocktypes.h"
 
@@ -48,6 +49,20 @@ void _CodeBlock_update(CodeBlock *this);
  * @param this CodeBlock to draw
  */
 void _CodeBlock_draw(CodeBlock *this);
+
+/**
+ * @brief Set CodeBlock 's sub CodeBlock num to given block
+ * @param this  CodeBlock to add to
+ * @param num   Index to add at
+ * @param block CodeBlock to add
+ */
+void CodeBlock_setblock(CodeBlock *this, unsigned num, CodeBlock *block);
+/**
+ * @brief Add CodeBlock to another CodeBlock
+ * @param this  CodeBlock to add to
+ * @param block CodeBlock to add
+ */
+void CodeBlock_addblock(CodeBlock *this, CodeBlock *block);
 
 /**
  * @brief Get size taken up by CodeBlock

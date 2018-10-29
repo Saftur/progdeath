@@ -112,6 +112,10 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Source\codeblocklist.c">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Source\codeblocktypes.c">
       <SubType>
       </SubType>
@@ -163,6 +167,10 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\codeblock.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Source\codeblocklist.h">
       <SubType>
       </SubType>
     </ClInclude>

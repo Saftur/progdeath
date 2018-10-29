@@ -49,6 +49,9 @@
     <ClCompile Include="Source\codeblocktypes.c">
       <Filter>Game\Components\Code Block</Filter>
     </ClCompile>
+    <ClCompile Include="Source\codeblocklist.c">
+      <Filter>Game\Components\Code Block</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -97,6 +100,9 @@
       <Filter>Game\Components\Code Block</Filter>
     </ClInclude>
     <ClInclude Include="Source\codeblocktypes.h">
+      <Filter>Game\Components\Code Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\codeblocklist.h">
       <Filter>Game\Components\Code Block</Filter>
     </ClInclude>
   </ItemGroup>

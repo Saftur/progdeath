@@ -1,7 +1,7 @@
 /**
  * @file list.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/28/18
+ * @date 10/29/18
  * @brief C++-vector-style array
  * @addtogroup Util
  * @{
@@ -40,6 +40,13 @@ void List_delete(List *list);
  * @param size New allocated size
  */
 void List_reserve(List *list, size_t size);
+/**
+ * @brief Resize array, setting all new values to given value
+ * @param list List to resize
+ * @param size New size
+ * @param item Value to initialize new items to
+ */
+void List_resize(List *list, size_t size, void *item);
 /**
  * @brief Add item to list
  * @param list List to add to
