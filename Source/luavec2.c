@@ -1,7 +1,7 @@
 /**
  * @file luavec2.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/27/18
+ * @date 10/28/18
  * Lua vec2_t implementation
  */
 #include "luavec2.h"
@@ -18,6 +18,7 @@
  * @return New vec2
  */
 static int l_new(lua_State *L) {
+    lua_pushnil(L);
     vec2_t *v = lua_newuserdata(L, sizeof(vec2_t));
     luaL_getmetatable(L, "vec2");
     lua_setmetatable(L, -2);
@@ -56,7 +57,7 @@ static int l_new(lua_State *L) {
         v->y = luaL_checknumber(L, 2);
         v->x = lua_tonumber(L, 1);
         break;
-    case LUA_TNONE:
+    case LUA_TNIL:
         v->x = 0.f;
         v->y = 0.f;
         break;
@@ -133,17 +134,25 @@ static int l_newindex(lua_State *L) {
  * @return New vec2
  */
 static int l_call(lua_State *L) {
+    lua_pushnil(L);
     lua_getglobal(L, "vec2");
     lua_getfield(L, -1, "new");
-    lua_pushvalue(L, 2);
-    if (lua_istable(L, -1)) {
-        if (!lua_pcall(L, 1, 1, 0))
-            return 1;
-    } else {
+    const char *t;
+    for (int i = 1; i < 4; i++)
+        t = luaL_typename(L, i);
+    int nargs = 0;
+    switch (lua_type(L, 2)) {
+    case LUA_TNUMBER:
+        lua_pushvalue(L, 2);
+        nargs++;
+    case LUA_TTABLE:
         lua_pushvalue(L, 3);
-        if (!lua_pcall(L, 2, 1, 0))
+        nargs++;
+    case LUA_TNIL:
+        if (!lua_pcall(L, nargs, 1, 0))
             return 1;
     }
+    return 0;
 }
 
 /**

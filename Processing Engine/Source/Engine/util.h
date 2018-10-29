@@ -1,7 +1,7 @@
 /**
  * @file util.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/27/18
+ * @date 10/28/18
  * @brief Utilities
  * @addtogroup Util
  * @{
@@ -50,12 +50,19 @@ void swapInt(int *a, int *b);
 void swapUnsigned(unsigned *a, unsigned *b);
 
 /**
- * @brief Check if a Vector2D is in a given range (rectangle)
- * @param v The Vector2D
+ * @brief Check if a vec2_t is in a given range (rectangle)
+ * @param v The vec2_t
  * @param range1 First range endpoint
  * @param range2 Second range endpoint
- * @return If the Vector2D is in given range
+ * @return If the vec2_t is in given range
  */
 bool vec2_in_range(vec2_t v, vec2_t range1, vec2_t range2);
+/**
+ * @brief Check if two vec2_t are equal
+ * @param a First vec2_t
+ * @param b Second vec2_t
+ * @return If the two vec2_t are equal
+ */
+bool vec2_equal(vec2_t a, vec2_t b);
 
 /// @}

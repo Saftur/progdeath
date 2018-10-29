@@ -1,7 +1,7 @@
 /**
  * @file physics.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
+ * @date 10/28/18
  * @brief Physics implementation
  * @addtogroup Components
  * @{
@@ -52,8 +52,8 @@ void _Physics_delete(Physics *this) {
  */
 void _Physics_update(Physics *this) {
     this->vel = vec2_add(this->vel, this->accel);
-    float len = vec2_mag(this->vel);
-    if (vec2_equals(this->vel, this->pVel)) {
+    float len = vec2_length(this->vel);
+    if (vec2_equal(this->vel, this->pVel)) {
         // Velocity hasn't changed
         vec2_t dec = (vec2_t) { 0.f, 0.f };
         if (len > 0.f) {

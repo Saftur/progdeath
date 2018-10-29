@@ -11,6 +11,7 @@
 
 #include <Engine/objectmngr.h>
 #include <Engine/transform.h>
+#include <Engine/physics.h>
 
 #include "luautil.h"
 #include "luavec2.h"
@@ -50,24 +51,56 @@ static int l_counthook(lua_State *L) {
 
 
 /**
- * @brief Move Entity by vec2_t v
- * @param ent Entity to move
- * @param v   vec2_t to move by
- */
-static void move(Entity *ent, vec2_t v) {
-    Transform *trs = Object_getComp(ent->comp.owner, TRANSFORM);
-    trs->pos = vec2_add(trs->pos, v);
-}
-
-/**
  * @brief Move by vec2_t
  * @param 1 vec2_t to move by
  */
 static int l_move(lua_State *L) {
-    Entity *ent = getEntity(L);
     luaL_argcheck(L, lua_isuserdata(L, 1), 1, "'vec2' expected");
+    Entity *ent = getEntity(L);
     vec2_t v = *(vec2_t*)luaL_checkudata(L, 1, "vec2");
-    move(ent, v);
+    Transform *trs = Object_getComp(ent->comp.owner, TRANSFORM);
+    if (trs) trs->pos = vec2_add(trs->pos, v);
+    return 0;
+}
+
+/**
+ * @brief Set acceleration
+ * @param 1 vec2_t acceleration
+ */
+static int l_setaccel(lua_State *L) {
+    luaL_argcheck(L, lua_isuserdata(L, 1), 1, "'vec2' expected");
+    Entity *ent = getEntity(L);
+    vec2_t a = *(vec2_t*)luaL_checkudata(L, 1, "vec2");
+    Physics *phys = Object_getComp(ent->comp.owner, PHYSICS);
+    if (phys) phys->accel = a;
+    return 0;
+}
+
+/**
+ * @brief Set velocity
+ * @param 1 vec2_t velocity
+ */
+static int l_setvel(lua_State *L) {
+    luaL_argcheck(L, lua_isuserdata(L, 1), 1, "'vec2' expected");
+    Entity *ent = getEntity(L);
+    vec2_t a = *(vec2_t*)luaL_checkudata(L, 1, "vec2");
+    Physics *phys = Object_getComp(ent->comp.owner, PHYSICS);
+    if (phys) phys->vel = a;
+    return 0;
+}
+
+/**
+ * @brief Get max velocity
+ * @return Max velocity
+ */
+static int l_getmaxvel(lua_State *L) {
+    Entity *ent = getEntity(L);
+    Physics *phys = Object_getComp(ent->comp.owner, PHYSICS);
+    if (phys) {
+        lua_pushnumber(L, phys->maxVel);
+        return 1;
+    }
+    return 0;
 }
 
 /**
@@ -106,7 +139,6 @@ static int l_getnearest(lua_State *L) {
     Transform *trs = Object_getComp(ent->comp.owner, TRANSFORM);
     if (!trs)
         return 0;
-    //int type = (lua_isnumber(L, 1)) ? (lua_tonumber(L, 1)) : -1;
     List *types = List_new(4, NULL);
     switch (lua_type(L, 1)) {
     case LUA_TNUMBER:
@@ -169,11 +201,8 @@ static int l_getpos(lua_State *L) {
         return 0;
     lua_getglobal(L, "vec2");
     lua_getfield(L, -1, "new");
-    //lua_newtable(L);
     lua_pushnumber(L, trs->pos.x);
-    //lua_rawseti(L, -2, 1);
     lua_pushnumber(L, trs->pos.y);
-    //lua_rawseti(L, -2, 2);
     lua_call(L, 2, 1);
     return 1;
 }
@@ -218,6 +247,23 @@ static int l_gettypename(lua_State *L) {
     return 1;
 }
 
+static const luaL_Reg funcs[] = {
+    {"Move", l_move},
+    {"SetAccel", l_setaccel},
+    {"SetVel", l_setvel},
+
+    {"GetMaxVel", l_getmaxvel},
+
+    {"GetNearby", l_getnearby},
+    {"GetNearest", l_getnearest},
+
+    {"GetType", l_gettype},
+    {"GetTypeName", l_gettypename},
+
+    {"GetPos", l_getpos},
+    {NULL, NULL}
+};
+
 /**
  * @brief Initialize Entity Lua script state
  * @param ent        Entity whose script to initialize
@@ -253,23 +299,8 @@ void initEntityLuaState(Entity *ent, const char *scriptName) {
     lua_pushcfunction(L, l_counthook);
     lua_settable(L, LUA_REGISTRYINDEX);
 
-    lua_pushcfunction(L, l_move);
-    lua_setglobal(L, "Move");
-
-    lua_pushcfunction(L, l_getnearby);
-    lua_setglobal(L, "GetNearby");
-
-    lua_pushcfunction(L, l_getnearest);
-    lua_setglobal(L, "GetNearest");
-
-    lua_pushcfunction(L, l_gettype);
-    lua_setglobal(L, "GetType");
-
-    lua_pushcfunction(L, l_gettypename);
-    lua_setglobal(L, "GetTypeName");
-
-    lua_pushcfunction(L, l_getpos);
-    lua_setglobal(L, "GetPos");
+    lua_rawgeti(L, LUA_REGISTRYINDEX, LUA_RIDX_GLOBALS);
+    luaL_setfuncs(L, funcs, 0);
 
     lua_pushnumber(L, ET_PLAYER);
     lua_setglobal(L, "ET_PLAYER");

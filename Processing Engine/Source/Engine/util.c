@@ -1,7 +1,7 @@
 /**
  * @file util.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/27/18
+ * @date 10/28/18
  * @brief Utilities implementation
  * @addtogroup Util
  * @{
@@ -73,6 +73,16 @@ void swapUnsigned(unsigned *a, unsigned *b) {
  */
 bool vec2_in_range(vec2_t v, vec2_t range1, vec2_t range2) {
     return inRange(v.x, range1.x, range2.x) && inRange(v.y, range1.y, range2.y);
+}
+
+/**
+ * @brief Check if two vec2_t are equal
+ * @param a First vec2_t
+ * @param b Second vec2_t
+ * @return If the two vec2_t are equal
+ */
+bool vec2_equal(vec2_t a, vec2_t b) {
+    return a.x == b.x && a.y == b.y;
 }
 
 /// @}
