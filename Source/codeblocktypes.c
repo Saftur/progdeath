@@ -149,9 +149,8 @@ static char *var_text(CodeBlock *block) {
 
 static vec2_t if_gettopsize(CodeBlock *block) {
     vec2_t size = (vec2_t){ 100, HEIGHT };
-    vec2_t condSize;
     if (block->blocks->size >= 1) {
-        condSize = CodeBlock_getsize(block->blocks->items[0]);
+        vec2_t condSize = CodeBlock_getsize(block->blocks->items[0]);
         if (condSize.x + 26 > size.x)
             size.x = condSize.x + 26;
         if (condSize.y + 4 > size.y)

@@ -49,7 +49,7 @@ void editorScreenInit(ObjectMngr *objMngr) {
 
     obj = Object_new("CodeBlock");
     trs = Transform_new();
-    trs->pos = (vec2_t){ canvasWidth / 2, canvasHeight / 2 };
+    trs->pos = (vec2_t){ canvasWidth / 4, canvasHeight / 4 };
 
     cb = CodeBlock_new(CB_IF, NULL, 0);
     CodeBlock_setblock(cb, 0, CodeBlock_new(CB_VAR, "test", 5));

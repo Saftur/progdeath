@@ -65,9 +65,11 @@ void _CodeBlock_update(CodeBlock *this) {
  * @param this CodeBlock to draw
  */
 void _CodeBlock_draw(CodeBlock *this) {
+    scale(2);
     Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
     if (trs)
         CodeBlock_draw(this, trs->pos/*, CBDM_FULL*/);
+    scale(0.5);
 }
 
 /**
