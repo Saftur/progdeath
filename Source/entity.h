@@ -20,15 +20,21 @@ typedef enum EntityType {
 
 typedef struct Entity Entity; ///< @brief Entity forward declaration
 
+typedef enum ScriptType {
+    ST_FILENAME,
+    ST_CODE,
+} ScriptType;
+
 /**
  * @brief Entity Component
  */
 typedef struct Entity {
     Component comp; ///< @brief Component data
 
-    const char *scriptName; ///< @brief Lua script name
-    lua_State *script;      ///< @brief Entity Lua script
-    List *types;            ///< @brief List of Entity types
+    const char *scriptStr; ///< @brief Lua script code or filename
+    ScriptType scriptType; ///< @brief Lua script type (code or filename)
+    lua_State *script;     ///< @brief Entity Lua script
+    List *types;           ///< @brief List of Entity types
 
     float detectRange; ///< @brief Entity detection range
     Entity *actualEnt; ///< @brief Pointer to actual Entity on Entity lua clones
@@ -36,11 +42,12 @@ typedef struct Entity {
 
 /**
  * @brief Create new Entity
- * @param scriptName Lua script name
+ * @param script     Lua script code or filename
+ * @param scriptType Lua script type (code or filename)
  * @param baseType   Entity base type
  * @return New Entity
  */
-Entity *Entity_new(const char *scriptName, EntityType baseType);
+Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseType);
 
 /**
  * @brief Clone Entity

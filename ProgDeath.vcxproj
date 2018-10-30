@@ -186,6 +186,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Source\enemylua.h" />
     <ClInclude Include="Source\entity.h">
       <SubType>
       </SubType>

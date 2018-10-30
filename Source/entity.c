@@ -19,11 +19,12 @@
 
 /**
  * @brief Create new Entity
- * @param scriptName Lua script name
+ * @param script     Lua script code or filename
+ * @param scriptType Lua script type (code or filename)
  * @param baseType   Entity base type
  * @return New Entity
  */
-Entity *Entity_new(const char *scriptName, EntityType baseType) {
+Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseType) {
     Entity *this = malloc(sizeof(Entity));
     this->comp.typeName = "Entity";
     this->comp.typeId = ENTITY;
@@ -35,7 +36,7 @@ Entity *Entity_new(const char *scriptName, EntityType baseType) {
     this->comp.coll_resolve = _Entity_coll_resolve;
     this->comp.owner = NULL;
 
-    initEntityLuaState(this, scriptName);
+    initEntityLuaState(this, script, scriptType);
     if (!this->script) {
         _Entity_delete(this);
         return NULL;
@@ -59,7 +60,7 @@ Entity *Entity_new(const char *scriptName, EntityType baseType) {
 Entity *_Entity_clone(Entity *this) {
     Entity *new = malloc(sizeof(Entity));
 
-    initEntityLuaState(new, this->scriptName);
+    initEntityLuaState(new, this->script, this->scriptType);
     if (!new->script) {
         _Entity_delete(new);
         return NULL;

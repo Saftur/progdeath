@@ -16,7 +16,6 @@
 
 #include "luautil.h"
 #include "luavec2.h"
-#include "entity.h"
 
 #define SCRIPT_TIMEOUT 1000
 
@@ -57,7 +56,8 @@ static void cloneEntity(lua_State *L, Entity *ent) {
             newEnt = lua_newuserdata(L, sizeof(Entity));
             newEnt->comp = ent->comp;
             newEnt->comp.owner = newObj;
-            newEnt->scriptName = NULL;
+            newEnt->scriptStr = NULL;
+            newEnt->scriptType = 0;
             newEnt->script = NULL;
             newEnt->types = List_copy(ent->types);
             newEnt->detectRange = ent->detectRange;
@@ -340,9 +340,10 @@ static const luaL_Reg funcs[] = {
 /**
  * @brief Initialize Entity Lua script state
  * @param ent        Entity whose script to initialize
- * @param scriptName Name of Lua script to use
+ * @param script     Lua script code or filename
+ * @param scriptType Lua script type (code or filename)
  */
-void initEntityLuaState(Entity *ent, const char *scriptName) {
+void initEntityLuaState(Entity *ent, const char *script, ScriptType scriptType) {
     lua_State *L = luaL_newstate();
     luaL_requiref(L, "_G", luaopen_base, 1);
     luaL_requiref(L, "string", luaopen_string, 1);
@@ -357,8 +358,9 @@ void initEntityLuaState(Entity *ent, const char *scriptName) {
     lua_pushnil(L);
     lua_setglobal(L, "debug");
 
-    if (luaL_loadfile(L, scriptName) || lua_pcall(L, 0, 0, 0)) {
-        fprintf(stderr, "Failed to load script \"%s\"", scriptName);
+    if ((scriptType == ST_FILENAME) ? luaL_dofile(L, script) : luaL_dostring(L, script)) {
+        char c = (scriptType == ST_FILENAME) ? '\"' : '\n';
+        fprintf(stderr, "Failed to load script %c%s%c", c, script, c);
         return NULL;
     }
 
@@ -380,7 +382,8 @@ void initEntityLuaState(Entity *ent, const char *scriptName) {
     lua_pushnumber(L, ENT_ENEMY);
     lua_setglobal(L, "ENT_ENEMY");
 
-    ent->scriptName = scriptName;
+    ent->scriptStr = script;
+    ent->scriptType = scriptType;
     ent->script = L;
 }
 

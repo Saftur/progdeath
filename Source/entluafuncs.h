@@ -8,14 +8,15 @@
 
 #include <lua.h>
 
-typedef struct Entity Entity; ///< @brief Entity forward declaration
+#include "entity.h"
 
 /**
  * @brief Initialize Entity Lua script state
  * @param ent        Entity whose script to initialize
- * @param scriptName Name of Lua script to use
+ * @param script     Lua script code or filename
+ * @param scriptType Lua script type (code or filename)
  */
-void initEntityLuaState(Entity *ent, const char *scriptName);
+void initEntityLuaState(Entity *ent, const char *script, ScriptType scriptType);
 
 /**
  * @brief Reset the timeout Lua hook
