@@ -57,7 +57,7 @@ void gameScreenInit(ObjectMngr *objMngr) {
     Object_addComp(entObj, ent);
     ObjectMngr_addObj(objMngr, entObj);
 
-    for (unsigned i = 0; i < 100; i++) {
+    for (unsigned i = 0; i < 1; i++) {
         entObj = Object_new("Test Entity");
         entTrs = Transform_new();
         float angle = map((float)i, 0.f, 100.f, 0.f, TWO_PI);

@@ -27,6 +27,13 @@ typedef struct CodeBlockList {
 CodeBlockList *CodeBlockList_new();
 
 /**
+ * @brief Clone CodeBlockList
+ * @param this CodeBlockList to clone
+ * @return Cloned CodeBlockList
+ */
+CodeBlockList *_CodeBlockList_clone(CodeBlockList *this);
+
+/**
  * @brief Delete CodeBlockList
  * @param this CodeBlockList to delete
  */

@@ -24,4 +24,11 @@ typedef struct EmptyComp {
  */
 EmptyComp *EmptyComp_new();
 
+/**
+ * @brief Clone EmptyComp
+ * @param this EmptyComp to clone
+ * @return Cloned EmptyComp
+ */
+EmptyComp *_EmptyComp_clone(EmptyComp *this);
+
 /// @}

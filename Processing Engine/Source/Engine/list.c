@@ -12,17 +12,41 @@
 
 /**
  * @brief Create new List
- * @param max     Starting allocation size
- * @param delFunc Item delete function
+ * @param max      Starting allocation size
+ * @param copyFunc Item copy function
+ * @param delFunc  Item delete function
  * @return New List
  */
-List *List_new(size_t max, void (*delFunc)(void *item)) {
+List *List_new(size_t max, void *(*copyFunc)(void *item), void (*delFunc)(void *item)) {
     List *list = malloc(sizeof(List));
     list->max = max;
     list->size = 0;
     list->items = malloc(max * sizeof(void*));
+    list->copyFunc = copyFunc;
     list->delFunc = delFunc;
     return list;
+}
+
+/**
+ * @brief Copy a List
+ * @param list List to copy
+ * @return Copy of List
+ */
+List *List_copy(List *list) {
+    List *new = malloc(sizeof(List));
+    new->max = list->max;
+    new->size = list->size;
+    new->items = malloc(new->max * sizeof(void*));
+    if (!list->copyFunc)
+        memcpy(new->items, list->items, list->size);
+    else {
+        for (unsigned i = 0; i < list->size; i++) {
+            new->items[i] = list->copyFunc(list->items[i]);
+        }
+    }
+    new->copyFunc = list->copyFunc;
+    new->delFunc = list->delFunc;
+    return new;
 }
 
 /**

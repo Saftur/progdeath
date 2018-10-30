@@ -20,11 +20,13 @@ Text *Text_new(const char *text, int textSize) {
     Text *this = malloc(sizeof(Text));
     this->comp.typeName = "Text";
     this->comp.typeId = TEXT;
+    this->comp.clone = _Text_clone;
     this->comp.delete = _Text_delete;
     this->comp.update = NULL;
     this->comp.draw = _Text_draw;
     this->comp.collides = false;
     this->comp.coll_resolve = NULL;
+    this->comp.owner = NULL;
 
     this->text = NULL;
     Text_setText(this, text);
@@ -32,6 +34,22 @@ Text *Text_new(const char *text, int textSize) {
     this->textColor = color(0, 0, 0, 255);
 
     return this;
+}
+
+/**
+ * @brief Clone Text
+ * @param this Text to clone
+ * @return Cloned Text
+ */
+Text *_Text_clone(Text *this) {
+    Text *new = malloc(sizeof(Text));
+
+    new->text = NULL;
+    Text_setText(new, this->text);
+    new->textSize = this->textSize;
+    new->textColor = this->textColor;
+
+    return new;
 }
 
 /**

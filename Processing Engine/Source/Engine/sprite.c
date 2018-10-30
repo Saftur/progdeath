@@ -20,17 +20,34 @@ Sprite *Sprite_new(const char *fileName, vec2_t size) {
     Sprite *this = malloc(sizeof(Sprite));
     this->comp.typeName = "Sprite";
     this->comp.typeId = ILLEGAL_COMP;
+    this->comp.clone = _Sprite_clone;
     this->comp.delete = _Sprite_delete;
     this->comp.update = NULL;
     this->comp.draw = _Sprite_draw;
     this->comp.collides = false;
     this->comp.coll_resolve = NULL;
+    this->comp.owner = NULL;
 
     this->image = loadImage(fileName);
     this->size = size;
     this->alpha = 1.f;
 
     return this;
+}
+
+/**
+ * @brief Clone Sprite
+ * @param this Sprite to clone
+ * @return Cloned Sprite
+ */
+Sprite *_Sprite_clone(Sprite *this) {
+    Sprite *new = malloc(sizeof(Sprite));
+
+    new->image = this->image;
+    new->size = this->size;
+    new->alpha = this->alpha;
+
+    return new;
 }
 
 /**

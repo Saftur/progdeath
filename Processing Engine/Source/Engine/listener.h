@@ -36,6 +36,13 @@ typedef struct Listener {
 Listener *Listener_new(Listener_EventFunc event, Listener_EffectFunc effect);
 
 /**
+ * @brief Clone Listener
+ * @param this Listener to clone
+ * @return Cloned Listener
+ */
+Listener *_Listener_clone(Listener *this);
+
+/**
  * @brief Delete Listener
  * @param this Listener to delete
  */

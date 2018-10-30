@@ -27,7 +27,7 @@ size_t ObjectMngr_startMaxObjs = 10;
  */
 ObjectMngr *ObjectMngr_new(GameLayer *gLayer) {
     ObjectMngr *objMngr = malloc(sizeof(ObjectMngr));
-    objMngr->objs = List_new(ObjectMngr_startMaxObjs, Object_delete);
+    objMngr->objs = List_new(ObjectMngr_startMaxObjs, Object_clone, Object_delete);
     objMngr->gLayer = gLayer;
     return objMngr;
 }

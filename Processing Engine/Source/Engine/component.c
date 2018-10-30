@@ -8,6 +8,24 @@
  */
 #include "component.h"
 
+#include <string.h>
+
+/**
+ * @brief Clone Component
+ * @param comp Component to clone
+ * @return Clone of Component
+ */
+Component *Component_clone(Component *comp) {
+    if (!comp->clone)
+        return NULL;
+    Component *clone = comp->clone(comp);
+
+    *clone = *comp;
+    clone->owner = NULL;
+
+    return clone;
+}
+
 /**
  * @brief Delete Component
  * @param comp Component to delete

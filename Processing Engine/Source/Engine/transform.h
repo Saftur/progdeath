@@ -30,6 +30,13 @@ typedef struct Transform {
 Transform *Transform_new();
 
 /**
+ * @brief Clone Transform
+ * @param this Transform to clone
+ * @return Cloned Transform
+ */
+Transform *_Transform_clone(Transform *this);
+
+/**
  * @brief Delete Transform
  * @param this Transform to delete
  */

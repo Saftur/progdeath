@@ -23,11 +23,13 @@ Button *Button_new(vec2_t buttonSize, ButtonEffect effect, const char *text) {
     Button *this = malloc(sizeof(Button));
     this->comp.typeName = "Button";
     this->comp.typeId = BUTTON;
+    this->comp.clone = _Button_clone;
     this->comp.delete = _Button_delete;
     this->comp.update = _Button_update;
     this->comp.draw = _Button_draw;
     this->comp.collides = false;
     this->comp.coll_resolve = NULL;
+    this->comp.owner = NULL;
 
     this->buttonSize = buttonSize;
     this->effect = effect;
@@ -35,6 +37,21 @@ Button *Button_new(vec2_t buttonSize, ButtonEffect effect, const char *text) {
     this->text->comp.owner = NULL;
 
     return this;
+}
+
+/**
+ * @brief Clone Button
+ * @param this Button to clone
+ * @return Cloned Button
+ */
+Button *_Button_clone(Button *this) {
+    Button *new = malloc(sizeof(Button));
+
+    new->buttonSize = this->buttonSize;
+    new->effect = this->effect;
+    new->text = Text_new(this->text, new->buttonSize.y - 5);
+    
+    return new;
 }
 
 /**

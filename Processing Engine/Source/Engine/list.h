@@ -18,16 +18,24 @@ typedef struct List {
     size_t max;     ///< @brief Current allocated size of array
     size_t size;    ///< @brief Number of items in array
 
-    void (*delFunc)(void *item); ///< @brief Delete function for items
+    void *(*copyFunc)(void *item); ///< @brief Copy function for items
+    void (*delFunc)(void *item);   ///< @brief Delete function for items
 } List;
 
 /**
  * @brief Create new List
- * @param max     Starting allocation size
- * @param delFunc Item delete function
+ * @param max      Starting allocation size
+ * @param copyFunc Item copy function
+ * @param delFunc  Item delete function
  * @return New List
  */
-List *List_new(size_t max, void (*delFunc)(void *item));
+List *List_new(size_t max, void *(*copyFunc)(void *item), void (*delFunc)(void *item));
+/**
+ * @brief Copy a List
+ * @param list List to copy
+ * @return Copy of List
+ */
+List *List_copy(List *list);
 /**
  * @brief Delete List
  * @param list List to delete

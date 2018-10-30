@@ -23,10 +23,26 @@ size_t Object_startMaxComps = 10;
 Object *Object_new(const char *name) {
     Object *obj = malloc(sizeof(Object));
     obj->name = name;
-    obj->comps = List_new(Object_startMaxComps, Component_delete);
-    obj->collComps = List_new(Object_startMaxComps, NULL);
+    obj->comps = List_new(Object_startMaxComps, Component_clone, Component_delete);
+    obj->collComps = List_new(Object_startMaxComps, NULL, NULL);
     obj->toDestroy = -1;
     return obj;
+}
+
+/**
+ * @brief Clone Object
+ * @param obj Object to clone
+ * @return Cloned Object
+ */
+Object *Object_clone(Object *obj) {
+    Object *new = malloc(sizeof(Object));
+    new->name = obj->name;
+    new->comps = List_copy(obj->comps);
+    for (unsigned i = 0; i < new->comps->size; i++)
+        ((Component*)new->comps->items[i])->owner = new;
+    new->collComps = List_copy(obj->comps);
+    obj->toDestroy = -1;
+    return new;
 }
 
 /**

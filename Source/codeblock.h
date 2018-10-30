@@ -22,6 +22,7 @@ typedef struct CodeBlock {
     CodeBlockType type; ///< @brief CodeBlock type
     List *blocks;       ///< @brief Contained CodeBlock s
     void *data;         ///< @brief CodeBlock data
+    size_t dataSize;    ///< @brief Size of CodeBlock data
 } CodeBlock;
 
 /**
@@ -32,6 +33,13 @@ typedef struct CodeBlock {
  * @return New CodeBlock
  */
 CodeBlock *CodeBlock_new(CodeBlockType type, void *data, size_t dataSize);
+
+/**
+ * @brief Clone CodeBlock
+ * @param this CodeBlock to clone
+ * @return Cloned CodeBlock
+ */
+CodeBlock *_CodeBlock_clone(CodeBlock *this);
 
 /**
  * @brief Delete CodeBlock

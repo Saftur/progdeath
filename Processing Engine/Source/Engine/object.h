@@ -37,6 +37,12 @@ typedef struct Object {
  */
 Object *Object_new(const char *name);
 /**
+ * @brief Clone Object
+ * @param obj Object to clone
+ * @return Cloned Object
+ */
+Object *Object_clone(Object *obj);
+/**
  * @brief Delete Object
  * @param obj Object to delete
  */

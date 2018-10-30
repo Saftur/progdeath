@@ -23,7 +23,7 @@ void Engine_init(unsigned numLayers) {
     Engine_delete();
 
     engine = malloc(sizeof(Engine));
-    engine->gLayers = List_new(numLayers, GameLayer_delete);
+    engine->gLayers = List_new(numLayers, NULL, GameLayer_delete);
     for (unsigned i = 0; i < numLayers; i++)
         List_push_back(engine->gLayers, NULL);
     engine->firstUpdate = 0;
@@ -129,13 +129,13 @@ GameLayer *Engine_getLayer(unsigned layerNum) {
  * @param numComps Total number of Component s
  */
 void Engine_initCollFuncList(unsigned numComps) {
-    engine->collChecks = List_new(numComps, List_delete);
-    engine->collResolves = List_new(numComps, List_delete);
+    engine->collChecks = List_new(numComps, List_copy, List_delete);
+    engine->collResolves = List_new(numComps, List_copy, List_delete);
     for (unsigned i = 0; i < numComps; i++) {
         // Avoid duplicate entries in 2D list
         unsigned listSize = i+1;
-        List *checks = List_new(listSize, NULL);
-        List *resolves = List_new(listSize, NULL);
+        List *checks = List_new(listSize, NULL, NULL);
+        List *resolves = List_new(listSize, NULL, NULL);
         List_push_back(engine->collChecks, checks);
         List_push_back(engine->collResolves, resolves);
         for (unsigned j = 0; j < listSize; j++) {

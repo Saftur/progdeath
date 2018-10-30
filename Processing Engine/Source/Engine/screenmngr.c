@@ -21,7 +21,7 @@
  */
 ScreenMngr *ScreenMngr_new(GameLayer *gLayer) {
     ScreenMngr *scrMngr = malloc(sizeof(ScreenMngr));
-    scrMngr->screens = List_new(10, Screen_delete);
+    scrMngr->screens = List_new(10, NULL, Screen_delete);
     scrMngr->currScreen = NULL;
     scrMngr->nextScreen = NULL;
     scrMngr->gLayer = gLayer;

@@ -28,6 +28,13 @@ typedef struct Text {
 Text *Text_new(const char *text, int textSize);
 
 /**
+ * @brief Clone Text
+ * @param this Text to clone
+ * @return Cloned Text
+ */
+Text *_Text_clone(Text *this);
+
+/**
  * @brief Delete Text
  * @param this Text to delete
  */

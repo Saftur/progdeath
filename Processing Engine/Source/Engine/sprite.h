@@ -30,6 +30,13 @@ typedef struct Sprite {
 Sprite *Sprite_new(const char *fileName, vec2_t size);
 
 /**
+ * @brief Clone Sprite
+ * @param this Sprite to clone
+ * @return Cloned Sprite
+ */
+Sprite *_Sprite_clone(Sprite *this);
+
+/**
  * @brief Delete Sprite
  * @param this Sprite to delete
  */

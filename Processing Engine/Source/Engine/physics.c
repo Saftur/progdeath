@@ -22,11 +22,13 @@ Physics *Physics_new(float maxVel, float deccel) {
     Physics *this = malloc(sizeof(Physics));
     this->comp.typeName = "Physics";
     this->comp.typeId = PHYSICS;
+    this->comp.clone = _Physics_clone;
     this->comp.delete = _Physics_delete;
     this->comp.update = _Physics_update;
     this->comp.draw = NULL;
     this->comp.collides = false;
     this->comp.coll_resolve = NULL;
+    this->comp.owner = NULL;
 
     this->maxVel = maxVel;
     this->deccel = deccel;
@@ -36,6 +38,23 @@ Physics *Physics_new(float maxVel, float deccel) {
     this->accel = (vec2_t){0.f, 0.f};
 
     return this;
+}
+
+/**
+ * @brief Clone Physics
+ * @param this Physics to clone
+ * @return Cloned Physics
+ */
+Physics *_Physics_clone(Physics *this) {
+    Physics *new = malloc(sizeof(Physics));
+
+    new->maxVel = this->maxVel;
+    new->deccel = this->deccel;
+    new->vel = this->vel;
+    new->pVel = this->pVel;
+    new->accel = this->accel;
+
+    return new;
 }
 
 /**

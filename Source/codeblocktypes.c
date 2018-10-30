@@ -218,8 +218,8 @@ static char *if_text(CodeBlock *block) {
     size_t len = 0;
     char *line;
     size_t lineLen;
-    List *lines = List_new(20, free);
-    List *lineLens = List_new(20, NULL);
+    List *lines = List_new(20, NULL, free);
+    List *lineLens = List_new(20, NULL, NULL);
     char *subText;
     size_t subLen;
 

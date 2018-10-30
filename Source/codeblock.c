@@ -23,14 +23,16 @@ CodeBlock *CodeBlock_new(CodeBlockType type, void *data, size_t dataSize) {
     CodeBlock *this = malloc(sizeof(CodeBlock));
     this->comp.typeName = "CodeBlock";
     this->comp.typeId = CODEBLOCK;
+    this->comp.clone = _CodeBlock_clone;
     this->comp.delete = _CodeBlock_delete;
     this->comp.update = _CodeBlock_update;
     this->comp.draw = _CodeBlock_draw;
     this->comp.collides = false;
     this->comp.coll_resolve = NULL;
+    this->comp.owner = NULL;
 
     this->type = type;
-    this->blocks = List_new(10, _CodeBlock_delete);
+    this->blocks = List_new(10, _CodeBlock_clone, _CodeBlock_delete);
     List_resize(this->blocks, CodeBlock_numargs[type], NULL);
     for (unsigned i = 0; i < this->blocks->size; i++)
         this->blocks->items[i] = CodeBlock_new(CB_EMPTY, NULL, 0);
@@ -38,8 +40,26 @@ CodeBlock *CodeBlock_new(CodeBlockType type, void *data, size_t dataSize) {
         this->data = malloc(dataSize);
         memcpy(this->data, data, dataSize);
     } else this->data = NULL;
+    this->dataSize = dataSize;
 
     return this;
+}
+
+/**
+ * @brief Clone CodeBlock
+ * @param this CodeBlock to clone
+ * @return Cloned CodeBlock
+ */
+CodeBlock *_CodeBlock_clone(CodeBlock *this) {
+    CodeBlock *new = malloc(sizeof(CodeBlock));
+
+    new->type = this->type;
+    new->blocks = List_copy(this->blocks);
+    new->data = malloc(this->dataSize);
+    memcpy(new->data, this->data, this->dataSize);
+    new->dataSize = this->dataSize;
+
+    return new;
 }
 
 /**

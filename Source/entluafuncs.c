@@ -12,6 +12,7 @@
 #include <Engine/objectmngr.h>
 #include <Engine/transform.h>
 #include <Engine/physics.h>
+#include <Engine/text.h>
 
 #include "luautil.h"
 #include "luavec2.h"
@@ -28,6 +29,50 @@ static Entity *getEntity(lua_State *L) {
     lua_pushstring(L, "Entity");
     lua_gettable(L, LUA_REGISTRYINDEX);
     return lua_touserdata(L, -1);
+}
+
+static int l_delobj(lua_State *L) {
+    Entity *ent = lua_touserdata(L, 1);
+    Object *obj = ent->comp.owner;
+    obj->comps->delFunc = NULL;
+    for (unsigned i = 0; i < obj->comps->size; i++) {
+        Component *comp = obj->comps->items[i];
+        if (comp->typeId != ENTITY)
+            Component_delete(comp);
+    }
+    Object_delete(obj);
+}
+
+static void cloneEntity(lua_State *L, Entity *ent) {
+    Object *obj = ent->comp.owner;
+    Object *newObj = malloc(sizeof(Object));
+    newObj->name = obj->name;
+    newObj->comps = List_new(obj->comps->max, obj->comps->copyFunc, obj->comps->delFunc);
+    newObj->collComps = List_new(obj->collComps->max, NULL, NULL);
+    List_resize(newObj->comps, obj->comps->size, NULL);
+    Entity *newEnt;
+    for (unsigned i = 0; i < obj->comps->size; i++) {
+        Component *comp = obj->comps->items[i];
+        if (comp->typeId == ENTITY) {
+            newEnt = lua_newuserdata(L, sizeof(Entity));
+            newEnt->comp = ent->comp;
+            newEnt->comp.owner = newObj;
+            newEnt->scriptName = NULL;
+            newEnt->script = NULL;
+            newEnt->types = List_copy(ent->types);
+            newEnt->detectRange = ent->detectRange;
+            newEnt->actualEnt = ent;
+            newObj->comps->items[i] = newEnt;
+        } else {
+            comp = Component_clone(comp);
+            comp->owner = newObj;
+            newObj->comps->items[i] = comp;
+        }
+    }
+    lua_newtable(L);
+    lua_pushcfunction(L, l_delobj);
+    lua_setfield(L, -2, "__gc");
+    lua_setmetatable(L, -2);
 }
 
 /**
@@ -122,7 +167,8 @@ static int l_getnearby(lua_State *L) {
         if (!(objEnt = Object_getComp(obj, ENTITY)) || objEnt == ent || !(objTrs = Object_getComp(obj, TRANSFORM)))
             continue;
         if (vec2_distance(trs->pos, objTrs->pos) < ent->detectRange) {
-            lua_pushlightuserdata(L, objEnt);
+            //lua_pushlightuserdata(L, objEnt);
+            cloneEntity(L, objEnt);
             lua_rawseti(L, -2, ++count);
         }
     }
@@ -139,7 +185,7 @@ static int l_getnearest(lua_State *L) {
     Transform *trs = Object_getComp(ent->comp.owner, TRANSFORM);
     if (!trs)
         return 0;
-    List *types = List_new(4, NULL);
+    List *types = List_new(4, NULL, NULL);
     switch (lua_type(L, 1)) {
     case LUA_TNUMBER:
         List_push_back(types, (int)lua_tonumber(L, 1));
@@ -179,7 +225,8 @@ static int l_getnearest(lua_State *L) {
         }
     }
     if (nearest)
-        lua_pushlightuserdata(L, nearest);
+        //lua_pushlightuserdata(L, nearest);
+        cloneEntity(L, nearest);
     else lua_pushnil(L);
     List_delete(types);
     return 1;
@@ -333,6 +380,7 @@ void initEntityLuaState(Entity *ent, const char *scriptName) {
     lua_pushnumber(L, ENT_ENEMY);
     lua_setglobal(L, "ENT_ENEMY");
 
+    ent->scriptName = scriptName;
     ent->script = L;
 }
 

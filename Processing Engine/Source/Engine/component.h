@@ -32,9 +32,10 @@ enum _Component_TypeId {
     NUM_ENGINE_COMPS
 };
 
-typedef void (*Comp_DeleteFunc)(Component*); ///< @brief Component delete function signature
-typedef void (*Comp_UpdateFunc)(Component*); ///< @brief Component update function signature
-typedef void (*Comp_DrawFunc)(Component*);   ///< @brief Component draw function signature
+typedef Component *(*Comp_CloneFunc)(Component*); ///< @brief Component clone function signature
+typedef void (*Comp_DeleteFunc)(Component*);      ///< @brief Component delete function signature
+typedef void (*Comp_UpdateFunc)(Component*);      ///< @brief Component update function signature
+typedef void (*Comp_DrawFunc)(Component*);        ///< @brief Component draw function signature
 
 typedef void (*Comp_CollResolveFunc)(Component*, Component*); ///< @brief Component collision resolve function signature
 
@@ -45,6 +46,7 @@ typedef struct Component {
     const char *typeName; ///< @brief Name of Component type
     unsigned typeId;      ///< @brief Id of Component type
 
+    Comp_CloneFunc clone;   ///< @brief Component clone function
     Comp_DeleteFunc delete; ///< @brief Component delete function
     Comp_UpdateFunc update; ///< @brief Component update function
     Comp_DrawFunc draw;     ///< @brief Component draw function
@@ -54,6 +56,13 @@ typedef struct Component {
 
     Object *owner; ///< @brief Object this Component is on
 } Component;
+
+/**
+ * @brief Clone Component
+ * @param comp Component to clone
+ * @return Clone of Component
+ */
+Component *Component_clone(Component *comp);
 
 /**
  * @brief Delete Component

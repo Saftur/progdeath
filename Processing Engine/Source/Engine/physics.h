@@ -33,6 +33,13 @@ typedef struct Physics {
 Physics *Physics_new(float maxVel, float deccel);
 
 /**
+ * @brief Clone Physics
+ * @param this Physics to clone
+ * @return Cloned Physics
+ */
+Physics *_Physics_clone(Physics *this);
+
+/**
  * @brief Delete Physics
  * @param this Physics to delete
  */

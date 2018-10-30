@@ -27,11 +27,13 @@ Entity *Entity_new(const char *scriptName, EntityType baseType) {
     Entity *this = malloc(sizeof(Entity));
     this->comp.typeName = "Entity";
     this->comp.typeId = ENTITY;
+    this->comp.clone = _Entity_clone;
     this->comp.delete = _Entity_delete;
     this->comp.update = _Entity_update;
     this->comp.draw = _Entity_draw;
     this->comp.collides = false;
     this->comp.coll_resolve = _Entity_coll_resolve;
+    this->comp.owner = NULL;
 
     initEntityLuaState(this, scriptName);
     if (!this->script) {
@@ -40,12 +42,35 @@ Entity *Entity_new(const char *scriptName, EntityType baseType) {
     }
     register_luafuncs(this->script);
 
-    this->types = List_new(10, NULL);
+    this->types = List_new(10, NULL, NULL);
     List_push_back(this->types, (void*)baseType);
 
     this->detectRange = 300.f;
+    this->actualEnt = this;
 
     return this;
+}
+
+/**
+ * @brief Clone Entity
+ * @param this Entity to clone
+ * @return Cloned Entity
+ */
+Entity *_Entity_clone(Entity *this) {
+    Entity *new = malloc(sizeof(Entity));
+
+    initEntityLuaState(new, this->scriptName);
+    if (!new->script) {
+        _Entity_delete(new);
+        return NULL;
+    }
+    register_luafuncs(new->script);
+
+    new->types = List_copy(this->types);
+
+    new->detectRange = this->detectRange;
+
+    return new;
 }
 
 /**
