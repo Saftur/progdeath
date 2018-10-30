@@ -340,6 +340,17 @@ static const luaL_Reg funcs[] = {
     {"SetAccel", l_setaccel},
     {"SetVel", l_setvel},
 
+    //{"Throw", l_throw},
+    //{"Pickup", l_pickup},
+    //{"Attack", l_attack},
+    //{"Block", l_block},
+    //{"Turn", l_turn},
+    //{"UseItem", l_useitem},
+
+    //{"GetInventory", l_getinventory},
+    //{"StoreItem", l_storeitem},
+    //{"RetrieveItem", l_retrieveitem},
+
     {"GetMaxVel", l_getmaxvel},
 
     {"GetNearby", l_getnearby},
@@ -351,6 +362,10 @@ static const luaL_Reg funcs[] = {
 
     {"GetPos", l_getpos},
     {"GetHp", l_gethp},
+    //{"GetMainHand", l_getmainhand},
+    //{"GetOffHand", l_getoffhand},
+    //{"GetAction", l_getaction},
+
     {NULL, NULL}
 };
 

@@ -53,6 +53,12 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
     this->hp = maxHp;
     this->maxHp = maxHp;
 
+    this->inventory.mainHand = NONE;
+    this->inventory.offHand = NONE;
+
+    for (int i = 0; i < INVENTORY_SIZE; i++)
+        this->inventory.stored[i] = NONE;
+
     return this;
 }
 
