@@ -13,10 +13,6 @@
 #include <string.h>
 
 
-int cb_use_scl_offset = 1;
-float cb_scale;
-vec2_t cb_offset;
-
 /**
  * @brief Create new CodeBlock
  * @param type     Type of CodeBlock
@@ -72,6 +68,8 @@ CodeBlock *_CodeBlock_clone(CodeBlock *this) {
  * @param this CodeBlock to delete
  */
 void _CodeBlock_delete(CodeBlock *this) {
+    if (!this)
+        return;
     List_delete(this->blocks);
     free(this->data);
     free(this);
@@ -90,17 +88,9 @@ void _CodeBlock_update(CodeBlock *this) {
  * @param this CodeBlock to draw
  */
 void _CodeBlock_draw(CodeBlock *this) {
-    if (cb_use_scl_offset) {
-        translate(cb_offset.x, cb_offset.y);
-        scale(cb_scale);
-    }
     Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
     if (trs)
         CodeBlock_draw(this, trs->pos);
-    if (cb_use_scl_offset) {
-        scale(1 / cb_scale);
-        translate(-cb_offset.x, -cb_offset.y);
-    }
 }
 
 /**
@@ -143,6 +133,17 @@ vec2_t CodeBlock_getsize(CodeBlock *this) {
  */
 int CodeBlock_grab(CodeBlock *this, vec2_t p) {
     return CodeBlock_types[this->type].grab(this, p);
+}
+
+/**
+ * @brief Attempt to drop a CodeBlock onto another
+ * @param this    CodeBlock to drop on
+ * @param dropped CodeBlock to drop
+ * @param p       Mouse position on CodeBlock
+ * @return Whether it was dropped
+ */
+int CodeBlock_drop(CodeBlock *this, CodeBlock *dropped, vec2_t p) {
+    return CodeBlock_types[this->type].drop(this, dropped, p);
 }
 
 /**

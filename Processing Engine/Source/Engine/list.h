@@ -56,11 +56,18 @@ void List_reserve(List *list, size_t size);
  */
 void List_resize(List *list, size_t size, void *item);
 /**
- * @brief Add item to list
+ * @brief Add item to List
  * @param list List to add to
  * @param item Item to add
  */
 void List_push_back(List *list, void *item);
+/**
+ * @brief Insert item to list at given position
+ * @param list List to add to
+ * @param i    Index to insert at
+ * @param item Item to add
+ */
+void List_insert(List *list, unsigned i, void *item);
 /**
  * @brief Delete last item in List
  * @param list List to delete from

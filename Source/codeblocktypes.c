@@ -68,16 +68,28 @@ static void addTabs(char *txt) {
 }
 
 
+static int is_directive(CodeBlock *block) {
+    return block->type == CB_SETVAR || block->type == CB_IF;
+}
+
+static int is_arg(CodeBlock *block) {
+    return block->type == CB_VAR;
+}
+
+
+static CodeBlock *empty_new() {
+    return CodeBlock_new(CB_EMPTY, NULL, 0);
+}
+
 static vec2_t empty_getsize(CodeBlock *block) {
     return (vec2_t){ 100, INNER_HEIGHT };
 }
 
 static int empty_grab(CodeBlock *block, vec2_t p) {
-    /*if (vec2_in_range(p, vec2_zero(), empty_getsize(block))) {
+    return 0;
+}
 
-        return 1;
-    }
-    return 0;*/
+static int empty_drop(CodeBlock *block, CodeBlock *dropped, vec2_t p) {
     return 0;
 }
 
@@ -121,20 +133,51 @@ static int setvar_grab(CodeBlock *block, vec2_t p) {
     if (var) {
         vec2_t varPos = setvar_varpos(block, size, varSize);
         if (CodeBlock_grab(var, vec2_sub(p, varPos))) {
-            block->blocks->items[0] = NULL;
+            block->blocks->items[0] = empty_new();
             return 0;
         }
     }
     if (val) {
         vec2_t valPos = setvar_valpos(block, size, varSize, valSize);
         if (CodeBlock_grab(val, vec2_sub(p, valPos))) {
-            block->blocks->items[1] = NULL;
+            block->blocks->items[1] = empty_new();
             return 0;
         }
     }
     if (vec2_in_range(p, vec2_zero(), setvar_getsize(block))) {
         setGrabbed(block);
         return 1;
+    }
+    return 0;
+}
+
+static int setvar_drop(CodeBlock *block, CodeBlock *dropped, vec2_t p) {
+    vec2_t size = setvar_getsize(block);
+    CodeBlock *var = (block->blocks->size >= 1) ? block->blocks->items[0] : NULL;
+    CodeBlock *val = (block->blocks->size >= 2) ? block->blocks->items[1] : NULL;
+    vec2_t varSize = var ? CodeBlock_getsize(var) : (vec2_t){ 0, 0 };
+    vec2_t valSize = val ? CodeBlock_getsize(val) : (vec2_t){ 0, 0 };
+    if (var) {
+        vec2_t varPos = setvar_varpos(block, size, varSize);
+        vec2_t subP = vec2_sub(p, varPos);
+        if (CodeBlock_drop(var, dropped, subP)) {
+            return 1;
+        } else if (is_arg(dropped) && vec2_in_range(subP, vec2_zero(), varSize)) {
+            _CodeBlock_delete(var);
+            block->blocks->items[0] = dropped;
+            return 1;
+        }
+    }
+    if (val) {
+        vec2_t valPos = setvar_valpos(block, size, varSize, valSize);
+        vec2_t subP = vec2_sub(p, valPos);
+        if (CodeBlock_drop(val, dropped, subP)) {
+            return 1;
+        } else if (is_arg(dropped) && vec2_in_range(subP, vec2_zero(), valSize)) {
+            _CodeBlock_delete(val);
+            block->blocks->items[1] = dropped;
+            return 1;
+        }
     }
     return 0;
 }
@@ -193,6 +236,10 @@ static int var_grab(CodeBlock *block, vec2_t p) {
     return 0;
 }
 
+static int var_drop(CodeBlock *block, CodeBlock *dropped, vec2_t p) {
+    return 0;
+}
+
 static vec2_t var_draw(CodeBlock *block, vec2_t pos) {
     vec2_t size = var_getsize(block);
     noStroke();
@@ -222,12 +269,11 @@ static vec2_t if_gettopsize(CodeBlock *block) {
 
 static vec2_t if_getsize(CodeBlock *block) {
     vec2_t size = if_gettopsize(block);
-    vec2_t innSize;
-    size.y += IF_YSPACING;
+    //size.y += IF_YSPACING;
     for (unsigned i = 1; i < block->blocks->size; i++) {
-        innSize = CodeBlock_getsize(block->blocks->items[i]);
+        vec2_t innSize = CodeBlock_getsize(block->blocks->items[i]);
         size.x = max(size.x, innSize.x + IF_BD_XSP);
-        size.y += innSize.y;
+        size.y += innSize.y + IF_YSPACING;
     }
     size.y += IF_BD_YSP;
     return size;
@@ -242,7 +288,7 @@ static int if_grab(CodeBlock *block, vec2_t p) {
     if (cond) {
         vec2_t condPos = if_condpos();
         if (CodeBlock_grab(cond, vec2_sub(p, condPos))) {
-            block->blocks->items[0] = NULL;
+            block->blocks->items[0] = empty_new();
             return 0;
         }
     }
@@ -252,15 +298,61 @@ static int if_grab(CodeBlock *block, vec2_t p) {
         CodeBlock *b = block->blocks->items[i];
         y += IF_YSPACING;
         vec2_t bPos = (vec2_t){ IF_BD_XSP, y };
+        vec2_t bSize = CodeBlock_getsize(b);
         if (CodeBlock_grab(b, vec2_sub(p, bPos))) {
             List_remove_nodelete(block->blocks, i);
             return 0;
         }
-        y += CodeBlock_getsize(b).y;
+        y += bSize.y;
     }
     vec2_t size = if_getsize(block);
     if (vec2_in_range(p, vec2_zero(), (vec2_t){ size.x, topsize.y })) {
         setGrabbed(block);
+        return 1;
+    }
+    return 0;
+}
+
+static int if_drop(CodeBlock *block, CodeBlock *dropped, vec2_t p) {
+    CodeBlock *cond = (block->blocks->size >= 1) ? block->blocks->items[0] : NULL;
+    if (cond) {
+        vec2_t condPos = if_condpos();
+        vec2_t condSize = CodeBlock_getsize(cond);
+        vec2_t subP = vec2_sub(p, condPos);
+        if (CodeBlock_drop(cond, dropped, subP)) {
+            return 1;
+        } else if (is_arg(dropped) && vec2_in_range(subP, vec2_zero(), condSize)) {
+            _CodeBlock_delete(cond);
+            block->blocks->items[0] = dropped;
+            return 1;
+        }
+    }
+    vec2_t topsize = if_gettopsize(block);
+    vec2_t size = if_getsize(block);
+    float y = topsize.y;
+    float insY = topsize.y - PADD;
+    float prevInsAdd = PADD;
+    float nextInsY = 0;
+    for (unsigned i = 1; i < block->blocks->size; i++) {
+        CodeBlock *b = block->blocks->items[i];
+        y += IF_YSPACING;
+        vec2_t bPos = (vec2_t){ IF_BD_XSP, y };
+        float bHeight = CodeBlock_getsize(b).y;
+        nextInsY = insY + IF_YSPACING + prevInsAdd + (bHeight / 2);
+        prevInsAdd = bHeight / 2;
+        vec2_t subP = vec2_sub(p, bPos);
+        if (CodeBlock_drop(b, dropped, subP)) {
+            return 1;
+        } else if (is_directive(dropped) && vec2_in_range(p, (vec2_t){ IF_BD_XSP, insY }, (vec2_t){ size.x - IF_BD_XSP, nextInsY })) {
+            List_insert(block->blocks, i, dropped);
+            return 1;
+        }
+        y += bHeight;
+        insY = nextInsY;
+    }
+    nextInsY = insY + IF_BD_YSP + prevInsAdd;
+    if (is_directive(dropped) && vec2_in_range(p, (vec2_t){ IF_BD_XSP, insY }, (vec2_t){ size.x - IF_BD_XSP, nextInsY })) {
+        List_push_back(block->blocks, dropped);
         return 1;
     }
     return 0;
@@ -360,8 +452,8 @@ static char *if_text(CodeBlock *block) {
 }
 
 CodeBlockTypeData CodeBlock_types[] = {
-    {0, empty_getsize, empty_grab, empty_draw, empty_text},
-    {2, setvar_getsize, setvar_grab, setvar_draw, setvar_text},
-    {0, var_getsize, var_grab, var_draw, var_text},
-    {1, if_getsize, if_grab, if_draw, if_text},
+    {0, empty_getsize, empty_grab, empty_drop, empty_draw, empty_text},
+    {2, setvar_getsize, setvar_grab, setvar_drop, setvar_draw, setvar_text},
+    {0, var_getsize, var_grab, var_drop, var_draw, var_text},
+    {1, if_getsize, if_grab, if_drop, if_draw, if_text},
 };

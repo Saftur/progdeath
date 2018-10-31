@@ -13,10 +13,6 @@
 
 #include "codeblocktypes.h"
 
-extern int cb_use_scl_offset;
-extern float cb_scale;
-extern vec2_t cb_offset;
-
 /**
  * @brief CodeBlock Component
  */
@@ -89,6 +85,14 @@ vec2_t CodeBlock_getsize(CodeBlock *this);
  * @return Whether it was grabbed
  */
 int CodeBlock_grab(CodeBlock *this, vec2_t p);
+/**
+ * @brief Attempt to drop a CodeBlock onto another
+ * @param this    CodeBlock to drop on
+ * @param dropped CodeBlock to drop
+ * @param p       Mouse position on CodeBlock
+ * @return Whether it was dropped
+ */
+int CodeBlock_drop(CodeBlock *this, CodeBlock *dropped, vec2_t p);
 
 /**
  * @brief Draw CodeBlock at given position

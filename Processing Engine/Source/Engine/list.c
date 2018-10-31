@@ -94,7 +94,7 @@ void List_resize(List *list, size_t size, void *item) {
 }
 
 /**
- * @brief Add item to list
+ * @brief Add item to List
  * @param list List to add to
  * @param item Item to add
  */
@@ -102,6 +102,22 @@ void List_push_back(List *list, void *item) {
     if (list->size >= list->max)
         List_reserve(list, list->max * 2);
     list->items[list->size++] = item;
+}
+
+/**
+ * @brief Insert item to list at given position
+ * @param list List to add to
+ * @param i    Index to insert at
+ * @param item Item to add
+ */
+void List_insert(List *list, unsigned i, void *item) {
+    if (i >= list->size)
+        return;
+    if (list->size+1 > list->max)
+        List_reserve(list, list->max * 2);
+    memmove(list->items + i + 1, list->items + i, (list->size - i) * sizeof(void*));
+    list->size++;
+    list->items[i] = item;
 }
 
 /**

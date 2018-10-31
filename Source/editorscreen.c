@@ -13,6 +13,7 @@
 #include <Engine/gamelayer.h>
 #include <Engine/transform.h>
 #include <Engine/listener.h>
+#include <Engine/util.h>
 
 #include "gamebuttons.h"
 
@@ -23,10 +24,9 @@
 
 static CBGrabComp *grabbed = NULL;
 static CodeBlockBoard *board = NULL;
+static CodeBlockList *list = NULL;
 
 PFont monoFont;
-
-//  GRABBED
 
 void setGrabbed(CodeBlock *block) {
     CBGrabComp_setGrabbed(grabbed, block);
@@ -34,6 +34,12 @@ void setGrabbed(CodeBlock *block) {
 
 void addToBoard(CodeBlock *block, vec2_t pos) {
     CodeBlockBoard_addBlock(board, block, pos);
+}
+
+int isOnList(vec2_t pos) {
+    pos = vec2_scale(pos, cb_scale);
+    pos = vec2_add(pos, cb_offset);
+    return vec2_in_range(pos, vec2_zero(), list->size);
 }
 
 //  MENU LISTENER
@@ -97,8 +103,8 @@ void editorScreenInit(ObjectMngr *objMngr) {
     ObjectMngr_addObj(objMngr, obj);
 
     obj = Object_new("CodeBlock List");
-    CodeBlockList *cbl = CodeBlockList_new();
-    Object_addComp(obj, cbl);
+    list = CodeBlockList_new();
+    Object_addComp(obj, list);
     ObjectMngr_addObj(objMngr, obj);
 
     obj = Object_new("CodeBlock Grabbed");
@@ -118,10 +124,17 @@ void editorScreenInit(ObjectMngr *objMngr) {
  * @param screen Screen to update
  */
 void editorScreenUpdate(Screen *screen) {
+    float dScale = 0.f;
     if (keyIsDown(KEY_EQUAL))
-        cb_scale += 0.5f * dt();
+        dScale += 1.f * dt();
     if (keyIsDown(KEY_MINUS))
-        cb_scale -= 0.5f * dt();
+        dScale -= 1.f * dt();
+    if (dScale != 0) {
+        float oldScale = cb_scale;
+        cb_scale += dScale;
+        vec2_t center = (vec2_t){ canvasWidth / 2, canvasHeight / 2 };
+        cb_offset = vec2_add(vec2_scale(vec2_scale(vec2_sub(cb_offset, center), 1 / oldScale), cb_scale), center);
+    }
     if (keyIsDown(KEY_LEFT))
         cb_offset.x += 400.f * dt();
     if (keyIsDown(KEY_RIGHT))

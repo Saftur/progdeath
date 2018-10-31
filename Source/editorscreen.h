@@ -17,6 +17,7 @@ typedef struct CodeBlock CodeBlock;   ///< @brief CodeBlock forward declaration
 
 void setGrabbed(CodeBlock *block);
 void addToBoard(CodeBlock *block, vec2_t pos);
+int isOnList(vec2_t pos);
 
 /**
  * @brief Initialize Editor Screen

@@ -10,6 +10,7 @@
 
 #include "editorscreen.h"
 #include "codeblock.h"
+#include "codeblockboard.h"
 
 /**
  * @brief Create new CBGrabComp
@@ -72,12 +73,17 @@ void _CBGrabComp_update(CBGrabComp *this) {
  * @param this CBGrabComp to draw
  */
 void _CBGrabComp_draw(CBGrabComp *this) {
+    translate(cb_offset.x, cb_offset.y);
+    scale(cb_scale);
     if (this->grabbed) {
         vec2_t mPos = (vec2_t){ mouseX, mouseY };
-        screenToWorld(&mPos.x, &mPos.y);
+        mPos = vec2_sub(mPos, cb_offset);
+        mPos = vec2_scale(mPos, 1 / cb_scale);
+        //screenToWorld(&mPos.x, &mPos.y);
         CodeBlock_draw(this->grabbed, mPos);
     }
-
+    scale(1 / cb_scale);
+    translate(-cb_offset.x, -cb_offset.y);
 }
 
 /**

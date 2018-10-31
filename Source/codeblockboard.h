@@ -11,6 +11,9 @@
 #include <Engine/component.h>
 #include "gamecomps.h"
 
+extern float cb_scale;
+extern vec2_t cb_offset;
+
 typedef struct CodeBlock CodeBlock; ///< @brief CodeBlock forward declaration
 
 /**

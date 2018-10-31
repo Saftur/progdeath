@@ -46,9 +46,6 @@
     <ClCompile Include="Source\codeblock.c">
       <Filter>Game\Components\Code Block</Filter>
     </ClCompile>
-    <ClCompile Include="Source\codeblocktypes.c">
-      <Filter>Game\Components\Code Block</Filter>
-    </ClCompile>
     <ClCompile Include="Source\codeblocklist.c">
       <Filter>Game\Components\Code Block\List</Filter>
     </ClCompile>
@@ -57,6 +54,9 @@
     </ClCompile>
     <ClCompile Include="Source\codeblockboard.c">
       <Filter>Game\Components\Code Block\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\codeblocktypes.c">
+      <Filter>Game\Components\Code Block\Types</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -105,9 +105,6 @@
     <ClInclude Include="Source\codeblock.h">
       <Filter>Game\Components\Code Block</Filter>
     </ClInclude>
-    <ClInclude Include="Source\codeblocktypes.h">
-      <Filter>Game\Components\Code Block</Filter>
-    </ClInclude>
     <ClInclude Include="Source\enemylua.h">
       <Filter>Game\Components\Entity</Filter>
     </ClInclude>
@@ -119,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="Source\codeblockboard.h">
       <Filter>Game\Components\Code Block\Board</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\codeblocktypes.h">
+      <Filter>Game\Components\Code Block\Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +175,9 @@
     </Filter>
     <Filter Include="Game\Components\Code Block\Board">
       <UniqueIdentifier>{28b2f174-89da-4ce1-b8f0-97da9c07500f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types">
+      <UniqueIdentifier>{c0fb3186-9992-491e-b903-124e8ce7ea7a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

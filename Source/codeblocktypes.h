@@ -30,6 +30,7 @@ void decTab();
 
 typedef vec2_t(*CodeBlock_getsizefunc)(CodeBlock*);
 typedef int(*CodeBlock_grabfunc)(CodeBlock*,vec2_t);
+typedef int(*CodeBlock_dropfunc)(CodeBlock*,CodeBlock*,vec2_t);
 typedef vec2_t(*CodeBlock_drawfunc)(CodeBlock*,vec2_t);
 typedef char*(*CodeBlock_textfunc)(CodeBlock*);
 
@@ -37,6 +38,7 @@ typedef struct CodeBlockTypeData {
     size_t numArgs;
     CodeBlock_getsizefunc getsize;
     CodeBlock_grabfunc grab;
+    CodeBlock_dropfunc drop;
     CodeBlock_drawfunc draw;
     CodeBlock_textfunc text;
 } CodeBlockTypeData;

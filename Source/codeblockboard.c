@@ -10,7 +10,11 @@
 
 #include <Engine/util.h>
 
+#include "editorscreen.h"
 #include "codeblock.h"
+
+float cb_scale;
+vec2_t cb_offset;
 
 /**
  * @brief Create new CodeBlockBoard
@@ -62,7 +66,9 @@ void _CodeBlockBoard_delete(CodeBlockBoard *this) {
 void _CodeBlockBoard_update(CodeBlockBoard *this) {
     if (mousePressed(MOUSE_BUTTON_1)) {
         vec2_t mPos = (vec2_t){ mouseX, mouseY };
-        screenToWorld(&mPos.x, &mPos.y);
+        mPos = vec2_sub(mPos, cb_offset);
+        mPos = vec2_scale(mPos, 1 / cb_scale);
+        //screenToWorld(&mPos.x, &mPos.y);
         for (int i = 0; i < this->blocks->size; i++) {
             CodeBlock **block = this->blocks->items+i;
             vec2_t pos = *(vec2_t*)this->blockPos->items[i];
@@ -80,8 +86,12 @@ void _CodeBlockBoard_update(CodeBlockBoard *this) {
  * @param this CodeBlockBoard to draw
  */
 void _CodeBlockBoard_draw(CodeBlockBoard *this) {
+    translate(cb_offset.x, cb_offset.y);
+    scale(cb_scale);
     for (unsigned i = 0; i < this->blocks->size; i++)
         CodeBlock_draw(this->blocks->items[i], *(vec2_t*)this->blockPos->items[i]);
+    scale(1 / cb_scale);
+    translate(-cb_offset.x, -cb_offset.y);
 }
 
 /**
@@ -91,9 +101,27 @@ void _CodeBlockBoard_draw(CodeBlockBoard *this) {
  * @param pos   Position to add at
  */
 void CodeBlockBoard_addBlock(CodeBlockBoard *this, CodeBlock *block, vec2_t pos) {
+    pos = vec2_sub(pos, cb_offset);
+    pos = vec2_scale(pos, 1 / cb_scale);
+    vec2_t offPos = pos;
+    for (unsigned i = 0; i < this->blocks->size; i++) {
+        CodeBlock *bBlock = this->blocks->items[i];
+        vec2_t bPos = *(vec2_t*)this->blockPos->items[i];
+        vec2_t subPos = vec2_sub(pos, bPos);
+        if (CodeBlock_drop(bBlock, block, subPos))
+            return;
+        vec2_t bSize = CodeBlock_getsize(bBlock);
+        vec2_t bEndPos = vec2_add(bPos, bSize);
+        if (vec2_in_range(offPos, bPos, bEndPos))
+            offPos.x = bEndPos.x;
+    }
+    if (isOnList(pos)) {
+        _CodeBlock_delete(block);
+        return;
+    }
     List_push_back(this->blocks, block);
     vec2_t *newPos = malloc(sizeof(vec2_t));
-    *newPos = pos;
+    *newPos = offPos;
     List_push_back(this->blockPos, newPos);
 }
 
