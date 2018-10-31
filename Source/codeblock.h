@@ -1,7 +1,7 @@
 /**
  * @file codeblock.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/28/18
+ * @date 10/31/18
  * @brief CodeBlock Component
  * @addtogroup Components
  * @{
@@ -12,6 +12,10 @@
 #include "gamecomps.h"
 
 #include "codeblocktypes.h"
+
+extern int cb_use_scl_offset;
+extern float cb_scale;
+extern vec2_t cb_offset;
 
 /**
  * @brief CodeBlock Component
@@ -78,6 +82,14 @@ void CodeBlock_addblock(CodeBlock *this, CodeBlock *block);
  * @return Size of CodeBlock
  */
 vec2_t CodeBlock_getsize(CodeBlock *this);
+/**
+ * @brief Attempt to grab this CodeBlock
+ * @param this CodeBlock to grab
+ * @param p    Mouse position on CodeBlock
+ * @return Whether it was grabbed
+ */
+int CodeBlock_grab(CodeBlock *this, vec2_t p);
+
 /**
  * @brief Draw CodeBlock at given position
  * @param this CodeBlock to draw

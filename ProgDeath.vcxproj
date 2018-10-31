@@ -108,7 +108,15 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\cbgrabcomp.c">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Source\codeblock.c">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Source\codeblockboard.c">
       <SubType>
       </SubType>
     </ClCompile>
@@ -166,7 +174,15 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\cbgrabcomp.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Source\codeblock.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Source\codeblockboard.h">
       <SubType>
       </SubType>
     </ClInclude>

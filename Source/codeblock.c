@@ -1,7 +1,7 @@
 /**
  * @file codeblock.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/29/18
+ * @date 10/31/18
  * @brief CodeBlock implementation
  * @addtogroup Components
  * @{
@@ -11,6 +11,11 @@
 #include <Engine/transform.h>
 
 #include <string.h>
+
+
+int cb_use_scl_offset = 1;
+float cb_scale;
+vec2_t cb_offset;
 
 /**
  * @brief Create new CodeBlock
@@ -33,7 +38,7 @@ CodeBlock *CodeBlock_new(CodeBlockType type, void *data, size_t dataSize) {
 
     this->type = type;
     this->blocks = List_new(10, _CodeBlock_clone, _CodeBlock_delete);
-    List_resize(this->blocks, CodeBlock_numargs[type], NULL);
+    List_resize(this->blocks, CodeBlock_types[type].numArgs, NULL);
     for (unsigned i = 0; i < this->blocks->size; i++)
         this->blocks->items[i] = CodeBlock_new(CB_EMPTY, NULL, 0);
     if (data) {
@@ -85,11 +90,17 @@ void _CodeBlock_update(CodeBlock *this) {
  * @param this CodeBlock to draw
  */
 void _CodeBlock_draw(CodeBlock *this) {
-    scale(2);
+    if (cb_use_scl_offset) {
+        translate(cb_offset.x, cb_offset.y);
+        scale(cb_scale);
+    }
     Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
     if (trs)
-        CodeBlock_draw(this, trs->pos/*, CBDM_FULL*/);
-    scale(0.5);
+        CodeBlock_draw(this, trs->pos);
+    if (cb_use_scl_offset) {
+        scale(1 / cb_scale);
+        translate(-cb_offset.x, -cb_offset.y);
+    }
 }
 
 /**
@@ -121,7 +132,17 @@ void CodeBlock_addblock(CodeBlock *this, CodeBlock *block) {
  * @return Size of CodeBlock
  */
 vec2_t CodeBlock_getsize(CodeBlock *this) {
-    return CodeBlock_getsizefuncs[this->type](this);
+    return CodeBlock_types[this->type].getsize(this);
+}
+
+/**
+ * @brief Attempt to grab this CodeBlock
+ * @param this CodeBlock to grab
+ * @param p    Mouse position on CodeBlock
+ * @return Whether it was grabbed
+ */
+int CodeBlock_grab(CodeBlock *this, vec2_t p) {
+    return CodeBlock_types[this->type].grab(this, p);
 }
 
 /**
@@ -131,7 +152,7 @@ vec2_t CodeBlock_getsize(CodeBlock *this) {
  * @return Size of drawn CodeBlock
  */
 vec2_t CodeBlock_draw(CodeBlock *this, vec2_t pos) {
-    return CodeBlock_drawfuncs[this->type](this, pos);
+    return CodeBlock_types[this->type].draw(this, pos);
 }
 
 /**
@@ -140,7 +161,7 @@ vec2_t CodeBlock_draw(CodeBlock *this, vec2_t pos) {
  * @return Newly allocated string
  */
 char *CodeBlock_text(CodeBlock *this) {
-    return CodeBlock_textfuncs[this->type](this);
+    return CodeBlock_types[this->type].text(this);
 }
 
 /// @}

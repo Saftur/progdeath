@@ -42,9 +42,11 @@ void ScreenMngr_delete(ScreenMngr *scrMngr) {
  * @param scrMngr ScreenMngr to update
  */
 void ScreenMngr_update(ScreenMngr *scrMngr) {
+    if (scrMngr->currScreen)
+        Screen_update(scrMngr->currScreen);
     if (scrMngr->nextScreen != scrMngr->currScreen) {
         if (scrMngr->currScreen)
-            Screen_end(scrMngr->currScreen);
+            Screen_end(scrMngr->currScreen, scrMngr->gLayer->objMngr);
         ObjectMngr_deleteAll(scrMngr->gLayer->objMngr);
         scrMngr->currScreen = scrMngr->nextScreen;
         Screen_init(scrMngr->currScreen, scrMngr->gLayer->objMngr);

@@ -1,7 +1,7 @@
 /**
  * @file codeblocklist.h
- * @author Name (username)
- * @date 
+ * @author Arthur Bouvier (a.bouvier)
+ * @date 10/31/18
  * @brief CodeBlockList Component
  * @addtogroup Components
  * @{
@@ -11,13 +11,18 @@
 #include <Engine/component.h>
 #include "gamecomps.h"
 
+typedef struct CodeBlock CodeBlock; ///< @brief CodeBlock forward declaration
+
 /**
  * @brief CodeBlockList Component
  */
 typedef struct CodeBlockList {
     Component comp; ///< @brief Component data
 
-    List *cBlocks; ///< @brief List of CodeBlock s
+    List *blocks;    ///< @brief List of CodeBlock s
+    List *blockPos;  ///< @brief CodeBlock positions in CodeBlockList
+    List *blockSize; ///< @brief CodeBlock sizes in CodeBlockList
+    vec2_t size;     ///< @brief Size of CodeBlockList
 } CodeBlockList;
 
 /**
@@ -49,5 +54,12 @@ void _CodeBlockList_update(CodeBlockList *this);
  * @param this CodeBlockList to draw
  */
 void _CodeBlockList_draw(CodeBlockList *this);
+
+/**
+ * @brief Add CodeBlock to CodeBlockList
+ * @param this  CodeBlockList to add to
+ * @param block CodeBlock to add
+ */
+void CodeBlockList_addBlock(CodeBlockList *this, CodeBlock *block);
 
 /// @}

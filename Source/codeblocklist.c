@@ -1,14 +1,20 @@
 /**
  * @file codeblocklist.c
- * @author Name (username)
- * @date 
+ * @author Arthur Bouvier (a.bouvier)
+ * @date 10/31/18
  * @brief CodeBlockList implementation
  * @addtogroup Components
  * @{
  */
 #include "codeblocklist.h"
 
+#include <Engine/engine.h>
+#include <Engine/util.h>
+
 #include "codeblock.h"
+#include "editorscreen.h"
+
+#define BORDER 20
 
 /**
  * @brief Create new CodeBlockList
@@ -26,7 +32,18 @@ CodeBlockList *CodeBlockList_new() {
     this->comp.coll_resolve = NULL;
     this->comp.owner = NULL;
 
-    this->cBlocks = List_new(30, _CodeBlock_clone, _CodeBlock_delete);
+    this->size = (vec2_t){ 0, 0 };
+    this->blocks = List_new(CB_NUM_TYPES, _CodeBlock_clone, _CodeBlock_delete);
+    this->blockPos = List_new(CB_NUM_TYPES, vec2_copy, free);
+    this->blockSize = List_new(CB_NUM_TYPES, vec2_copy, free);
+    for (int type = 0; type < CB_NUM_TYPES; type++) {
+        switch (type) {
+        case CB_EMPTY: case CB_VAR:
+            break;
+        default:
+            CodeBlockList_addBlock(this, CodeBlock_new(type, NULL, 0));
+        }
+    }
 
     return this;
 }
@@ -39,7 +56,7 @@ CodeBlockList *CodeBlockList_new() {
 CodeBlockList *_CodeBlockList_clone(CodeBlockList *this) {
     CodeBlockList *new = malloc(sizeof(CodeBlockList));
 
-    new->cBlocks = List_copy(this->cBlocks);
+    new->blocks = List_copy(this->blocks);
 
     return new;
 }
@@ -49,7 +66,9 @@ CodeBlockList *_CodeBlockList_clone(CodeBlockList *this) {
  * @param this CodeBlockList to delete
  */
 void _CodeBlockList_delete(CodeBlockList *this) {
-    List_delete(this->cBlocks);
+    List_delete(this->blocks);
+    List_delete(this->blockPos);
+    List_delete(this->blockSize);
     free(this);
 }
 
@@ -58,7 +77,19 @@ void _CodeBlockList_delete(CodeBlockList *this) {
  * @param this CodeBlockList to update
  */
 void _CodeBlockList_update(CodeBlockList *this) {
-
+    if (mousePressed(MOUSE_BUTTON_1)) {
+        vec2_t mPos = (vec2_t){ mouseX, mouseY };
+        screenToWorld(&mPos.x, &mPos.y);
+        if (0 <= mPos.x && mPos.x < this->size.x && 0 <= mPos.y && mPos.y < this->size.y) {
+            for (int i = 0; i < this->blocks->size; i++) {
+                CodeBlock **block = this->blocks->items+i;
+                vec2_t pos = *(vec2_t*)this->blockPos->items[i];
+                if (CodeBlock_grab(*block, vec2_sub(mPos, pos))) {
+                    *block = _CodeBlock_clone(*block);
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -66,7 +97,31 @@ void _CodeBlockList_update(CodeBlockList *this) {
  * @param this CodeBlockList to draw
  */
 void _CodeBlockList_draw(CodeBlockList *this) {
+    for (int i = 0; i < this->blocks->size; i++) {
+        vec2_t pos = *(vec2_t*)this->blockPos->items[i];
+        CodeBlock_draw(this->blocks->items[i], pos);
+    }
+}
 
+/**
+ * @brief Add CodeBlock to CodeBlockList
+ * @param this  CodeBlockList to add to
+ * @param block CodeBlock to add
+ */
+void CodeBlockList_addBlock(CodeBlockList *this, CodeBlock *block) {
+    vec2_t lastPos = (this->blockPos->size > 0) ? *(vec2_t*)this->blockPos->items[this->blockPos->size-1] : (vec2_t){ BORDER, 0 };
+    vec2_t lastSize = (this->blockSize->size > 0) ? *(vec2_t*)this->blockSize->items[this->blockPos->size-1] : (vec2_t){ 0, 0 };
+    vec2_t *newPos = malloc(sizeof(vec2_t));
+    *newPos = lastPos;
+    newPos->y += lastSize.y + BORDER;
+    vec2_t *newSize = malloc(sizeof(vec2_t));
+    *newSize = CodeBlock_getsize(block);
+    List_push_back(this->blocks, block);
+    List_push_back(this->blockPos, newPos);
+    List_push_back(this->blockSize, newSize);
+    if (newSize->x + BORDER > this->size.x)
+        this->size.x = newSize->x + BORDER;
+    this->size.y += newSize->y + BORDER;
 }
 
 /// @}

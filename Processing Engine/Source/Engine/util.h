@@ -12,6 +12,21 @@
 #include <C_Processing.h>
 
 /**
+ * @brief Copy data with given size
+ * @param data Data to copy
+ * @param size Size of data
+ * @return Copied data
+ */
+void *copy(void *data, size_t size);
+
+/**
+ * @brief Copy vec2_t from pointer
+ * @param vec vec2_t to copy
+ * @return Copied vec2_t
+ */
+vec2_t *vec2_copy(vec2_t *vec);
+
+/**
  * @brief Check if two floats are within a given range of each other
  * @param a     First value
  * @param b     Second value

@@ -73,6 +73,12 @@ void List_pop(List *list);
  */
 void List_remove(List *list, unsigned i);
 /**
+ * @brief Remove an item from the list without calling delFunc
+ * @param list List to delete from
+ * @param i    Index of item to delete
+ */
+#define List_remove_nodelete(list, i) {void *delFunc = list->delFunc; list->delFunc = NULL; List_remove(list, i); list->delFunc = delFunc;}
+/**
  * @brief Delete all items in List
  * @param list List to delete from
  */

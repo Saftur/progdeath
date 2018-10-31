@@ -1,8 +1,8 @@
 /**
  * @file codeblocktypes.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/29/18
- * CodeBlock types
+ * @date 10/31/18
+ * @brief CodeBlock types
  */
 #pragma once
 
@@ -29,10 +29,16 @@ void incTab();
 void decTab();
 
 typedef vec2_t(*CodeBlock_getsizefunc)(CodeBlock*);
+typedef int(*CodeBlock_grabfunc)(CodeBlock*,vec2_t);
 typedef vec2_t(*CodeBlock_drawfunc)(CodeBlock*,vec2_t);
 typedef char*(*CodeBlock_textfunc)(CodeBlock*);
 
-extern size_t CodeBlock_numargs[];
-extern CodeBlock_getsizefunc CodeBlock_getsizefuncs[];
-extern CodeBlock_drawfunc CodeBlock_drawfuncs[];
-extern CodeBlock_textfunc CodeBlock_textfuncs[];
+typedef struct CodeBlockTypeData {
+    size_t numArgs;
+    CodeBlock_getsizefunc getsize;
+    CodeBlock_grabfunc grab;
+    CodeBlock_drawfunc draw;
+    CodeBlock_textfunc text;
+} CodeBlockTypeData;
+
+extern CodeBlockTypeData CodeBlock_types[];
