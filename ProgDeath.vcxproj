@@ -166,6 +166,10 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="enemyspawns.h" />
+    <ClInclude Include="environment.h" />
+    <ClInclude Include="map.h" />
+    <ClInclude Include="mapitems.h" />
     <ClInclude Include="Source\codeblock.h">
       <SubType>
       </SubType>

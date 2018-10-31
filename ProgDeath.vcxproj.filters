@@ -108,6 +108,18 @@
     <ClInclude Include="Source\enemylua.h">
       <Filter>Game\Components\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="environment.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="mapitems.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyspawns.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -154,6 +166,9 @@
     </Filter>
     <Filter Include="Game\Components\Code Block">
       <UniqueIdentifier>{fc97b877-ef6c-428a-a978-40d2d3063d93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Map">
+      <UniqueIdentifier>{e8676e4f-4cfb-4a87-a9a1-48bfd6d15b5e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
