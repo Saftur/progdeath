@@ -8,10 +8,19 @@
  */
 #include "codeblock.h"
 
-#include <Engine/transform.h>
-
 #include <string.h>
 
+#include "cb_empty.h"
+#include "cb_setvar.h"
+#include "cb_var.h"
+#include "cb_if.h"
+
+static CodeBlock_initfunc init_funcs[] = {
+    cb_empty_init,
+    cb_setvar_init,
+    cb_var_init,
+    cb_if_init,
+};
 
 /**
  * @brief Create new CodeBlock
@@ -22,19 +31,11 @@
  */
 CodeBlock *CodeBlock_new(CodeBlockType type, void *data, size_t dataSize) {
     CodeBlock *this = malloc(sizeof(CodeBlock));
-    this->comp.typeName = "CodeBlock";
-    this->comp.typeId = CODEBLOCK;
-    this->comp.clone = _CodeBlock_clone;
-    this->comp.delete = _CodeBlock_delete;
-    this->comp.update = _CodeBlock_update;
-    this->comp.draw = _CodeBlock_draw;
-    this->comp.collides = false;
-    this->comp.coll_resolve = NULL;
-    this->comp.owner = NULL;
+    init_funcs[type](this);
 
     this->type = type;
-    this->blocks = List_new(10, _CodeBlock_clone, _CodeBlock_delete);
-    List_resize(this->blocks, CodeBlock_types[type].numArgs, NULL);
+    this->blocks = List_new(10, CodeBlock_clone, CodeBlock_delete);
+    List_resize(this->blocks, this->typeData.numArgs, NULL);
     for (unsigned i = 0; i < this->blocks->size; i++)
         this->blocks->items[i] = CodeBlock_new(CB_EMPTY, NULL, 0);
     if (data) {
@@ -51,8 +52,9 @@ CodeBlock *CodeBlock_new(CodeBlockType type, void *data, size_t dataSize) {
  * @param this CodeBlock to clone
  * @return Cloned CodeBlock
  */
-CodeBlock *_CodeBlock_clone(CodeBlock *this) {
+CodeBlock *CodeBlock_clone(CodeBlock *this) {
     CodeBlock *new = malloc(sizeof(CodeBlock));
+    new->typeData = this->typeData;
 
     new->type = this->type;
     new->blocks = List_copy(this->blocks);
@@ -67,7 +69,7 @@ CodeBlock *_CodeBlock_clone(CodeBlock *this) {
  * @brief Delete CodeBlock
  * @param this CodeBlock to delete
  */
-void _CodeBlock_delete(CodeBlock *this) {
+void CodeBlock_delete(CodeBlock *this) {
     if (!this)
         return;
     List_delete(this->blocks);
@@ -79,18 +81,8 @@ void _CodeBlock_delete(CodeBlock *this) {
  * @brief Update CodeBlock
  * @param this CodeBlock to update
  */
-void _CodeBlock_update(CodeBlock *this) {
+void CodeBlock_update(CodeBlock *this) {
 
-}
-
-/**
- * @brief Draw CodeBlock
- * @param this CodeBlock to draw
- */
-void _CodeBlock_draw(CodeBlock *this) {
-    Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
-    if (trs)
-        CodeBlock_draw(this, trs->pos);
 }
 
 /**
@@ -103,7 +95,7 @@ void CodeBlock_setblock(CodeBlock *this, unsigned num, CodeBlock *block) {
     if (num >= this->blocks->size) return;
     CodeBlock **bp = this->blocks->items+num;
     if (bp)
-        _CodeBlock_delete(*bp);
+        CodeBlock_delete(*bp);
     *bp = block;
 }
 
@@ -122,7 +114,7 @@ void CodeBlock_addblock(CodeBlock *this, CodeBlock *block) {
  * @return Size of CodeBlock
  */
 vec2_t CodeBlock_getsize(CodeBlock *this) {
-    return CodeBlock_types[this->type].getsize(this);
+    return this->typeData.getsize(this);
 }
 
 /**
@@ -131,8 +123,8 @@ vec2_t CodeBlock_getsize(CodeBlock *this) {
  * @param p    Mouse position on CodeBlock
  * @return Whether it was grabbed
  */
-int CodeBlock_grab(CodeBlock *this, vec2_t p) {
-    return CodeBlock_types[this->type].grab(this, p);
+CBGrabResult CodeBlock_grab(CodeBlock *this, vec2_t p) {
+    return this->typeData.grab(this, p);
 }
 
 /**
@@ -143,7 +135,9 @@ int CodeBlock_grab(CodeBlock *this, vec2_t p) {
  * @return Whether it was dropped
  */
 int CodeBlock_drop(CodeBlock *this, CodeBlock *dropped, vec2_t p) {
-    return CodeBlock_types[this->type].drop(this, dropped, p);
+    if (this->typeData.drop)
+        return this->typeData.drop(this, dropped, p);
+    return 0;
 }
 
 /**
@@ -153,7 +147,7 @@ int CodeBlock_drop(CodeBlock *this, CodeBlock *dropped, vec2_t p) {
  * @return Size of drawn CodeBlock
  */
 vec2_t CodeBlock_draw(CodeBlock *this, vec2_t pos) {
-    return CodeBlock_types[this->type].draw(this, pos);
+    return this->typeData.draw(this, pos);
 }
 
 /**
@@ -161,8 +155,8 @@ vec2_t CodeBlock_draw(CodeBlock *this, vec2_t pos) {
  * @param this CodeBlock to convert
  * @return Newly allocated string
  */
-char *CodeBlock_text(CodeBlock *this) {
-    return CodeBlock_types[this->type].text(this);
+char *CodeBlock_totext(CodeBlock *this) {
+    return this->typeData.totext(this);
 }
 
 /// @}

@@ -31,7 +31,7 @@ CodeBlockBoard *CodeBlockBoard_new() {
     this->comp.collides = false;
     this->comp.coll_resolve = NULL;
 
-    this->blocks = List_new(10, _CodeBlock_clone, _CodeBlock_delete);
+    this->blocks = List_new(10, CodeBlock_clone, CodeBlock_delete);
     this->blockPos = List_new(10, vec2_copy, free);
 
     return this;
@@ -69,13 +69,16 @@ void _CodeBlockBoard_update(CodeBlockBoard *this) {
         mPos = vec2_sub(mPos, cb_offset);
         mPos = vec2_scale(mPos, 1 / cb_scale);
         //screenToWorld(&mPos.x, &mPos.y);
-        for (int i = 0; i < this->blocks->size; i++) {
+        for (unsigned i = this->blocks->size - 1; i < this->blocks->size; i--) {
             CodeBlock **block = this->blocks->items+i;
             vec2_t pos = *(vec2_t*)this->blockPos->items[i];
-            if (CodeBlock_grab(*block, vec2_sub(mPos, pos))) {
-                List_remove_nodelete(this->blocks, i);
-                List_remove_nodelete(this->blockPos, i);
-                break;
+            CBGrabResult grabRes = CodeBlock_grab(*block, vec2_sub(mPos, pos));
+            if (grabRes.either) {
+                if (grabRes.parent) {
+                    List_remove_nodelete(this->blocks, i);
+                    List_remove_nodelete(this->blockPos, i);
+                }
+                return;
             }
         }
     }
@@ -116,7 +119,7 @@ void CodeBlockBoard_addBlock(CodeBlockBoard *this, CodeBlock *block, vec2_t pos)
             offPos.x = bEndPos.x;
     }
     if (isOnList(pos)) {
-        _CodeBlock_delete(block);
+        CodeBlock_delete(block);
         return;
     }
     List_push_back(this->blocks, block);

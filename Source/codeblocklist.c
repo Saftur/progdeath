@@ -33,7 +33,7 @@ CodeBlockList *CodeBlockList_new() {
     this->comp.owner = NULL;
 
     this->size = (vec2_t){ 0, 0 };
-    this->blocks = List_new(CB_NUM_TYPES, _CodeBlock_clone, _CodeBlock_delete);
+    this->blocks = List_new(CB_NUM_TYPES, CodeBlock_clone, CodeBlock_delete);
     this->blockPos = List_new(CB_NUM_TYPES, vec2_copy, free);
     this->blockSize = List_new(CB_NUM_TYPES, vec2_copy, free);
     for (int type = 0; type < CB_NUM_TYPES; type++) {
@@ -84,8 +84,8 @@ void _CodeBlockList_update(CodeBlockList *this) {
             for (int i = 0; i < this->blocks->size; i++) {
                 CodeBlock **block = this->blocks->items+i;
                 vec2_t pos = *(vec2_t*)this->blockPos->items[i];
-                if (CodeBlock_grab(*block, vec2_sub(mPos, pos))) {
-                    *block = _CodeBlock_clone(*block);
+                if (CodeBlock_grab(*block, vec2_sub(mPos, pos)).parent) {
+                    *block = CodeBlock_clone(*block);
                 }
             }
         }

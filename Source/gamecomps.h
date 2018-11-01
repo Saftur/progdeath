@@ -15,7 +15,6 @@
  */
 enum _Game_Comp_TypeId {
     ENTITY = NUM_ENGINE_COMPS,
-    CODEBLOCK,
     CODEBLOCKLIST,
     CODEBLOCKBOARD,
     CBGRABCOMP,

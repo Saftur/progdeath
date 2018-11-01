@@ -55,7 +55,19 @@
     <ClCompile Include="Source\codeblockboard.c">
       <Filter>Game\Components\Code Block\Board</Filter>
     </ClCompile>
-    <ClCompile Include="Source\codeblocktypes.c">
+    <ClCompile Include="Source\cb_empty.c">
+      <Filter>Game\Components\Code Block\Types\Empty</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\cb_if.c">
+      <Filter>Game\Components\Code Block\Types\If</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\cb_setvar.c">
+      <Filter>Game\Components\Code Block\Types\Set Var</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\cb_var.c">
+      <Filter>Game\Components\Code Block\Types\Var</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\cbtypedata.c">
       <Filter>Game\Components\Code Block\Types</Filter>
     </ClCompile>
   </ItemGroup>
@@ -117,7 +129,19 @@
     <ClInclude Include="Source\codeblockboard.h">
       <Filter>Game\Components\Code Block\Board</Filter>
     </ClInclude>
-    <ClInclude Include="Source\codeblocktypes.h">
+    <ClInclude Include="Source\cb_empty.h">
+      <Filter>Game\Components\Code Block\Types\Empty</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\cb_if.h">
+      <Filter>Game\Components\Code Block\Types\If</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\cb_setvar.h">
+      <Filter>Game\Components\Code Block\Types\Set Var</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\cb_var.h">
+      <Filter>Game\Components\Code Block\Types\Var</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\cbtypedata.h">
       <Filter>Game\Components\Code Block\Types</Filter>
     </ClInclude>
   </ItemGroup>
@@ -178,6 +202,18 @@
     </Filter>
     <Filter Include="Game\Components\Code Block\Types">
       <UniqueIdentifier>{c0fb3186-9992-491e-b903-124e8ce7ea7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Empty">
+      <UniqueIdentifier>{e8600cee-df38-4598-8974-93b373d14b8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Set Var">
+      <UniqueIdentifier>{1eb3721c-ca5e-4f02-9f8d-e3587d6312ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Var">
+      <UniqueIdentifier>{b7f3483b-f29d-44a5-ad56-341ba93aa02a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\If">
+      <UniqueIdentifier>{aba36051-2c6e-4ca4-8d20-814b41f361a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

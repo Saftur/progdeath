@@ -40,7 +40,7 @@ CBGrabComp *CBGrabComp_new() {
 CBGrabComp *_CBGrabComp_clone(CBGrabComp *this) {
     CBGrabComp *new = malloc(sizeof(CBGrabComp));
 
-    new->grabbed = _CodeBlock_clone(this->grabbed);
+    new->grabbed = CodeBlock_clone(this->grabbed);
 
     return new;
 }
@@ -51,7 +51,7 @@ CBGrabComp *_CBGrabComp_clone(CBGrabComp *this) {
  */
 void _CBGrabComp_delete(CBGrabComp *this) {
     if (this->grabbed)
-        _CodeBlock_delete(this->grabbed);
+        CodeBlock_delete(this->grabbed);
     free(this);
 }
 
@@ -93,7 +93,7 @@ void _CBGrabComp_draw(CBGrabComp *this) {
  */
 void CBGrabComp_setGrabbed(CBGrabComp *this, CodeBlock *block) {
     if (this->grabbed)
-        _CodeBlock_delete(this->grabbed);
+        CodeBlock_delete(this->grabbed);
     this->grabbed = block;
 }
 

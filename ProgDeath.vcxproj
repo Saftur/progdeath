@@ -112,6 +112,17 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Source\cbtypedata.c">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Source\cb_empty.c">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Source\cb_if.c" />
+    <ClCompile Include="Source\cb_setvar.c" />
+    <ClCompile Include="Source\cb_var.c" />
     <ClCompile Include="Source\codeblock.c">
       <SubType>
       </SubType>
@@ -121,10 +132,6 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       </SubType>
     </ClCompile>
     <ClCompile Include="Source\codeblocklist.c">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Source\codeblocktypes.c">
       <SubType>
       </SubType>
     </ClCompile>
@@ -178,6 +185,17 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Source\cbtypedata.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Source\cb_empty.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Source\cb_if.h" />
+    <ClInclude Include="Source\cb_setvar.h" />
+    <ClInclude Include="Source\cb_var.h" />
     <ClInclude Include="Source\codeblock.h">
       <SubType>
       </SubType>
@@ -187,10 +205,6 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       </SubType>
     </ClInclude>
     <ClInclude Include="Source\codeblocklist.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="Source\codeblocktypes.h">
       <SubType>
       </SubType>
     </ClInclude>

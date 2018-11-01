@@ -8,16 +8,70 @@
  */
 #pragma once
 
-#include <Engine/component.h>
-#include "gamecomps.h"
+#include <stddef.h>
 
-#include "codeblocktypes.h"
+#include <C_Processing.h>
+#include <Engine/list.h>
+
+//#include "codeblocktypes.h"
+
+typedef struct CodeBlock CodeBlock; ///< @brief CodeBlock forward declaration
+
+typedef enum CodeBlockType {
+    CB_EMPTY,
+
+    CB_SETVAR,
+
+    CB_VAR,
+    //CB_STR,
+
+    CB_IF,
+
+    CB_NUM_TYPES
+} CodeBlockType;
+
+typedef struct CBGrabResult {
+    int either;
+    int parent;
+    int child;
+} CBGrabResult;
+
+extern int tablevel;
+
+void incTab();
+void decTab();
+
+typedef void(*CodeBlock_initfunc)(CodeBlock*);
+
+typedef void(*CodeBlock_updatefunc)(CodeBlock*);
+typedef vec2_t(*CodeBlock_getsizefunc)(CodeBlock*);
+typedef CBGrabResult(*CodeBlock_grabfunc)(CodeBlock*,vec2_t);
+typedef int(*CodeBlock_dropfunc)(CodeBlock*,CodeBlock*,vec2_t);
+typedef vec2_t(*CodeBlock_drawfunc)(CodeBlock*,vec2_t);
+typedef char*(*CodeBlock_textfunc)(CodeBlock*);
+
+typedef struct CodeBlockTypeData {
+    size_t numArgs;
+    CodeBlock_updatefunc update;
+    CodeBlock_getsizefunc getsize;
+    CodeBlock_grabfunc grab;
+    CodeBlock_dropfunc drop;
+    CodeBlock_drawfunc draw;
+    CodeBlock_textfunc totext;
+} CodeBlockTypeData;
 
 /**
  * @brief CodeBlock Component
  */
 typedef struct CodeBlock {
-    Component comp; ///< @brief Component data
+    /*size_t numArgs;
+    CodeBlock_updatefunc update;
+    CodeBlock_getsizefunc getsize;
+    CodeBlock_grabfunc grab;
+    CodeBlock_dropfunc drop;
+    CodeBlock_drawfunc draw;
+    CodeBlock_textfunc totext;*/
+    CodeBlockTypeData typeData;
 
     CodeBlockType type; ///< @brief CodeBlock type
     List *blocks;       ///< @brief Contained CodeBlock s
@@ -39,24 +93,19 @@ CodeBlock *CodeBlock_new(CodeBlockType type, void *data, size_t dataSize);
  * @param this CodeBlock to clone
  * @return Cloned CodeBlock
  */
-CodeBlock *_CodeBlock_clone(CodeBlock *this);
+CodeBlock *CodeBlock_clone(CodeBlock *this);
 
 /**
  * @brief Delete CodeBlock
  * @param this CodeBlock to delete
  */
-void _CodeBlock_delete(CodeBlock *this);
+void CodeBlock_delete(CodeBlock *this);
 
 /**
  * @brief Update CodeBlock
  * @param this CodeBlock to update
  */
-void _CodeBlock_update(CodeBlock *this);
-/**
- * @brief Draw CodeBlock
- * @param this CodeBlock to draw
- */
-void _CodeBlock_draw(CodeBlock *this);
+void CodeBlock_update(CodeBlock *this);
 
 /**
  * @brief Set CodeBlock 's sub CodeBlock num to given block
@@ -84,7 +133,7 @@ vec2_t CodeBlock_getsize(CodeBlock *this);
  * @param p    Mouse position on CodeBlock
  * @return Whether it was grabbed
  */
-int CodeBlock_grab(CodeBlock *this, vec2_t p);
+CBGrabResult CodeBlock_grab(CodeBlock *this, vec2_t p);
 /**
  * @brief Attempt to drop a CodeBlock onto another
  * @param this    CodeBlock to drop on
@@ -107,6 +156,6 @@ vec2_t CodeBlock_draw(CodeBlock *this, vec2_t pos);
  * @param this CodeBlock to convert
  * @return Newly allocated string
  */
-char *CodeBlock_text(CodeBlock *this);
+char *CodeBlock_totext(CodeBlock *this);
 
 /// @}
