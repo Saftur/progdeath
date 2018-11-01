@@ -52,13 +52,13 @@ static void update(CodeBlock *block, vec2_t pos) {
     }
 }
 
-static CBGrabResult grab(CodeBlock *block, vec2_t p) {
+static CBGrabResult grab(CodeBlock *block, vec2_t p, int test) {
     CBGrabResult res;
     CodeBlock *cond = block->blocks->items[0];
     vec2_t condPos = condpos();
-    res = CodeBlock_grab(cond, vec2_sub(p, condPos));
+    res = CodeBlock_grab_test(cond, vec2_sub(p, condPos), test);
     if (res.either) {
-        if (res.parent)
+        if (res.parent && !test)
             block->blocks->items[0] = empty_new();
         return GRABRES_CHILD;
     }
@@ -69,9 +69,9 @@ static CBGrabResult grab(CodeBlock *block, vec2_t p) {
         y += IF_YSPACING;
         vec2_t bPos = (vec2_t){ IF_BD_XSP, y };
         vec2_t bSize = CodeBlock_getsize(b);
-        res = CodeBlock_grab(b, vec2_sub(p, bPos));
+        res = CodeBlock_grab_test(b, vec2_sub(p, bPos), test);
         if (res.either) {
-            if (res.parent)
+            if (res.parent && !test)
                 List_remove_nodelete(block->blocks, i);
             return GRABRES_CHILD;
         }
@@ -79,7 +79,7 @@ static CBGrabResult grab(CodeBlock *block, vec2_t p) {
     }
     vec2_t size = getsize(block);
     if (vec2_in_range(p, vec2_zero(), (vec2_t){ size.x, topsize.y })) {
-        setGrabbed(block, p);
+        if (!test) setGrabbed(block, p);
         return GRABRES_PARENT;
     }
     return GRABRES_NEITHER;
@@ -227,6 +227,7 @@ void cb_if_new(CodeBlock *block) {
     block->typeData.isArg = 0;
     block->typeData.numArgs = 1;
     block->typeData.init = NULL;
+    block->typeData.delete = NULL;
     block->typeData.getsize = getsize;
     block->typeData.update = update;
     block->typeData.grab = grab;

@@ -33,6 +33,7 @@ static CodeBlock_newfunc new_funcs[] = {
  */
 CodeBlock *CodeBlock_new(CodeBlockType type, void *data, size_t dataSize) {
     CodeBlock *this = malloc(sizeof(CodeBlock));
+    this->typeData = (CodeBlockTypeData){0};
     new_funcs[type](this);
 
     this->type = type;
@@ -67,6 +68,9 @@ CodeBlock *CodeBlock_clone(CodeBlock *this) {
     memcpy(new->data, this->data, this->dataSize);
     new->dataSize = this->dataSize;
 
+    if (new->typeData.clone)
+        new->typeData.clone(new);
+
     return new;
 }
 
@@ -77,6 +81,8 @@ CodeBlock *CodeBlock_clone(CodeBlock *this) {
 void CodeBlock_delete(CodeBlock *this) {
     if (!this)
         return;
+    if (this->typeData.delete)
+        this->typeData.delete(this);
     List_delete(this->blocks);
     free(this->data);
     free(this);
@@ -134,7 +140,18 @@ vec2_t CodeBlock_getsize(CodeBlock *this) {
  * @return Whether it was grabbed
  */
 CBGrabResult CodeBlock_grab(CodeBlock *this, vec2_t p) {
-    return this->typeData.grab(this, p);
+    return this->typeData.grab(this, p, 0);
+}
+
+/**
+ * @brief Attempt to grab this CodeBlock
+ * @param this CodeBlock to grab
+ * @param p    Mouse position on CodeBlock
+ * @param test Whether or not it should actually grab or just check
+ * @return Whether it was grabbed
+ */
+CBGrabResult CodeBlock_grab_test(CodeBlock *this, vec2_t p, int test) {
+    return this->typeData.grab(this, p, test);
 }
 
 /**

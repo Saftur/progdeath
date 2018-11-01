@@ -32,7 +32,7 @@ void Engine_init(unsigned numLayers) {
 
     engine->collChecks = NULL;
 
-    setKeyboardInputCallback(keyCallback);
+    initFocus();
 }
 
 /**
@@ -42,6 +42,8 @@ void Engine_delete() {
     if (!engine) return;
     List_delete(engine->gLayers);
     free(engine);
+
+    endFocus();
 }
 
 /**

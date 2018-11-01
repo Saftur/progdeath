@@ -10,6 +10,7 @@
 
 #include <Engine/engine.h>
 #include <Engine/util.h>
+#include <Engine/focus.h>
 
 #include "codeblock.h"
 #include "editorscreen.h"
@@ -37,15 +38,22 @@ CodeBlockList *CodeBlockList_new() {
     this->blockPos = List_new(CB_NUM_TYPES, vec2_copy, free);
     this->blockSize = List_new(CB_NUM_TYPES, vec2_copy, free);
     for (int type = 0; type < CB_NUM_TYPES; type++) {
+        CodeBlock *block = NULL;
         switch (type) {
         case CB_EMPTY:
             break;
         case CB_VAR:
-            CodeBlockList_addBlock(this, CodeBlock_new(CB_VAR, "test", 5));
+            block = CodeBlock_new(CB_VAR, "test", 5);
+            break;
+        case CB_STR:
+            block = CodeBlock_new(type, NULL, 0);
+            removeFocusObject(*(void**)block->data);
             break;
         default:
-            CodeBlockList_addBlock(this, CodeBlock_new(type, NULL, 0));
+            block = CodeBlock_new(type, NULL, 0);
         }
+        if (block)
+            CodeBlockList_addBlock(this, block);
     }
 
     return this;
@@ -87,8 +95,10 @@ void _CodeBlockList_update(CodeBlockList *this) {
             for (int i = 0; i < this->blocks->size; i++) {
                 CodeBlock **block = this->blocks->items+i;
                 vec2_t pos = *(vec2_t*)this->blockPos->items[i];
-                if (CodeBlock_grab(*block, vec2_sub(mPos, pos)).parent) {
-                    *block = CodeBlock_clone(*block);
+                vec2_t sPos = vec2_sub(mPos, pos);
+                if (CodeBlock_grab_test(*block, sPos, 1).parent) {
+                    //*block = CodeBlock_clone(*block);
+                    setGrabbed(CodeBlock_clone(*block), sPos);
                 }
             }
         }

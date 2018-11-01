@@ -99,7 +99,7 @@ void editorScreenInit(ObjectMngr *objMngr) {
  */
 void editorScreenUpdate(Screen *screen) {
     float oldScale = cb_scale;
-    int ctrl = keyPressed(KEY_LEFT_CONTROL) || keyPressed(KEY_RIGHT_CONTRO);
+    int ctrl = keyIsDown(KEY_LEFT_CONTROL) || keyIsDown(KEY_RIGHT_CONTRO);
     if (ctrl && keyIsDown(KEY_EQUAL))
         cb_scale += 1.f * dt();
     if (ctrl && keyIsDown(KEY_MINUS))

@@ -44,9 +44,11 @@ void decTab();
 typedef void(*CodeBlock_newfunc)(CodeBlock*);
 
 typedef void(*CodeBlock_initfunc)(CodeBlock*);
+typedef void(*CodeBlock_clonefunc)(CodeBlock*);
+typedef void(*CodeBlock_deletefunc)(CodeBlock*);
 typedef vec2_t(*CodeBlock_getsizefunc)(CodeBlock*);
 typedef void(*CodeBlock_updatefunc)(CodeBlock*,vec2_t);
-typedef CBGrabResult(*CodeBlock_grabfunc)(CodeBlock*,vec2_t);
+typedef CBGrabResult(*CodeBlock_grabfunc)(CodeBlock*,vec2_t,int);
 typedef int(*CodeBlock_dropfunc)(CodeBlock*,CodeBlock*,vec2_t);
 typedef vec2_t(*CodeBlock_drawfunc)(CodeBlock*,vec2_t);
 typedef char*(*CodeBlock_textfunc)(CodeBlock*);
@@ -56,6 +58,8 @@ typedef struct CodeBlockTypeData {
     int isArg;
     size_t numArgs;
     CodeBlock_initfunc init;
+    CodeBlock_clonefunc clone;
+    CodeBlock_deletefunc delete;
     CodeBlock_getsizefunc getsize;
     CodeBlock_updatefunc update;
     CodeBlock_grabfunc grab;
@@ -139,6 +143,14 @@ vec2_t CodeBlock_getsize(CodeBlock *this);
  * @return Whether it was grabbed
  */
 CBGrabResult CodeBlock_grab(CodeBlock *this, vec2_t p);
+/**
+ * @brief Attempt to grab this CodeBlock
+ * @param this CodeBlock to grab
+ * @param p    Mouse position on CodeBlock
+ * @param test Whether or not it should actually grab or just check
+ * @return Whether it was grabbed
+ */
+CBGrabResult CodeBlock_grab_test(CodeBlock *this, vec2_t p, int test);
 /**
  * @brief Attempt to drop a CodeBlock onto another
  * @param this    CodeBlock to drop on

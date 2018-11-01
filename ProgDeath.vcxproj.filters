@@ -56,22 +56,22 @@
       <Filter>Game\Components\Code Block\Board</Filter>
     </ClCompile>
     <ClCompile Include="Source\cb_empty.c">
-      <Filter>Game\Components\Code Block\Types\Empty</Filter>
+      <Filter>Game\Components\Code Block\Types\Other\Empty</Filter>
     </ClCompile>
     <ClCompile Include="Source\cb_if.c">
-      <Filter>Game\Components\Code Block\Types\If</Filter>
+      <Filter>Game\Components\Code Block\Types\Control\If</Filter>
     </ClCompile>
     <ClCompile Include="Source\cb_setvar.c">
-      <Filter>Game\Components\Code Block\Types\Set Var</Filter>
+      <Filter>Game\Components\Code Block\Types\Directives\Set Var</Filter>
     </ClCompile>
     <ClCompile Include="Source\cb_var.c">
-      <Filter>Game\Components\Code Block\Types\Var</Filter>
+      <Filter>Game\Components\Code Block\Types\Arguments\Var</Filter>
     </ClCompile>
     <ClCompile Include="Source\cbtypedata.c">
       <Filter>Game\Components\Code Block\Types</Filter>
     </ClCompile>
     <ClCompile Include="Source\cb_str.c">
-      <Filter>Game\Components\Code Block\Types\Str</Filter>
+      <Filter>Game\Components\Code Block\Types\Arguments\Str</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,22 +133,22 @@
       <Filter>Game\Components\Code Block\Board</Filter>
     </ClInclude>
     <ClInclude Include="Source\cb_empty.h">
-      <Filter>Game\Components\Code Block\Types\Empty</Filter>
+      <Filter>Game\Components\Code Block\Types\Other\Empty</Filter>
     </ClInclude>
     <ClInclude Include="Source\cb_if.h">
-      <Filter>Game\Components\Code Block\Types\If</Filter>
+      <Filter>Game\Components\Code Block\Types\Control\If</Filter>
     </ClInclude>
     <ClInclude Include="Source\cb_setvar.h">
-      <Filter>Game\Components\Code Block\Types\Set Var</Filter>
+      <Filter>Game\Components\Code Block\Types\Directives\Set Var</Filter>
     </ClInclude>
     <ClInclude Include="Source\cb_var.h">
-      <Filter>Game\Components\Code Block\Types\Var</Filter>
+      <Filter>Game\Components\Code Block\Types\Arguments\Var</Filter>
     </ClInclude>
     <ClInclude Include="Source\cbtypedata.h">
       <Filter>Game\Components\Code Block\Types</Filter>
     </ClInclude>
     <ClInclude Include="Source\cb_str.h">
-      <Filter>Game\Components\Code Block\Types\Str</Filter>
+      <Filter>Game\Components\Code Block\Types\Arguments\Str</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -209,20 +209,35 @@
     <Filter Include="Game\Components\Code Block\Types">
       <UniqueIdentifier>{c0fb3186-9992-491e-b903-124e8ce7ea7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Components\Code Block\Types\Empty">
+    <Filter Include="Game\Components\Code Block\Types\Control">
+      <UniqueIdentifier>{26cce92a-9a89-468e-bad0-b37507ce7a70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Directives">
+      <UniqueIdentifier>{07f4efd9-be72-4a45-b3d8-1abb0d63615d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Arguments">
+      <UniqueIdentifier>{6dcb9d1a-e79e-43a0-b2ed-719345c39668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Other">
+      <UniqueIdentifier>{88ff4360-2aa3-4c70-b421-e650c0d8143f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Other\Empty">
       <UniqueIdentifier>{e8600cee-df38-4598-8974-93b373d14b8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Components\Code Block\Types\Set Var">
-      <UniqueIdentifier>{1eb3721c-ca5e-4f02-9f8d-e3587d6312ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components\Code Block\Types\Var">
-      <UniqueIdentifier>{b7f3483b-f29d-44a5-ad56-341ba93aa02a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components\Code Block\Types\If">
+    <Filter Include="Game\Components\Code Block\Types\Control\If">
       <UniqueIdentifier>{aba36051-2c6e-4ca4-8d20-814b41f361a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Components\Code Block\Types\Str">
+    <Filter Include="Game\Components\Code Block\Types\Directives\Set Var">
+      <UniqueIdentifier>{1eb3721c-ca5e-4f02-9f8d-e3587d6312ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Arguments\Str">
       <UniqueIdentifier>{198e3dd2-9d2c-4d57-aa23-51f0064bf946}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Arguments\Var">
+      <UniqueIdentifier>{b7f3483b-f29d-44a5-ad56-341ba93aa02a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Arguments\Operators">
+      <UniqueIdentifier>{bcacb3cd-c820-406a-b818-6086586a7082}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

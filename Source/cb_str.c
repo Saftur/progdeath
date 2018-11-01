@@ -15,19 +15,17 @@
 #include "cbtypedata.h"
 #include "codeblockboard.h"
 
+typedef struct CBStrFocus {
+    CodeBlock *block;
+    vec2_t pos;
+} CBStrFocus;
+
 #define STROFFSET(height) height * 0.60
 
-#define FOCUS(block) (*((int*)block->data))
-#define STR(block) ((char*)block->data+sizeof(int))
+#define FOCUS(block) (*(CBStrFocus**)block->data)
+#define STR(block) ((char*)block->data+sizeof(void*))
 
-#define STR_SIZE(block) block->dataSize - sizeof(int)
-
-static void init(CodeBlock *block) {
-    block->dataSize = sizeof(int) + 20;
-    block->data = malloc(sizeof(int) + block->dataSize*sizeof(char));
-    FOCUS(block) = 0;
-    STR(block)[0] = 0;
-}
+#define STR_SIZE(block) block->dataSize - sizeof(void*)
 
 static void addchar(CodeBlock *block, char c) {
     size_t len = strlen(STR(block));
@@ -49,112 +47,87 @@ static void backspace(CodeBlock *block) {
     STR(block)[len-1] = 0;
 }
 
+static char shiftnumchars[] ={')','!','@','#','$','%','^','&','*','('};
+
 static vec2_t getsize(CodeBlock *block) {
     float height = max(INNER_HEIGHT, TEXT_H() + PADD * 2);
     return (vec2_t){ max(100, TEXT_W(strlen(STR(block))) + STROFFSET(height) * 2), height };
 }
 
-static char shiftnumchars[] ={')','!','@','#','$','%','^','&','*','('};
+static int focusCheck(CBStrFocus *focus) {
+    vec2_t mPos = CB_getMousePos();
+    vec2_t size = getsize(focus->block);
+    return vec2_in_range(vec2_sub(mPos, focus->pos), (vec2_t){ STROFFSET(size.y), PADD }, (vec2_t){ size.x - STROFFSET(size.y), size.y - PADD });
+}
 
-static void focusCallback(Key key, KeyState state, CodeBlock *block) {
+static void focusCallback(Key key, KeyState state, CBStrFocus *focus) {
     int shift = keyIsDown(KEY_LEFT_SHIFT) || keyIsDown(KEY_RIGHT_SHIFT);
-    if ((state != KeyPressed && state != KeyRepeat) || keyPressed(KEY_LEFT_CONTROL) || keyPressed(KEY_RIGHT_CONTRO))
+    if ((state != KeyPressed && state != KeyRepeat) || keyIsDown(KEY_LEFT_CONTROL) || keyIsDown(KEY_RIGHT_CONTRO))
         return;
-    for (int k = KEY_A; k <= KEY_Z; k++) {
-        if (key == k)
-            addchar(block, k - KEY_A + (shift ? 'A' : 'a'));
-    }
-    for (int k = KEY_0; k <= KEY_9; k++) {
-        if (key == k)
-            addchar(block, (shift ? shiftnumchars[k - KEY_0] : k - KEY_0 + '0'));
-    }
+    if (KEY_A <= key && key <= KEY_Z)
+        addchar(focus->block, key - KEY_A + (shift ? 'A' : 'a'));
+    if (KEY_0 <= key && key <= KEY_9)
+        addchar(focus->block, (shift ? shiftnumchars[key - KEY_0] : key - KEY_0 + '0'));
     if (key == KEY_GRAVE_ACCENT)
-        addchar(block, (shift ? '~' : '`'));
+        addchar(focus->block, (shift ? '~' : '`'));
     if (key == KEY_MINUS)
-        addchar(block, (shift ? '_' : '-'));
+        addchar(focus->block, (shift ? '_' : '-'));
     if (key == KEY_EQUAL)
-        addchar(block, (shift ? '+' : '='));
+        addchar(focus->block, (shift ? '+' : '='));
     if (key == KEY_LEFT_BRACKET)
-        addchar(block, (shift ? '{' : '['));
+        addchar(focus->block, (shift ? '{' : '['));
     if (key == KEY_RIGHT_BRACKE)
-        addchar(block, (shift ? '}' : ']'));
+        addchar(focus->block, (shift ? '}' : ']'));
     if (key == KEY_BACKSLASH)
-        addchar(block, (shift ? '|' : '\\'));
+        addchar(focus->block, (shift ? '|' : '\\'));
     if (key == KEY_SEMICOLON)
-        addchar(block, (shift ? ':' : ';'));
+        addchar(focus->block, (shift ? ':' : ';'));
     if (key == KEY_APOSTROPHE)
-        addchar(block, (shift ? '"' : '\''));
+        addchar(focus->block, (shift ? '"' : '\''));
     if (key == KEY_COMMA)
-        addchar(block, (shift ? '<' : ','));
+        addchar(focus->block, (shift ? '<' : ','));
     if (key == KEY_PERIOD)
-        addchar(block, (shift ? '>' : '.'));
+        addchar(focus->block, (shift ? '>' : '.'));
     if (key == KEY_SLASH)
-        addchar(block, (shift ? '?' : '/'));
+        addchar(focus->block, (shift ? '?' : '/'));
 
     if (key == KEY_SPACE)
-        addchar(block, ' ');
+        addchar(focus->block, ' ');
     if (key == KEY_BACKSPACE)
-        backspace(block);
+        backspace(focus->block);
     if (key == KEY_ENTER) {
-        addchar(block, '\\');
-        addchar(block, 'n');
+        addchar(focus->block, '\\');
+        addchar(focus->block, 'n');
     }
+}
+
+static void init(CodeBlock *block) {
+    block->dataSize = sizeof(void*) + 20;
+    block->data = malloc(block->dataSize*sizeof(char));
+    FOCUS(block) = malloc(sizeof(CBStrFocus));
+    FOCUS(block)->block = block;
+    FOCUS(block)->pos = (vec2_t){ 0, 0 };
+    STR(block)[0] = 0;
+    addFocusObject(focusCheck, focusCallback, FOCUS(block));
+}
+
+static void clone(CodeBlock *block) {
+    FOCUS(block) = malloc(sizeof(CBStrFocus));
+    FOCUS(block)->block = block;
+    FOCUS(block)->pos = (vec2_t){ 0, 0 };
+    addFocusObject(focusCheck, focusCallback, FOCUS(block));
+}
+
+static void delete(CodeBlock *block) {
+    removeFocusObject(FOCUS(block));
+    free(FOCUS(block));
 }
 
 static void update(CodeBlock *block, vec2_t pos) {
-    if (mousePressed(MOUSE_BUTTON_1)) {
-        vec2_t mPos = CB_getMousePos();
-        vec2_t size = getsize(block);
-        //FOCUS(block) = vec2_in_range(vec2_sub(mPos, pos), (vec2_t){ STROFFSET(size.y), PADD }, (vec2_t){ size.x - STROFFSET(size.y), size.y - PADD });
-        if (vec2_in_range(vec2_sub(mPos, pos), (vec2_t){ STROFFSET(size.y), PADD }, (vec2_t){ size.x - STROFFSET(size.y), size.y - PADD }))
-            setFocusCallback(focusCallback, block);
-        else unsetFocusCallback(block);
-    }
-    /*if (!FOCUS(block) || keyPressed(KEY_LEFT_CONTROL) || keyPressed(KEY_RIGHT_CONTRO))
-        return;
-    int shift = keyIsDown(KEY_LEFT_SHIFT) || keyIsDown(KEY_RIGHT_SHIFT);
-    for (int k = KEY_A; k <= KEY_Z; k++) {
-        if (keyPressed(k))
-            addchar(block, k - KEY_A + (shift ? 'A' : 'a'));
-    }
-    for (int k = KEY_0; k <= KEY_9; k++) {
-        if (keyPressed(k))
-            addchar(block, (shift ? shiftnumchars[k - KEY_0] : k - KEY_0 + '0'));
-    }
-    if (keyPressed(KEY_GRAVE_ACCENT))
-        addchar(block, (shift ? '~' : '`'));
-    if (keyPressed(KEY_MINUS))
-        addchar(block, (shift ? '_' : '-'));
-    if (keyPressed(KEY_EQUAL))
-        addchar(block, (shift ? '+' : '='));
-    if (keyPressed(KEY_LEFT_BRACKET))
-        addchar(block, (shift ? '{' : '['));
-    if (keyPressed(KEY_RIGHT_BRACKE))
-        addchar(block, (shift ? '}' : ']'));
-    if (keyPressed(KEY_BACKSLASH))
-        addchar(block, (shift ? '|' : '\\'));
-    if (keyPressed(KEY_SEMICOLON))
-        addchar(block, (shift ? ':' : ';'));
-    if (keyPressed(KEY_APOSTROPHE))
-        addchar(block, (shift ? '"' : '\''));
-    if (keyPressed(KEY_COMMA))
-        addchar(block, (shift ? '<' : ','));
-    if (keyPressed(KEY_PERIOD))
-        addchar(block, (shift ? '>' : '.'));
-    if (keyPressed(KEY_SLASH))
-        addchar(block, (shift ? '?' : '/'));
-
-    if (keyPressed(KEY_SPACE))
-        addchar(block, ' ');
-    if (keyPressed(KEY_BACKSPACE))
-        backspace(block);
-    if (keyPressed(KEY_ENTER)) {
-        addchar(block, '\\');
-        addchar(block, 'n');
-    }*/
+    FOCUS(block)->pos = pos;
 }
 
-static CBGrabResult grab(CodeBlock *block, vec2_t p) {
+static CBGrabResult grab(CodeBlock *block, vec2_t p, int test) {
     vec2_t size = getsize(block);
     float halfHeight = size.y / 2;
     int inRect = vec2_in_range(p, (vec2_t){ halfHeight, 0 }, vec2_sub(size, (vec2_t){ halfHeight, 0 }));
@@ -164,7 +137,7 @@ static CBGrabResult grab(CodeBlock *block, vec2_t p) {
     if (inStr)
         return GRABRES_CHILD;
     if (inBlock) {
-        setGrabbed(block, p);
+        if (!test) setGrabbed(block, p);
         return GRABRES_PARENT;
     }
     return GRABRES_NEITHER;
@@ -210,6 +183,8 @@ void cb_str_new(CodeBlock *block) {
     block->typeData.isArg = 1;
     block->typeData.numArgs = 0;
     block->typeData.init = init;
+    block->typeData.clone = clone;
+    block->typeData.delete = delete;
     block->typeData.getsize = getsize;
     block->typeData.update = update;
     block->typeData.grab = grab;

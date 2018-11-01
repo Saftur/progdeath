@@ -35,7 +35,7 @@ static void update(CodeBlock *block, vec2_t pos) {
     CodeBlock_update(val, vec2_add(pos, valpos(size, varSize, valSize)));
 }
 
-static CBGrabResult grab(CodeBlock *block, vec2_t p) {
+static CBGrabResult grab(CodeBlock *block, vec2_t p, int test) {
     vec2_t size = getsize(block);
     CodeBlock *var = block->blocks->items[0];
     CodeBlock *val = block->blocks->items[1];
@@ -43,21 +43,21 @@ static CBGrabResult grab(CodeBlock *block, vec2_t p) {
     vec2_t valSize = CodeBlock_getsize(val);
     vec2_t varPos = varpos(size, varSize);
     CBGrabResult res;
-    res = CodeBlock_grab(var, vec2_sub(p, varPos));
+    res = CodeBlock_grab_test(var, vec2_sub(p, varPos), test);
     if (res.either) {
-        if (res.parent)
+        if (res.parent && !test)
             block->blocks->items[0] = empty_new();
         return GRABRES_CHILD;
     }
     vec2_t valPos = valpos(size, varSize, valSize);
-    res = CodeBlock_grab(val, vec2_sub(p, valPos));
+    res = CodeBlock_grab_test(val, vec2_sub(p, valPos), test);
     if (res.either) {
-        if (res.parent)
+        if (res.parent && !test)
             block->blocks->items[1] = empty_new();
         return GRABRES_CHILD;
     }
     if (vec2_in_range(p, vec2_zero(), getsize(block))) {
-        setGrabbed(block, p);
+        if (!test) setGrabbed(block, p);
         return GRABRES_PARENT;
     }
     return GRABRES_NEITHER;
@@ -135,6 +135,7 @@ void cb_setvar_new(CodeBlock *block) {
     block->typeData.isArg = 0;
     block->typeData.numArgs = 2;
     block->typeData.init = NULL;
+    block->typeData.delete = NULL;
     block->typeData.getsize = getsize;
     block->typeData.update = update;
     block->typeData.grab = grab;
