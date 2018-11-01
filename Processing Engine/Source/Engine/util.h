@@ -8,7 +8,6 @@
  */
 #pragma once
 
-#include <stdbool.h>
 #include <C_Processing.h>
 
 /**
@@ -33,7 +32,7 @@ vec2_t *vec2_copy(vec2_t *vec);
  * @param range Range to check
  * @return If values are within given range of each other
  */
-bool aboutEqual(float a, float b, float range);
+int aboutEqual(float a, float b, float range);
 /**
  * @brief Check if a float is withing a given range
  * @param num    Value
@@ -41,7 +40,7 @@ bool aboutEqual(float a, float b, float range);
  * @param range2 Second range endpoint
  * @return If value is in given range
  */
-bool inRange(float num, float range1, float range2);
+int inRange(float num, float range1, float range2);
 
 /**
  * @brief Check if two PColor s are equal
@@ -49,7 +48,7 @@ bool inRange(float num, float range1, float range2);
  * @param c2 Second PColor
  * @return If PColor s are equal
  */
-bool colorEquals(PColor c1, PColor c2);
+int colorEquals(PColor c1, PColor c2);
 
 /**
  * @brief Swap two int values
@@ -71,13 +70,13 @@ void swapUnsigned(unsigned *a, unsigned *b);
  * @param range2 Second range endpoint
  * @return If the vec2_t is in given range
  */
-bool vec2_in_range(vec2_t v, vec2_t range1, vec2_t range2);
+int vec2_in_range(vec2_t v, vec2_t range1, vec2_t range2);
 /**
  * @brief Check if two vec2_t are equal
  * @param a First vec2_t
  * @param b Second vec2_t
  * @return If the two vec2_t are equal
  */
-bool vec2_equal(vec2_t a, vec2_t b);
+int vec2_equal(vec2_t a, vec2_t b);
 
 /// @}

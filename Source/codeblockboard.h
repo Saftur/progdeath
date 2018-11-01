@@ -14,6 +14,8 @@
 extern float cb_scale;
 extern vec2_t cb_offset;
 
+vec2_t CB_getMousePos();
+
 typedef struct CodeBlock CodeBlock; ///< @brief CodeBlock forward declaration
 
 /**
@@ -63,5 +65,12 @@ void _CodeBlockBoard_draw(CodeBlockBoard *this);
  * @param pos   Position to add at
  */
 void CodeBlockBoard_addBlock(CodeBlockBoard *this, CodeBlock *block, vec2_t pos);
+
+/**
+ * @brief Convert all CodeBlock s in board to text
+ * @param this CodeBlockBoard to convert from
+ * @return Newly allocated string
+ */
+char *CodeBlockBoard_totext(CodeBlockBoard *this);
 
 /// @}

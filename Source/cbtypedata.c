@@ -29,11 +29,11 @@ void addTabs(char *txt) {
 }
 
 int is_directive(CodeBlock *block) {
-    return block->type == CB_SETVAR || block->type == CB_IF;
+    return block->typeData.isDir;
 }
 
 int is_arg(CodeBlock *block) {
-    return block->type == CB_VAR;
+    return block->typeData.isArg;
 }
 
 CodeBlock *empty_new() {

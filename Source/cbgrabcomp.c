@@ -28,6 +28,7 @@ CBGrabComp *CBGrabComp_new() {
     this->comp.coll_resolve = NULL;
 
     this->grabbed = NULL;
+    this->offset = vec2_zero();
 
     return this;
 }
@@ -62,7 +63,8 @@ void _CBGrabComp_delete(CBGrabComp *this) {
 void _CBGrabComp_update(CBGrabComp *this) {
     if (mouseReleased(MOUSE_BUTTON_1) && this->grabbed) {
         vec2_t mPos = (vec2_t){ mouseX, mouseY };
-        screenToWorld(&mPos.x, &mPos.y);
+        //screenToWorld(&mPos.x, &mPos.y);
+        mPos = vec2_sub(mPos, this->offset);
         addToBoard(this->grabbed, mPos);
         this->grabbed = NULL;
     }
@@ -76,9 +78,11 @@ void _CBGrabComp_draw(CBGrabComp *this) {
     translate(cb_offset.x, cb_offset.y);
     scale(cb_scale);
     if (this->grabbed) {
-        vec2_t mPos = (vec2_t){ mouseX, mouseY };
+        /*vec2_t mPos = (vec2_t){ mouseX, mouseY };
         mPos = vec2_sub(mPos, cb_offset);
-        mPos = vec2_scale(mPos, 1 / cb_scale);
+        mPos = vec2_scale(mPos, 1 / cb_scale);*/
+        vec2_t mPos = CB_getMousePos();
+        mPos = vec2_sub(mPos, this->offset);
         //screenToWorld(&mPos.x, &mPos.y);
         CodeBlock_draw(this->grabbed, mPos);
     }
@@ -91,10 +95,11 @@ void _CBGrabComp_draw(CBGrabComp *this) {
  * @param this  CBGrabComp to set on
  * @param block CodeBlock to set
  */
-void CBGrabComp_setGrabbed(CBGrabComp *this, CodeBlock *block) {
+void CBGrabComp_setGrabbed(CBGrabComp *this, CodeBlock *block, vec2_t offset) {
     if (this->grabbed)
         CodeBlock_delete(this->grabbed);
     this->grabbed = block;
+    this->offset = offset;
 }
 
 /// @}

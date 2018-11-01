@@ -70,6 +70,9 @@
     <ClCompile Include="Source\cbtypedata.c">
       <Filter>Game\Components\Code Block\Types</Filter>
     </ClCompile>
+    <ClCompile Include="Source\cb_str.c">
+      <Filter>Game\Components\Code Block\Types\Str</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -144,6 +147,9 @@
     <ClInclude Include="Source\cbtypedata.h">
       <Filter>Game\Components\Code Block\Types</Filter>
     </ClInclude>
+    <ClInclude Include="Source\cb_str.h">
+      <Filter>Game\Components\Code Block\Types\Str</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -214,6 +220,9 @@
     </Filter>
     <Filter Include="Game\Components\Code Block\Types\If">
       <UniqueIdentifier>{aba36051-2c6e-4ca4-8d20-814b41f361a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Str">
+      <UniqueIdentifier>{198e3dd2-9d2c-4d57-aa23-51f0064bf946}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

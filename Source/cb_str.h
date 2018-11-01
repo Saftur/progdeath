@@ -1,5 +1,5 @@
 /**
- * @file cb_var.h
+ * @file cb_str.h
  * @author Arthur Bouvier (a.bouvier)
  * @date 10/31/18
  * 
@@ -8,4 +8,4 @@
 
 typedef struct CodeBlock CodeBlock;
 
-void cb_var_new(CodeBlock *block);
+void cb_str_new(CodeBlock *block);

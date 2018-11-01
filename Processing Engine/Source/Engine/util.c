@@ -41,7 +41,7 @@ vec2_t *vec2_copy(vec2_t *vec) {
  * @param range Range to check
  * @return If values are within given range of each other
  */
-bool aboutEqual(float a, float b, float range) {
+int aboutEqual(float a, float b, float range) {
     return fabs(a-b) < range;
 }
 
@@ -52,7 +52,7 @@ bool aboutEqual(float a, float b, float range) {
  * @param range2 Second range endpoint
  * @return If value is in given range
  */
-bool inRange(float num, float range1, float range2) {
+int inRange(float num, float range1, float range2) {
     return (range1 < range2) ? (num > range1 && num < range2) : (num > range2 && num < range1);
 }
 
@@ -62,7 +62,7 @@ bool inRange(float num, float range1, float range2) {
  * @param c2 Second PColor
  * @return If PColor s are equal
  */
-bool colorEquals(PColor c1, PColor c2) {
+int colorEquals(PColor c1, PColor c2) {
     return c1.r == c2.r && c1.g == c2.g && c1.b == c2.b && c1.a == c2.a;
 }
 
@@ -95,7 +95,7 @@ void swapUnsigned(unsigned *a, unsigned *b) {
  * @param range2 Second range endpoint
  * @return If the vec2_t is in given range
  */
-bool vec2_in_range(vec2_t v, vec2_t range1, vec2_t range2) {
+int vec2_in_range(vec2_t v, vec2_t range1, vec2_t range2) {
     return inRange(v.x, range1.x, range2.x) && inRange(v.y, range1.y, range2.y);
 }
 
@@ -105,7 +105,7 @@ bool vec2_in_range(vec2_t v, vec2_t range1, vec2_t range2) {
  * @param b Second vec2_t
  * @return If the two vec2_t are equal
  */
-bool vec2_equal(vec2_t a, vec2_t b) {
+int vec2_equal(vec2_t a, vec2_t b) {
     return a.x == b.x && a.y == b.y;
 }
 

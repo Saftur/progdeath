@@ -28,8 +28,8 @@ static CodeBlockList *list = NULL;
 
 PFont monoFont;
 
-void setGrabbed(CodeBlock *block) {
-    CBGrabComp_setGrabbed(grabbed, block);
+void setGrabbed(CodeBlock *block, vec2_t offset) {
+    CBGrabComp_setGrabbed(grabbed, block, offset);
 }
 
 void addToBoard(CodeBlock *block, vec2_t pos) {
@@ -45,7 +45,7 @@ int isOnList(vec2_t pos) {
 //  MENU LISTENER
 
 static bool menuEvent(Listener *listener) {
-    return keyPressed(KEY_M);
+    return (keyIsDown(KEY_LEFT_CONTROL) || keyIsDown(KEY_LEFT_CONTROL)) && keyPressed(KEY_M);
 }
 
 static void menuEffect(Listener *listener) {
@@ -99,25 +99,26 @@ void editorScreenInit(ObjectMngr *objMngr) {
  */
 void editorScreenUpdate(Screen *screen) {
     float oldScale = cb_scale;
-    if (keyIsDown(KEY_EQUAL))
+    int ctrl = keyPressed(KEY_LEFT_CONTROL) || keyPressed(KEY_RIGHT_CONTRO);
+    if (ctrl && keyIsDown(KEY_EQUAL))
         cb_scale += 1.f * dt();
-    if (keyIsDown(KEY_MINUS))
+    if (ctrl && keyIsDown(KEY_MINUS))
         cb_scale -= 1.f * dt();
     if (cb_scale != oldScale) {
         vec2_t center = (vec2_t){ canvasWidth / 2, canvasHeight / 2 };
         cb_offset = vec2_add(vec2_scale(vec2_scale(vec2_sub(cb_offset, center), 1 / oldScale), cb_scale), center);
     }
 
-    if (keyIsDown(KEY_LEFT))
+    if (ctrl && keyIsDown(KEY_LEFT))
         cb_offset.x += 400.f * dt();
-    if (keyIsDown(KEY_RIGHT))
+    if (ctrl && keyIsDown(KEY_RIGHT))
         cb_offset.x -= 400.f * dt();
-    if (keyIsDown(KEY_UP))
+    if (ctrl && keyIsDown(KEY_UP))
         cb_offset.y += 400.f * dt();
-    if (keyIsDown(KEY_DOWN))
+    if (ctrl && keyIsDown(KEY_DOWN))
         cb_offset.y -= 400.f * dt();
 
-    if (keyPressed(KEY_0)) {
+    if (ctrl && keyPressed(KEY_0)) {
         cb_scale = 1.f;
         cb_offset = vec2_zero();
     }
@@ -130,7 +131,9 @@ void editorScreenUpdate(Screen *screen) {
 void editorScreenEnd(ObjectMngr *objMngr) {
     textFont(getDefaultFont(), 12);
 
-    // CodeBlockBoard_text(board);
+    char *text = CodeBlockBoard_totext(board);
+    printf(text);
+    free(text);
 }
 
 /// @}

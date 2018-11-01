@@ -15,7 +15,7 @@ typedef struct ObjectMngr ObjectMngr; ///< @brief ObjectMngr forward declaration
 typedef struct Screen Screen;         ///< @brief Screen forward declaration
 typedef struct CodeBlock CodeBlock;   ///< @brief CodeBlock forward declaration
 
-void setGrabbed(CodeBlock *block);
+void setGrabbed(CodeBlock *block, vec2_t offset);
 void addToBoard(CodeBlock *block, vec2_t pos);
 int isOnList(vec2_t pos);
 

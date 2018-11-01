@@ -8,4 +8,4 @@
 
 typedef struct CodeBlock CodeBlock;
 
-void cb_setvar_init(CodeBlock *block);
+void cb_setvar_new(CodeBlock *block);

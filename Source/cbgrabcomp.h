@@ -20,6 +20,7 @@ typedef struct CBGrabComp {
     Component comp; ///< @brief Component data
 
     CodeBlock *grabbed;
+    vec2_t offset;
 } CBGrabComp;
 
 /**
@@ -56,7 +57,8 @@ void _CBGrabComp_draw(CBGrabComp *this);
  * @brief Set grabbed CodeBlock
  * @param this  CBGrabComp to set on
  * @param block CodeBlock to set
+ * @param offset Offset from mouse
  */
-void CBGrabComp_setGrabbed(CBGrabComp *this, CodeBlock *block);
+void CBGrabComp_setGrabbed(CBGrabComp *this, CodeBlock *block, vec2_t offset);
 
 /// @}

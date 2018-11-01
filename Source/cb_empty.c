@@ -20,7 +20,7 @@ static vec2_t draw(CodeBlock *block, vec2_t pos) {
     vec2_t size = getsize(block);
     noStroke();
     fillColor(COLOR_EMPTY);
-    rect(pos.x, pos.y, size.x, size.y);
+    rectRounded(pos.x, pos.y, size.x, size.y, RECT_RADIUS);
     return size;
 }
 
@@ -30,10 +30,13 @@ static char *totext(CodeBlock *block) {
     return txt;
 }
 
-void cb_empty_init(CodeBlock *block) {
+void cb_empty_new(CodeBlock *block) {
+    block->typeData.isDir = 0;
+    block->typeData.isArg = 1;
     block->typeData.numArgs = 0;
-    block->typeData.update = NULL;
+    block->typeData.init = NULL;
     block->typeData.getsize = getsize;
+    block->typeData.update = NULL;
     block->typeData.grab = grab;
     block->typeData.drop = NULL;
     block->typeData.draw = draw;

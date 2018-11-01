@@ -15,9 +15,9 @@
 #define IF_BD_YSP (IF_BORDER + IF_YSPACING)
 
 static vec2_t gettopsize(CodeBlock *block) {
-    CodeBlock *cond = (block->blocks->size >= 1) ? block->blocks->items[0] : NULL;
-    vec2_t condSize = cond ? CodeBlock_getsize(cond) : (vec2_t){ 0, 0 };
-    vec2_t size = (vec2_t){ TEXT_W(3) + condSize.x + PADD * 2, max(HEIGHT, condSize.y + PADD * 2) };
+    CodeBlock *cond = block->blocks->items[0];
+    vec2_t condSize = CodeBlock_getsize(cond);
+    vec2_t size = (vec2_t){ TEXT_W(2.75) + condSize.x + PADD * 2, max(HEIGHT, condSize.y + PADD * 2) };
     return size;
 }
 
@@ -33,17 +33,34 @@ static vec2_t getsize(CodeBlock *block) {
 }
 
 static vec2_t condpos() {
-    return (vec2_t){ TEXT_W(3) + PADD, PADD };
+    return (vec2_t){ TEXT_W(2.75) + PADD, PADD };
+}
+
+static void update(CodeBlock *block, vec2_t pos) {
+    CodeBlock *cond = block->blocks->items[0];
+    vec2_t condPos = condpos();
+    CodeBlock_update(cond, vec2_add(pos, condPos));
+    vec2_t topsize = gettopsize(block);
+    float y = topsize.y;
+    for (unsigned i = 1; i < block->blocks->size; i++) {
+        CodeBlock *b = block->blocks->items[i];
+        y += IF_YSPACING;
+        vec2_t bPos = (vec2_t){ IF_BD_XSP, y };
+        vec2_t bSize = CodeBlock_getsize(b);
+        CodeBlock_update(b, vec2_add(pos, bPos));
+        y += bSize.y;
+    }
 }
 
 static CBGrabResult grab(CodeBlock *block, vec2_t p) {
-    CodeBlock *cond = (block->blocks->size >= 1) ? block->blocks->items[0] : NULL;
-    if (cond) {
-        vec2_t condPos = condpos();
-        if (CodeBlock_grab(cond, vec2_sub(p, condPos)).parent) {
+    CBGrabResult res;
+    CodeBlock *cond = block->blocks->items[0];
+    vec2_t condPos = condpos();
+    res = CodeBlock_grab(cond, vec2_sub(p, condPos));
+    if (res.either) {
+        if (res.parent)
             block->blocks->items[0] = empty_new();
-            return GRABRES_CHILD;
-        }
+        return GRABRES_CHILD;
     }
     vec2_t topsize = gettopsize(block);
     float y = topsize.y;
@@ -52,33 +69,33 @@ static CBGrabResult grab(CodeBlock *block, vec2_t p) {
         y += IF_YSPACING;
         vec2_t bPos = (vec2_t){ IF_BD_XSP, y };
         vec2_t bSize = CodeBlock_getsize(b);
-        if (CodeBlock_grab(b, vec2_sub(p, bPos)).parent) {
-            List_remove_nodelete(block->blocks, i);
+        res = CodeBlock_grab(b, vec2_sub(p, bPos));
+        if (res.either) {
+            if (res.parent)
+                List_remove_nodelete(block->blocks, i);
             return GRABRES_CHILD;
         }
         y += bSize.y;
     }
     vec2_t size = getsize(block);
     if (vec2_in_range(p, vec2_zero(), (vec2_t){ size.x, topsize.y })) {
-        setGrabbed(block);
+        setGrabbed(block, p);
         return GRABRES_PARENT;
     }
     return GRABRES_NEITHER;
 }
 
 static int drop(CodeBlock *block, CodeBlock *dropped, vec2_t p) {
-    CodeBlock *cond = (block->blocks->size >= 1) ? block->blocks->items[0] : NULL;
-    if (cond) {
-        vec2_t condPos = condpos();
-        vec2_t condSize = CodeBlock_getsize(cond);
-        vec2_t subP = vec2_sub(p, condPos);
-        if (CodeBlock_drop(cond, dropped, subP)) {
-            return 1;
-        } else if (is_arg(dropped) && vec2_in_range(subP, vec2_zero(), condSize)) {
-            CodeBlock_delete(cond);
-            block->blocks->items[0] = dropped;
-            return 1;
-        }
+    CodeBlock *cond = block->blocks->items[0];
+    vec2_t condPos = condpos();
+    vec2_t condSize = CodeBlock_getsize(cond);
+    vec2_t subP = vec2_sub(p, condPos);
+    if (CodeBlock_drop(cond, dropped, subP)) {
+        return 1;
+    } else if (is_arg(dropped) && vec2_in_range(subP, vec2_zero(), condSize)) {
+        CodeBlock_delete(cond);
+        block->blocks->items[0] = dropped;
+        return 1;
     }
     vec2_t topsize = gettopsize(block);
     vec2_t size = getsize(block);
@@ -137,14 +154,15 @@ static vec2_t draw(CodeBlock *block, vec2_t pos) {
 
     noStroke();
     fillColor(COLOR_CONTROL);
-    rect(pos.x, pos.y, size.x, topSize.y);
-    rect(pos.x, innPos.y, size.x, IF_BORDER);
+    rectRounded(pos.x, pos.y, size.x, topSize.y, RECT_RADIUS);
+    rectRounded(pos.x, innPos.y, size.x, IF_BORDER, RECT_RADIUS);
+    rect(pos.x, pos.y + topSize.y - RECT_RADIUS, RECT_RADIUS, RECT_RADIUS);
+    rect(pos.x, innPos.y, RECT_RADIUS, RECT_RADIUS);
 
     textSize(TEXT_SIZE);
     fillColor(COLOR_TEXT);
-    text("if", pos.x + PADD + TEXT_W(1/2), pos.y + topSize.y / 2 + TEXT_YOFFSET);
-    if (block->blocks->size >= 1)
-        CodeBlock_draw(block->blocks->items[0], vec2_add(pos, condpos()));
+    text("if", pos.x + PADD + TEXT_W(1/4), pos.y + TEXT_YOFFSET(topSize.y));
+    CodeBlock_draw(block->blocks->items[0], vec2_add(pos, condpos()));
     size.y += IF_BORDER;
     return size;
 }
@@ -204,10 +222,13 @@ static char *totext(CodeBlock *block) {
     return txt;
 }
 
-void cb_if_init(CodeBlock *block) {
+void cb_if_new(CodeBlock *block) {
+    block->typeData.isDir = 1;
+    block->typeData.isArg = 0;
     block->typeData.numArgs = 1;
-    block->typeData.update = NULL;
+    block->typeData.init = NULL;
     block->typeData.getsize = getsize;
+    block->typeData.update = update;
     block->typeData.grab = grab;
     block->typeData.drop = drop;
     block->typeData.draw = draw;

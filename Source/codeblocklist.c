@@ -38,7 +38,10 @@ CodeBlockList *CodeBlockList_new() {
     this->blockSize = List_new(CB_NUM_TYPES, vec2_copy, free);
     for (int type = 0; type < CB_NUM_TYPES; type++) {
         switch (type) {
-        case CB_EMPTY: case CB_VAR:
+        case CB_EMPTY:
+            break;
+        case CB_VAR:
+            CodeBlockList_addBlock(this, CodeBlock_new(CB_VAR, "test", 5));
             break;
         default:
             CodeBlockList_addBlock(this, CodeBlock_new(type, NULL, 0));
@@ -79,7 +82,7 @@ void _CodeBlockList_delete(CodeBlockList *this) {
 void _CodeBlockList_update(CodeBlockList *this) {
     if (mousePressed(MOUSE_BUTTON_1)) {
         vec2_t mPos = (vec2_t){ mouseX, mouseY };
-        screenToWorld(&mPos.x, &mPos.y);
+        //screenToWorld(&mPos.x, &mPos.y);
         if (0 <= mPos.x && mPos.x < this->size.x && 0 <= mPos.y && mPos.y < this->size.y) {
             for (int i = 0; i < this->blocks->size; i++) {
                 CodeBlock **block = this->blocks->items+i;

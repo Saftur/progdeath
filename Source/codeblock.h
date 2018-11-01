@@ -23,7 +23,7 @@ typedef enum CodeBlockType {
     CB_SETVAR,
 
     CB_VAR,
-    //CB_STR,
+    CB_STR,
 
     CB_IF,
 
@@ -41,19 +41,23 @@ extern int tablevel;
 void incTab();
 void decTab();
 
-typedef void(*CodeBlock_initfunc)(CodeBlock*);
+typedef void(*CodeBlock_newfunc)(CodeBlock*);
 
-typedef void(*CodeBlock_updatefunc)(CodeBlock*);
+typedef void(*CodeBlock_initfunc)(CodeBlock*);
 typedef vec2_t(*CodeBlock_getsizefunc)(CodeBlock*);
+typedef void(*CodeBlock_updatefunc)(CodeBlock*,vec2_t);
 typedef CBGrabResult(*CodeBlock_grabfunc)(CodeBlock*,vec2_t);
 typedef int(*CodeBlock_dropfunc)(CodeBlock*,CodeBlock*,vec2_t);
 typedef vec2_t(*CodeBlock_drawfunc)(CodeBlock*,vec2_t);
 typedef char*(*CodeBlock_textfunc)(CodeBlock*);
 
 typedef struct CodeBlockTypeData {
+    int isDir;
+    int isArg;
     size_t numArgs;
-    CodeBlock_updatefunc update;
+    CodeBlock_initfunc init;
     CodeBlock_getsizefunc getsize;
+    CodeBlock_updatefunc update;
     CodeBlock_grabfunc grab;
     CodeBlock_dropfunc drop;
     CodeBlock_drawfunc draw;
@@ -104,8 +108,9 @@ void CodeBlock_delete(CodeBlock *this);
 /**
  * @brief Update CodeBlock
  * @param this CodeBlock to update
+ * @param pos  Current position of CodeBlock
  */
-void CodeBlock_update(CodeBlock *this);
+void CodeBlock_update(CodeBlock *this, vec2_t pos);
 
 /**
  * @brief Set CodeBlock 's sub CodeBlock num to given block

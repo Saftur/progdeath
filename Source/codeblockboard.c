@@ -8,6 +8,8 @@
  */
 #include "codeblockboard.h"
 
+#include <stdio.h>
+#include <string.h>
 #include <Engine/util.h>
 
 #include "editorscreen.h"
@@ -15,6 +17,13 @@
 
 float cb_scale;
 vec2_t cb_offset;
+
+vec2_t CB_getMousePos() {
+    vec2_t mPos = (vec2_t){ mouseX, mouseY };
+    mPos = vec2_sub(mPos, cb_offset);
+    mPos = vec2_scale(mPos, 1 / cb_scale);
+    return mPos;
+}
 
 /**
  * @brief Create new CodeBlockBoard
@@ -65,9 +74,10 @@ void _CodeBlockBoard_delete(CodeBlockBoard *this) {
  */
 void _CodeBlockBoard_update(CodeBlockBoard *this) {
     if (mousePressed(MOUSE_BUTTON_1)) {
-        vec2_t mPos = (vec2_t){ mouseX, mouseY };
+        /*vec2_t mPos = (vec2_t){ mouseX, mouseY };
         mPos = vec2_sub(mPos, cb_offset);
-        mPos = vec2_scale(mPos, 1 / cb_scale);
+        mPos = vec2_scale(mPos, 1 / cb_scale);*/
+        vec2_t mPos = CB_getMousePos();
         //screenToWorld(&mPos.x, &mPos.y);
         for (unsigned i = this->blocks->size - 1; i < this->blocks->size; i--) {
             CodeBlock **block = this->blocks->items+i;
@@ -78,10 +88,12 @@ void _CodeBlockBoard_update(CodeBlockBoard *this) {
                     List_remove_nodelete(this->blocks, i);
                     List_remove_nodelete(this->blockPos, i);
                 }
-                return;
+                break;
             }
         }
     }
+    for (unsigned i = 0; i < this->blocks->size; i++)
+        CodeBlock_update(this->blocks->items[i], *(vec2_t*)this->blockPos->items[i]);
 }
 
 /**
@@ -106,7 +118,9 @@ void _CodeBlockBoard_draw(CodeBlockBoard *this) {
 void CodeBlockBoard_addBlock(CodeBlockBoard *this, CodeBlock *block, vec2_t pos) {
     pos = vec2_sub(pos, cb_offset);
     pos = vec2_scale(pos, 1 / cb_scale);
+    vec2_t halfSize = vec2_scale(CodeBlock_getsize(block), 0.5);
     vec2_t offPos = pos;
+    pos = vec2_add(pos, halfSize);
     for (unsigned i = 0; i < this->blocks->size; i++) {
         CodeBlock *bBlock = this->blocks->items[i];
         vec2_t bPos = *(vec2_t*)this->blockPos->items[i];
@@ -115,7 +129,7 @@ void CodeBlockBoard_addBlock(CodeBlockBoard *this, CodeBlock *block, vec2_t pos)
             return;
         vec2_t bSize = CodeBlock_getsize(bBlock);
         vec2_t bEndPos = vec2_add(bPos, bSize);
-        if (vec2_in_range(offPos, bPos, bEndPos))
+        if (vec2_in_range(vec2_add(offPos, halfSize), bPos, bEndPos))
             offPos.x = bEndPos.x;
     }
     if (isOnList(pos)) {
@@ -123,9 +137,50 @@ void CodeBlockBoard_addBlock(CodeBlockBoard *this, CodeBlock *block, vec2_t pos)
         return;
     }
     List_push_back(this->blocks, block);
+    //offPos = vec2_sub(pos, halfSize);
     vec2_t *newPos = malloc(sizeof(vec2_t));
     *newPos = offPos;
     List_push_back(this->blockPos, newPos);
+}
+
+/**
+ * @brief Convert all CodeBlock s in board to text
+ * @param this CodeBlockBoard to convert from
+ * @return Newly allocated string
+ */
+char *CodeBlockBoard_totext(CodeBlockBoard *this) {
+    List *texts = List_new(100, NULL, free);
+    size_t len = 0;
+    for (unsigned i = 0; i < this->blocks->size; i++) {
+        CodeBlock *block = this->blocks->items[i];
+        vec2_t pos = *(vec2_t*)this->blockPos->items[i];
+        char buf[32];
+        sprintf(buf, "-- %6.4f, %6.4f\n", pos.x, pos.y);
+        size_t commLen = strlen(buf);
+        char *comment = malloc((commLen+1) * sizeof(char));
+        strcpy(comment, buf);
+        List_push_back(texts, comment);
+        len += commLen;
+        char *bText = CodeBlock_totext(block);
+        List_push_back(texts, bText);
+        len += strlen(bText);
+        char *nl = malloc(2 * sizeof(char));
+        nl[0] = '\n'; nl[1] = 0;
+        List_push_back(texts, nl);
+        len += 2;
+    }
+    
+    char *text = malloc((len+1) * sizeof(char));
+    char *t = text;
+    for (unsigned i = 0; i < texts->size; i++) {
+        char *subText = texts->items[i];
+        strcpy(t, subText);
+        t += strlen(subText);
+    }
+
+    List_delete(texts);
+
+    return text;
 }
 
 /// @}

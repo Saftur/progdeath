@@ -13,13 +13,15 @@
 #include "cb_empty.h"
 #include "cb_setvar.h"
 #include "cb_var.h"
+#include "cb_str.h"
 #include "cb_if.h"
 
-static CodeBlock_initfunc init_funcs[] = {
-    cb_empty_init,
-    cb_setvar_init,
-    cb_var_init,
-    cb_if_init,
+static CodeBlock_newfunc new_funcs[] = {
+    cb_empty_new,
+    cb_setvar_new,
+    cb_var_new,
+    cb_str_new,
+    cb_if_new,
 };
 
 /**
@@ -31,7 +33,7 @@ static CodeBlock_initfunc init_funcs[] = {
  */
 CodeBlock *CodeBlock_new(CodeBlockType type, void *data, size_t dataSize) {
     CodeBlock *this = malloc(sizeof(CodeBlock));
-    init_funcs[type](this);
+    new_funcs[type](this);
 
     this->type = type;
     this->blocks = List_new(10, CodeBlock_clone, CodeBlock_delete);
@@ -43,6 +45,9 @@ CodeBlock *CodeBlock_new(CodeBlockType type, void *data, size_t dataSize) {
         memcpy(this->data, data, dataSize);
     } else this->data = NULL;
     this->dataSize = dataSize;
+
+    if (this->typeData.init)
+        this->typeData.init(this);
 
     return this;
 }
@@ -80,9 +85,14 @@ void CodeBlock_delete(CodeBlock *this) {
 /**
  * @brief Update CodeBlock
  * @param this CodeBlock to update
+ * @param pos  Current position of CodeBlock
  */
-void CodeBlock_update(CodeBlock *this) {
-
+void CodeBlock_update(CodeBlock *this, vec2_t pos) {
+    if (!this) return;
+    if (this->typeData.update)
+        this->typeData.update(this, pos);
+    /*for (unsigned i = 0; i < this->blocks->size; i++)
+        CodeBlock_update(this->blocks->items[i]);*/
 }
 
 /**
