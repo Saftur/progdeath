@@ -105,6 +105,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Source\Engine\engine.c" />
+    <ClCompile Include="Source\Engine\focus.c" />
     <ClCompile Include="Source\Engine\gamelayer.c">
       <SubType>
       </SubType>
@@ -150,6 +151,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Source\Engine\engine.h" />
+    <ClInclude Include="Source\Engine\focus.h" />
     <ClInclude Include="Source\Engine\gamelayer.h" />
     <ClInclude Include="Source\Engine\initcollcomps.h">
       <SubType>

@@ -12,6 +12,7 @@
 
 #include "component.h"
 #include "util.h"
+#include "focus.h"
 
 Engine *engine = NULL;
 
@@ -30,6 +31,8 @@ void Engine_init(unsigned numLayers) {
     engine->firstDraw = 0;
 
     engine->collChecks = NULL;
+
+    setKeyboardInputCallback(keyCallback);
 }
 
 /**

@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include <Engine/util.h>
+#include <Engine/focus.h>
 
 #include "cbtypedata.h"
 #include "codeblockboard.h"
@@ -55,13 +56,61 @@ static vec2_t getsize(CodeBlock *block) {
 
 static char shiftnumchars[] ={')','!','@','#','$','%','^','&','*','('};
 
+static void focusCallback(Key key, KeyState state, CodeBlock *block) {
+    int shift = keyIsDown(KEY_LEFT_SHIFT) || keyIsDown(KEY_RIGHT_SHIFT);
+    if ((state != KeyPressed && state != KeyRepeat) || keyPressed(KEY_LEFT_CONTROL) || keyPressed(KEY_RIGHT_CONTRO))
+        return;
+    for (int k = KEY_A; k <= KEY_Z; k++) {
+        if (key == k)
+            addchar(block, k - KEY_A + (shift ? 'A' : 'a'));
+    }
+    for (int k = KEY_0; k <= KEY_9; k++) {
+        if (key == k)
+            addchar(block, (shift ? shiftnumchars[k - KEY_0] : k - KEY_0 + '0'));
+    }
+    if (key == KEY_GRAVE_ACCENT)
+        addchar(block, (shift ? '~' : '`'));
+    if (key == KEY_MINUS)
+        addchar(block, (shift ? '_' : '-'));
+    if (key == KEY_EQUAL)
+        addchar(block, (shift ? '+' : '='));
+    if (key == KEY_LEFT_BRACKET)
+        addchar(block, (shift ? '{' : '['));
+    if (key == KEY_RIGHT_BRACKE)
+        addchar(block, (shift ? '}' : ']'));
+    if (key == KEY_BACKSLASH)
+        addchar(block, (shift ? '|' : '\\'));
+    if (key == KEY_SEMICOLON)
+        addchar(block, (shift ? ':' : ';'));
+    if (key == KEY_APOSTROPHE)
+        addchar(block, (shift ? '"' : '\''));
+    if (key == KEY_COMMA)
+        addchar(block, (shift ? '<' : ','));
+    if (key == KEY_PERIOD)
+        addchar(block, (shift ? '>' : '.'));
+    if (key == KEY_SLASH)
+        addchar(block, (shift ? '?' : '/'));
+
+    if (key == KEY_SPACE)
+        addchar(block, ' ');
+    if (key == KEY_BACKSPACE)
+        backspace(block);
+    if (key == KEY_ENTER) {
+        addchar(block, '\\');
+        addchar(block, 'n');
+    }
+}
+
 static void update(CodeBlock *block, vec2_t pos) {
     if (mousePressed(MOUSE_BUTTON_1)) {
         vec2_t mPos = CB_getMousePos();
         vec2_t size = getsize(block);
-        FOCUS(block) = vec2_in_range(vec2_sub(mPos, pos), (vec2_t){ STROFFSET(size.y), PADD }, (vec2_t){ size.x - STROFFSET(size.y), size.y - PADD });
+        //FOCUS(block) = vec2_in_range(vec2_sub(mPos, pos), (vec2_t){ STROFFSET(size.y), PADD }, (vec2_t){ size.x - STROFFSET(size.y), size.y - PADD });
+        if (vec2_in_range(vec2_sub(mPos, pos), (vec2_t){ STROFFSET(size.y), PADD }, (vec2_t){ size.x - STROFFSET(size.y), size.y - PADD }))
+            setFocusCallback(focusCallback, block);
+        else unsetFocusCallback(block);
     }
-    if (!FOCUS(block) || keyPressed(KEY_LEFT_CONTROL) || keyPressed(KEY_RIGHT_CONTRO))
+    /*if (!FOCUS(block) || keyPressed(KEY_LEFT_CONTROL) || keyPressed(KEY_RIGHT_CONTRO))
         return;
     int shift = keyIsDown(KEY_LEFT_SHIFT) || keyIsDown(KEY_RIGHT_SHIFT);
     for (int k = KEY_A; k <= KEY_Z; k++) {
@@ -102,7 +151,7 @@ static void update(CodeBlock *block, vec2_t pos) {
     if (keyPressed(KEY_ENTER)) {
         addchar(block, '\\');
         addchar(block, 'n');
-    }
+    }*/
 }
 
 static CBGrabResult grab(CodeBlock *block, vec2_t p) {

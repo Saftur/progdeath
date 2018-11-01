@@ -49,6 +49,9 @@
     <ClCompile Include="Source\Engine\screenmngr.c">
       <Filter>Engine\Screens</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Engine\focus.c">
+      <Filter>Engine\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine\button.h">
@@ -102,6 +105,9 @@
     <ClInclude Include="Source\Engine\screenmngr.h">
       <Filter>Engine\Screens</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Engine\focus.h">
+      <Filter>Engine\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -139,6 +145,9 @@
     </Filter>
     <Filter Include="Engine\Screens">
       <UniqueIdentifier>{961a3a76-0f86-4417-969e-2710ded68f67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Input">
+      <UniqueIdentifier>{190d498a-a7cd-4256-995f-4cb4457ab575}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
