@@ -16,6 +16,33 @@
 
 Engine *engine = NULL;
 
+static void keyCallback(Key key, KeyState state);
+static void mouseCallback(MouseButton button, KeyState state);
+
+typedef struct KeyCallback {
+    KeyCallbackFunc func;
+    void *upvalue;
+} KeyCallback;
+
+static KeyCallback *KeyCallback_new(KeyCallbackFunc func, void *upvalue) {
+    KeyCallback *new = malloc(sizeof(KeyCallback));
+    new->func = func;
+    new->upvalue = upvalue;
+    return new;
+}
+
+typedef struct MouseCallback {
+    MouseCallbackFunc func;
+    void *upvalue;
+} MouseCallback;
+
+static MouseCallback *MouseCallback_new(MouseCallbackFunc func, void *upvalue) {
+    MouseCallback *new = malloc(sizeof(MouseCallback));
+    new->func = func;
+    new->upvalue = upvalue;
+    return new;
+}
+
 /**
  * @brief Initialize the Engine
  * @param numLayers Starting number of layers
@@ -31,6 +58,12 @@ void Engine_init(unsigned numLayers) {
     engine->firstDraw = 0;
 
     engine->collChecks = NULL;
+
+    engine->keyCallbacks = List_new(10, NULL, free);
+    engine->mouseCallbacks = List_new(10, NULL, free);
+
+    setKeyboardInputCallback(keyCallback);
+    setMouseInputCallback(mouseCallback);
 
     initFocus();
 }
@@ -226,6 +259,48 @@ CollResolveFunc Engine_getCollResolveFunc(unsigned type1, unsigned type2) {
     if (funcPtr)
         return *funcPtr;
     else return NULL;
+}
+
+void Engine_addKeyCallback(KeyCallbackFunc func, void *upvalue) {
+    List_push_back(engine->keyCallbacks, KeyCallback_new(func, upvalue));
+}
+
+void Engine_removeKeyCallback(KeyCallbackFunc func, void *upvalue) {
+    for (unsigned i = 0; i < engine->keyCallbacks->size; i++) {
+        KeyCallback *callback = engine->keyCallbacks->items[i];
+        if (callback->func == func && callback->upvalue) {
+            List_remove(engine->keyCallbacks, i);
+            return;
+        }
+    }
+}
+
+void Engine_addMouseCallback(MouseCallbackFunc func, void *upvalue) {
+    List_push_back(engine->mouseCallbacks, MouseCallback_new(func, upvalue));
+}
+
+void Engine_removeMouseCallback(MouseCallbackFunc func, void *upvalue) {
+    for (unsigned i = 0; i < engine->mouseCallbacks->size; i++) {
+        MouseCallback *callback = engine->mouseCallbacks->items[i];
+        if (callback->func == func && callback->upvalue) {
+            List_remove(engine->mouseCallbacks, i);
+            return;
+        }
+    }
+}
+
+static void keyCallback(Key key, KeyState state) {
+    for (unsigned i = 0; i < engine->keyCallbacks->size; i++) {
+        KeyCallback *callback = engine->keyCallbacks->items[i];
+        callback->func(key, state, callback->upvalue);
+    }
+}
+
+static void mouseCallback(MouseButton button, KeyState state) {
+    for (unsigned i = 0; i < engine->mouseCallbacks->size; i++) {
+        MouseCallback *callback = engine->mouseCallbacks->items[i];
+        callback->func(button, state, callback->upvalue);
+    }
 }
 
 /// @}

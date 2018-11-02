@@ -6,6 +6,7 @@
  */
 #include "focus.h"
 
+#include "engine.h"
 #include "list.h"
 
 /**
@@ -56,8 +57,8 @@ void mouseCallback(MouseButton button, KeyState state) {
  * @brief Initialize focus
  */
 void initFocus() {
-    setKeyboardInputCallback(keyCallback);
-    setMouseInputCallback(mouseCallback);
+    Engine_addKeyCallback(keyCallback, NULL);
+    Engine_addMouseCallback(mouseCallback, NULL);
     focusObjs = List_new(20, NULL, free);
     focus = NULL;
 }

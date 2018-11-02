@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <Engine/engine.h>
 #include <Engine/util.h>
 
 #include "editorscreen.h"
@@ -24,6 +25,8 @@ vec2_t CB_getMousePos() {
     mPos = vec2_scale(mPos, 1 / cb_scale);
     return mPos;
 }
+
+static void mouseCallback(MouseButton button, KeyState state, CodeBlockBoard *this);
 
 /**
  * @brief Create new CodeBlockBoard
@@ -42,6 +45,8 @@ CodeBlockBoard *CodeBlockBoard_new() {
 
     this->blocks = List_new(10, CodeBlock_clone, CodeBlock_delete);
     this->blockPos = List_new(10, vec2_copy, free);
+
+    Engine_addMouseCallback(mouseCallback, this);
 
     return this;
 }
@@ -63,6 +68,7 @@ CodeBlockBoard *_CodeBlockBoard_clone(CodeBlockBoard *this) {
  * @param this CodeBlockBoard to delete
  */
 void _CodeBlockBoard_delete(CodeBlockBoard *this) {
+    Engine_removeMouseCallback(mouseCallback, this);
     List_delete(this->blocks);
     List_delete(this->blockPos);
     free(this);
@@ -73,27 +79,30 @@ void _CodeBlockBoard_delete(CodeBlockBoard *this) {
  * @param this CodeBlockBoard to update
  */
 void _CodeBlockBoard_update(CodeBlockBoard *this) {
-    if (mousePressed(MOUSE_BUTTON_1)) {
-        /*vec2_t mPos = (vec2_t){ mouseX, mouseY };
-        mPos = vec2_sub(mPos, cb_offset);
-        mPos = vec2_scale(mPos, 1 / cb_scale);*/
-        vec2_t mPos = CB_getMousePos();
-        //screenToWorld(&mPos.x, &mPos.y);
-        for (unsigned i = this->blocks->size - 1; i < this->blocks->size; i--) {
-            CodeBlock **block = this->blocks->items+i;
-            vec2_t pos = *(vec2_t*)this->blockPos->items[i];
-            CBGrabResult grabRes = CodeBlock_grab(*block, vec2_sub(mPos, pos));
-            if (grabRes.either) {
-                if (grabRes.parent) {
-                    List_remove_nodelete(this->blocks, i);
-                    List_remove_nodelete(this->blockPos, i);
-                }
-                break;
-            }
-        }
-    }
     for (unsigned i = 0; i < this->blocks->size; i++)
         CodeBlock_update(this->blocks->items[i], *(vec2_t*)this->blockPos->items[i]);
+}
+
+static void mouseCallback(MouseButton button, KeyState state, CodeBlockBoard *this) {
+    if (button != MOUSE_BUTTON_1 || state != KeyPressed)
+        return;
+    /*vec2_t mPos = (vec2_t){ mouseX, mouseY };
+    mPos = vec2_sub(mPos, cb_offset);
+    mPos = vec2_scale(mPos, 1 / cb_scale);*/
+    vec2_t mPos = CB_getMousePos();
+    //screenToWorld(&mPos.x, &mPos.y);
+    for (unsigned i = this->blocks->size - 1; i < this->blocks->size; i--) {
+        CodeBlock **block = this->blocks->items+i;
+        vec2_t pos = *(vec2_t*)this->blockPos->items[i];
+        CBGrabResult grabRes = CodeBlock_grab(*block, vec2_sub(mPos, pos));
+        if (grabRes.either) {
+            if (grabRes.parent) {
+                List_remove_nodelete(this->blocks, i);
+                List_remove_nodelete(this->blockPos, i);
+            }
+            break;
+        }
+    }
 }
 
 /**
@@ -118,9 +127,9 @@ void _CodeBlockBoard_draw(CodeBlockBoard *this) {
 void CodeBlockBoard_addBlock(CodeBlockBoard *this, CodeBlock *block, vec2_t pos) {
     pos = vec2_sub(pos, cb_offset);
     pos = vec2_scale(pos, 1 / cb_scale);
-    vec2_t halfSize = vec2_scale(CodeBlock_getsize(block), 0.5);
+    vec2_t dropOffset = vec2_scale(CodeBlock_getsize(block), 0.1);
     vec2_t offPos = pos;
-    pos = vec2_add(pos, halfSize);
+    pos = vec2_add(pos, dropOffset);
     for (unsigned i = 0; i < this->blocks->size; i++) {
         CodeBlock *bBlock = this->blocks->items[i];
         vec2_t bPos = *(vec2_t*)this->blockPos->items[i];
@@ -129,7 +138,7 @@ void CodeBlockBoard_addBlock(CodeBlockBoard *this, CodeBlock *block, vec2_t pos)
             return;
         vec2_t bSize = CodeBlock_getsize(bBlock);
         vec2_t bEndPos = vec2_add(bPos, bSize);
-        if (vec2_in_range(vec2_add(offPos, halfSize), bPos, bEndPos))
+        if (vec2_in_range(vec2_add(offPos, dropOffset), bPos, bEndPos))
             offPos.x = bEndPos.x;
     }
     if (isOnList(pos)) {
@@ -177,6 +186,7 @@ char *CodeBlockBoard_totext(CodeBlockBoard *this) {
         strcpy(t, subText);
         t += strlen(subText);
     }
+    *t = 0;
 
     List_delete(texts);
 

@@ -8,9 +8,13 @@
  */
 #include "cbgrabcomp.h"
 
+#include <Engine/engine.h>
+
 #include "editorscreen.h"
 #include "codeblock.h"
 #include "codeblockboard.h"
+
+static void mouseCallback(MouseButton button, KeyState state, CBGrabComp *this);
 
 /**
  * @brief Create new CBGrabComp
@@ -29,6 +33,8 @@ CBGrabComp *CBGrabComp_new() {
 
     this->grabbed = NULL;
     this->offset = vec2_zero();
+
+    Engine_addMouseCallback(mouseCallback, this);
 
     return this;
 }
@@ -51,6 +57,7 @@ CBGrabComp *_CBGrabComp_clone(CBGrabComp *this) {
  * @param this CBGrabComp to delete
  */
 void _CBGrabComp_delete(CBGrabComp *this) {
+    Engine_removeMouseCallback(mouseCallback, this);
     if (this->grabbed)
         CodeBlock_delete(this->grabbed);
     free(this);
@@ -61,13 +68,17 @@ void _CBGrabComp_delete(CBGrabComp *this) {
  * @param this CBGrabComp to update
  */
 void _CBGrabComp_update(CBGrabComp *this) {
-    if (mouseReleased(MOUSE_BUTTON_1) && this->grabbed) {
-        vec2_t mPos = (vec2_t){ mouseX, mouseY };
-        //screenToWorld(&mPos.x, &mPos.y);
-        mPos = vec2_sub(mPos, this->offset);
-        addToBoard(this->grabbed, mPos);
-        this->grabbed = NULL;
-    }
+
+}
+
+static void mouseCallback(MouseButton button, KeyState state, CBGrabComp *this) {
+    if (!this->grabbed || button != MOUSE_BUTTON_1 || state != KeyReleased)
+        return;
+    vec2_t mPos = (vec2_t){ mouseX, mouseY };
+    //screenToWorld(&mPos.x, &mPos.y);
+    mPos = vec2_sub(mPos, this->offset);
+    addToBoard(this->grabbed, mPos);
+    this->grabbed = NULL;
 }
 
 /**

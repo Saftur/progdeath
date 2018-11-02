@@ -17,6 +17,9 @@
 typedef bool (*CollCheckFunc)(Component*, Component*);   ///< @brief Collision checking function signature
 typedef void (*CollResolveFunc)(Component*, Component*); ///< @brief Collision resolving function signature
 
+typedef void (*KeyCallbackFunc)(Key, KeyState, void*);
+typedef void (*MouseCallbackFunc)(MouseButton, KeyState, void*);
+
 /**
  * @brief Contains Engine data
  */
@@ -34,6 +37,9 @@ typedef struct Engine {
                          * type1  2  | func  | func  |       |
                          *        3  | func  | func  | func  |
                          */
+
+    List *keyCallbacks;
+    List *mouseCallbacks;
 } Engine;
 
 extern Engine *engine; ///< @brief The primary game Engine object (must be initialized & deleted)
@@ -105,5 +111,10 @@ void Engine_addCollResolveFunc(unsigned type1, unsigned type2, CollResolveFunc f
  * @return Collision resolving function
  */
 CollResolveFunc Engine_getCollResolveFunc(unsigned type1, unsigned type2);
+
+void Engine_addKeyCallback(KeyCallbackFunc func, void *upvalue);
+void Engine_removeKeyCallback(KeyCallbackFunc func, void *upvalue);
+void Engine_addMouseCallback(MouseCallbackFunc func, void *upvalue);
+void Engine_removeMouseCallback(MouseCallbackFunc func, void *upvalue);
 
 /// @}

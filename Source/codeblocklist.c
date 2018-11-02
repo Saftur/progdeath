@@ -17,6 +17,8 @@
 
 #define BORDER 20
 
+static void mouseCallback(MouseButton button, KeyState state, CodeBlockList *this);
+
 /**
  * @brief Create new CodeBlockList
  * @return New CodeBlockList
@@ -56,6 +58,8 @@ CodeBlockList *CodeBlockList_new() {
             CodeBlockList_addBlock(this, block);
     }
 
+    Engine_addMouseCallback(mouseCallback, this);
+
     return this;
 }
 
@@ -77,6 +81,7 @@ CodeBlockList *_CodeBlockList_clone(CodeBlockList *this) {
  * @param this CodeBlockList to delete
  */
 void _CodeBlockList_delete(CodeBlockList *this) {
+    Engine_removeMouseCallback(mouseCallback, this);
     List_delete(this->blocks);
     List_delete(this->blockPos);
     List_delete(this->blockSize);
@@ -88,18 +93,22 @@ void _CodeBlockList_delete(CodeBlockList *this) {
  * @param this CodeBlockList to update
  */
 void _CodeBlockList_update(CodeBlockList *this) {
-    if (mousePressed(MOUSE_BUTTON_1)) {
-        vec2_t mPos = (vec2_t){ mouseX, mouseY };
-        //screenToWorld(&mPos.x, &mPos.y);
-        if (0 <= mPos.x && mPos.x < this->size.x && 0 <= mPos.y && mPos.y < this->size.y) {
-            for (int i = 0; i < this->blocks->size; i++) {
-                CodeBlock **block = this->blocks->items+i;
-                vec2_t pos = *(vec2_t*)this->blockPos->items[i];
-                vec2_t sPos = vec2_sub(mPos, pos);
-                if (CodeBlock_grab_test(*block, sPos, 1).parent) {
-                    //*block = CodeBlock_clone(*block);
-                    setGrabbed(CodeBlock_clone(*block), sPos);
-                }
+
+}
+
+static void mouseCallback(MouseButton button, KeyState state, CodeBlockList *this) {
+    if (button != MOUSE_BUTTON_1 || state != KeyPressed)
+        return;
+    vec2_t mPos = (vec2_t){ mouseX, mouseY };
+    //screenToWorld(&mPos.x, &mPos.y);
+    if (0 <= mPos.x && mPos.x < this->size.x && 0 <= mPos.y && mPos.y < this->size.y) {
+        for (int i = 0; i < this->blocks->size; i++) {
+            CodeBlock **block = this->blocks->items+i;
+            vec2_t pos = *(vec2_t*)this->blockPos->items[i];
+            vec2_t sPos = vec2_sub(mPos, pos);
+            if (CodeBlock_grab_test(*block, sPos, 1).parent) {
+                //*block = CodeBlock_clone(*block);
+                setGrabbed(CodeBlock_clone(*block), sPos);
             }
         }
     }
