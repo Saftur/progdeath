@@ -14,6 +14,7 @@
 
 #include "codeblock.h"
 #include "editorscreen.h"
+#include "cb_binaryop.h"
 
 #define BORDER 20
 
@@ -42,14 +43,18 @@ CodeBlockList *CodeBlockList_new() {
     for (int type = 0; type < CB_NUM_TYPES; type++) {
         CodeBlock *block = NULL;
         switch (type) {
-        case CB_EMPTY:
+        case CB_EMPTY: case CB_NUM:
             break;
         case CB_VAR:
-            block = CodeBlock_new(CB_VAR, "test", 5);
+            block = CodeBlock_new(type, "test", 5);
             break;
         case CB_STR:
             block = CodeBlock_new(type, NULL, 0);
             removeFocusObject(*(void**)block->data);
+            break;
+        case CB_BINARYOP:
+            for (CB_binaryop_type t = 0; t < CB_BOP_NUMOPS; t++)
+                CodeBlockList_addBlock(this, CodeBlock_new(type, &t, sizeof(unsigned)));
             break;
         default:
             block = CodeBlock_new(type, NULL, 0);

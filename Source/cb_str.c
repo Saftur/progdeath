@@ -11,6 +11,7 @@
 
 #include <Engine/util.h>
 #include <Engine/focus.h>
+#include <Engine/list.h>
 
 #include "cbtypedata.h"
 #include "codeblockboard.h"
@@ -20,21 +21,22 @@ typedef struct CBStrFocus {
     vec2_t pos;
 } CBStrFocus;
 
-#define STROFFSET(height) height * 0.60
+//#define FOCUS(block) (*(CBStrFocus**)block->data)
+//#define STR(block) ((char*)block->data+sizeof(void*))
+#define FOCUS(block)     ((CBStrFocus*)((List*)block->data)->items[0])
+#define STR(block)       ((char*)((List*)block->data)->items[1])
 
-#define FOCUS(block) (*(CBStrFocus**)block->data)
-#define STR(block) ((char*)block->data+sizeof(void*))
-
-#define STR_SIZE(block) block->dataSize - sizeof(void*)
+#define STR_OFFSET (ARG_RND_PADD + TEXT_W(1))
+#define STR_SIZE(block) block->dataSize
 
 static void addchar(CodeBlock *block, char c) {
     size_t len = strlen(STR(block));
     if ((len + 1) * sizeof(char) >= STR_SIZE(block)) {
-        void *old = block->data;
+        void *old = STR(block);
         size_t oldSize = block->dataSize;
         block->dataSize *= 2;
-        block->data = malloc(block->dataSize);
-        memcpy(block->data, old, oldSize);
+        STR(block) = malloc(block->dataSize);
+        memcpy(STR(block), old, oldSize);
         free(old);
     }
     STR(block)[len] = c;
@@ -51,13 +53,13 @@ static char shiftnumchars[] ={')','!','@','#','$','%','^','&','*','('};
 
 static vec2_t getsize(CodeBlock *block) {
     float height = max(INNER_HEIGHT, TEXT_H() + PADD * 2);
-    return (vec2_t){ max(100, TEXT_W(strlen(STR(block))) + STROFFSET(height) * 2), height };
+    return (vec2_t){ STR_OFFSET * 2 + max(TEXT_W(4), TEXT_W(strlen(STR(block)))), height };
 }
 
 static int focusCheck(CBStrFocus *focus) {
     vec2_t mPos = CB_getMousePos();
     vec2_t size = getsize(focus->block);
-    return vec2_in_range(vec2_sub(mPos, focus->pos), (vec2_t){ STROFFSET(size.y), PADD }, (vec2_t){ size.x - STROFFSET(size.y), size.y - PADD });
+    return vec2_in_range(vec2_sub(mPos, focus->pos), (vec2_t){ STR_OFFSET, PADD }, (vec2_t){ size.x - STR_OFFSET, size.y - PADD });
 }
 
 static void focusCallback(Key key, KeyState state, CBStrFocus *focus) {
@@ -102,25 +104,30 @@ static void focusCallback(Key key, KeyState state, CBStrFocus *focus) {
 }
 
 static void init(CodeBlock *block) {
-    block->dataSize = sizeof(void*) + 20;
-    block->data = malloc(block->dataSize*sizeof(char));
-    FOCUS(block) = malloc(sizeof(CBStrFocus));
+    block->data = List_new(2, NULL, free);
+    List_push_back(block->data, malloc(sizeof(CBStrFocus)));
     FOCUS(block)->block = block;
     FOCUS(block)->pos = (vec2_t){ 0, 0 };
+    block->dataSize = 20 * sizeof(char);
+    List_push_back(block->data, malloc(block->dataSize));
     STR(block)[0] = 0;
     addFocusObject(focusCheck, focusCallback, FOCUS(block));
 }
 
-static void clone(CodeBlock *block) {
-    FOCUS(block) = malloc(sizeof(CBStrFocus));
+static void clone(CodeBlock *block, CodeBlock *from) {
+    block->data = List_new(2, NULL, free);
+    List_push_back(block->data, malloc(sizeof(CBStrFocus)));
     FOCUS(block)->block = block;
     FOCUS(block)->pos = (vec2_t){ 0, 0 };
+    block->dataSize = from->dataSize;
+    List_push_back(block->data, malloc(block->dataSize));
+    strcpy(STR(block), STR(from));
     addFocusObject(focusCheck, focusCallback, FOCUS(block));
 }
 
 static void delete(CodeBlock *block) {
     removeFocusObject(FOCUS(block));
-    free(FOCUS(block));
+    List_delete(block->data);
 }
 
 static void update(CodeBlock *block, vec2_t pos) {
@@ -133,7 +140,7 @@ static CBGrabResult grab(CodeBlock *block, vec2_t p, int test) {
     int inRect = vec2_in_range(p, (vec2_t){ halfHeight, 0 }, vec2_sub(size, (vec2_t){ halfHeight, 0 }));
     vec2_t cCenter1 = (vec2_t){ halfHeight, halfHeight }, cCenter2 = (vec2_t){ size.x - halfHeight, halfHeight };
     int inBlock = inRect || vec2_length(vec2_sub(p, cCenter1)) < halfHeight || vec2_length(vec2_sub(p, cCenter2)) < halfHeight;
-    int inStr = vec2_in_range(p, (vec2_t){ STROFFSET(size.y), PADD }, (vec2_t){ size.x - STROFFSET(size.y), size.y - PADD });
+    int inStr = vec2_in_range(p, (vec2_t){ STR_OFFSET, PADD }, (vec2_t){ size.x - STR_OFFSET, size.y - PADD });
     if (inStr)
         return GRABRES_CHILD;
     if (inBlock) {
@@ -149,12 +156,12 @@ static vec2_t draw(CodeBlock *block, vec2_t pos) {
     fillColor(COLOR_ARG);
     rectRounded(pos.x, pos.y, size.x, size.y, size.y / 2);
     fillColor(COLOR_EMPTY);
-    rectRounded(pos.x + STROFFSET(size.y), pos.y + PADD, size.x - STROFFSET(size.y) * 2, size.y - PADD * 2, RECT_RADIUS);
+    rectRounded(pos.x + STR_OFFSET, pos.y + PADD, size.x - STR_OFFSET * 2, size.y - PADD * 2, RECT_RADIUS);
     textSize(TEXT_SIZE);
     fillColor(COLOR_TEXT);
-    text("\"", pos.x + ARG_RND_W, pos.y + TEXT_YOFFSET(size.y));
-    text(STR(block), pos.x + STROFFSET(size.y), pos.y + TEXT_YOFFSET(size.y));
-    text("\"", pos.x + size.x - TEXT_W(1) - ARG_RND_W, pos.y + TEXT_YOFFSET(size.y));
+    text("\"", pos.x + ARG_RND_PADD, pos.y + TEXT_YOFFSET(size.y));
+    text(STR(block), pos.x + STR_OFFSET, pos.y + TEXT_YOFFSET(size.y));
+    text("\"", pos.x + size.x - TEXT_W(1) - ARG_RND_PADD, pos.y + TEXT_YOFFSET(size.y));
     return size;
 }
 
@@ -181,7 +188,7 @@ static char *totext(CodeBlock *block) {
 void cb_str_new(CodeBlock *block) {
     block->typeData.isDir = 0;
     block->typeData.isArg = 1;
-    block->typeData.numArgs = 0;
+    block->typeData.ignData = 1;
     block->typeData.init = init;
     block->typeData.clone = clone;
     block->typeData.delete = delete;

@@ -33,7 +33,6 @@ static char *totext(CodeBlock *block) {
 void cb_empty_new(CodeBlock *block) {
     block->typeData.isDir = 0;
     block->typeData.isArg = 1;
-    block->typeData.numArgs = 0;
     block->typeData.init = NULL;
     block->typeData.delete = NULL;
     block->typeData.getsize = getsize;

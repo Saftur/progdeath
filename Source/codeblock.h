@@ -23,7 +23,9 @@ typedef enum CodeBlockType {
     CB_SETVAR,
 
     CB_VAR,
+    CB_NUM,
     CB_STR,
+    CB_BINARYOP,
 
     CB_IF,
 
@@ -44,7 +46,7 @@ void decTab();
 typedef void(*CodeBlock_newfunc)(CodeBlock*);
 
 typedef void(*CodeBlock_initfunc)(CodeBlock*);
-typedef void(*CodeBlock_clonefunc)(CodeBlock*);
+typedef void(*CodeBlock_clonefunc)(CodeBlock*,CodeBlock*);
 typedef void(*CodeBlock_deletefunc)(CodeBlock*);
 typedef vec2_t(*CodeBlock_getsizefunc)(CodeBlock*);
 typedef void(*CodeBlock_updatefunc)(CodeBlock*,vec2_t);
@@ -56,7 +58,7 @@ typedef char*(*CodeBlock_textfunc)(CodeBlock*);
 typedef struct CodeBlockTypeData {
     int isDir;
     int isArg;
-    size_t numArgs;
+    int ignData;
     CodeBlock_initfunc init;
     CodeBlock_clonefunc clone;
     CodeBlock_deletefunc delete;

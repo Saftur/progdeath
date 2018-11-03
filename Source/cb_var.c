@@ -9,7 +9,7 @@
 #include "cbtypedata.h"
 
 static vec2_t getsize(CodeBlock *block) {
-    return (vec2_t){ TEXT_W(strlen(block->data)) + ARG_RND_W * 2, max(INNER_HEIGHT, TEXT_H() + PADD * 2) };
+    return (vec2_t){ TEXT_W(strlen(block->data)) + ARG_RND_PADD * 2, max(INNER_HEIGHT, TEXT_H() + PADD * 2) };
 }
 
 static CBGrabResult grab(CodeBlock *block, vec2_t p, int test) {
@@ -31,7 +31,7 @@ static vec2_t draw(CodeBlock *block, vec2_t pos) {
     rectRounded(pos.x, pos.y, size.x, size.y, size.y / 2);
     textSize(TEXT_SIZE);
     fillColor(COLOR_TEXT);
-    text(block->data, pos.x + ARG_RND_W, pos.y + TEXT_YOFFSET(size.y));
+    text(block->data, pos.x + ARG_RND_PADD, pos.y + TEXT_YOFFSET(size.y));
     return size;
 }
 
@@ -46,7 +46,6 @@ static char *totext(CodeBlock *block) {
 void cb_var_new(CodeBlock *block) {
     block->typeData.isDir = 0;
     block->typeData.isArg = 1;
-    block->typeData.numArgs = 0;
     block->typeData.init = NULL;
     block->typeData.delete = NULL;
     block->typeData.getsize = getsize;

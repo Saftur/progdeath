@@ -73,6 +73,12 @@
     <ClCompile Include="Source\cb_str.c">
       <Filter>Game\Components\Code Block\Types\Arguments\Str</Filter>
     </ClCompile>
+    <ClCompile Include="Source\cb_binaryop.c">
+      <Filter>Game\Components\Code Block\Types\Arguments\Operators</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\cb_num.c">
+      <Filter>Game\Components\Code Block\Types\Arguments\Num</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -149,6 +155,12 @@
     </ClInclude>
     <ClInclude Include="Source\cb_str.h">
       <Filter>Game\Components\Code Block\Types\Arguments\Str</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\cb_binaryop.h">
+      <Filter>Game\Components\Code Block\Types\Arguments\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\cb_num.h">
+      <Filter>Game\Components\Code Block\Types\Arguments\Num</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +250,9 @@
     </Filter>
     <Filter Include="Game\Components\Code Block\Types\Arguments\Operators">
       <UniqueIdentifier>{bcacb3cd-c820-406a-b818-6086586a7082}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Arguments\Num">
+      <UniqueIdentifier>{29f3aa79-d47c-4565-a257-35f58f1c9503}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

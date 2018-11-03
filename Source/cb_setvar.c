@@ -8,6 +8,11 @@
 
 #include "cbtypedata.h"
 
+static void init(CodeBlock *block) {
+    List_push_back(block->blocks, CodeBlock_new(CB_EMPTY, NULL, 0));
+    List_push_back(block->blocks, CodeBlock_new(CB_NUM, NULL, 0));
+}
+
 static vec2_t getsize(CodeBlock *block) {
     CodeBlock *var = block->blocks->items[0];
     CodeBlock *val = block->blocks->items[1];
@@ -21,7 +26,7 @@ static vec2_t varpos(vec2_t size, vec2_t varSize) {
 }
 
 static vec2_t valpos(vec2_t size, vec2_t varSize, vec2_t valSize) {
-    return (vec2_t){PADD + varSize.x + TEXT_W(2), size.y / 2 - valSize.y / 2};
+    return (vec2_t){ PADD + varSize.x + TEXT_W(2), size.y / 2 - valSize.y / 2 };
 }
 
 static void update(CodeBlock *block, vec2_t pos) {
@@ -53,7 +58,7 @@ static CBGrabResult grab(CodeBlock *block, vec2_t p, int test) {
     res = CodeBlock_grab_test(val, vec2_sub(p, valPos), test);
     if (res.either) {
         if (res.parent && !test)
-            block->blocks->items[1] = empty_new();
+            block->blocks->items[1] = CodeBlock_new(CB_NUM, NULL, 0);
         return GRABRES_CHILD;
     }
     if (vec2_in_range(p, vec2_zero(), getsize(block))) {
@@ -103,15 +108,12 @@ static vec2_t draw(CodeBlock *block, vec2_t pos) {
     CodeBlock_draw(var, vec2_add(pos, varpos(size, varSize)));
     textSize(TEXT_SIZE);
     fillColor(COLOR_TEXT);
-    text("=", pos.x + varSize.x + PADD + TEXT_W(1/2), pos.y + TEXT_YOFFSET(size.y));
+    text("=", pos.x + varSize.x + PADD + TEXT_W(0.5f), pos.y + TEXT_YOFFSET(size.y));
     CodeBlock_draw(val, vec2_add(pos, valpos(size, varSize, valSize)));
     return size;
 }
 
 static char *totext(CodeBlock *block) {
-    if (block->blocks->size < 2)
-        return NULL;
-
     char *var = CodeBlock_totext(block->blocks->items[0]);
     char *val = CodeBlock_totext(block->blocks->items[1]);
     size_t varlen = strlen(var);
@@ -133,8 +135,7 @@ static char *totext(CodeBlock *block) {
 void cb_setvar_new(CodeBlock *block) {
     block->typeData.isDir = 1;
     block->typeData.isArg = 0;
-    block->typeData.numArgs = 2;
-    block->typeData.init = NULL;
+    block->typeData.init = init;
     block->typeData.delete = NULL;
     block->typeData.getsize = getsize;
     block->typeData.update = update;

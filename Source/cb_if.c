@@ -14,6 +14,10 @@
 #define IF_BD_XSP (IF_BORDER + IF_XSPACING)
 #define IF_BD_YSP (IF_BORDER + IF_YSPACING)
 
+static void init(CodeBlock *block) {
+    List_push_back(block->blocks, CodeBlock_new(CB_EMPTY, NULL, 0));
+}
+
 static vec2_t gettopsize(CodeBlock *block) {
     CodeBlock *cond = block->blocks->items[0];
     vec2_t condSize = CodeBlock_getsize(cond);
@@ -225,8 +229,7 @@ static char *totext(CodeBlock *block) {
 void cb_if_new(CodeBlock *block) {
     block->typeData.isDir = 1;
     block->typeData.isArg = 0;
-    block->typeData.numArgs = 1;
-    block->typeData.init = NULL;
+    block->typeData.init = init;
     block->typeData.delete = NULL;
     block->typeData.getsize = getsize;
     block->typeData.update = update;

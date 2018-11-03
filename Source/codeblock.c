@@ -13,14 +13,18 @@
 #include "cb_empty.h"
 #include "cb_setvar.h"
 #include "cb_var.h"
+#include "cb_num.h"
 #include "cb_str.h"
+#include "cb_binaryop.h"
 #include "cb_if.h"
 
 static CodeBlock_newfunc new_funcs[] = {
     cb_empty_new,
     cb_setvar_new,
     cb_var_new,
+    cb_num_new,
     cb_str_new,
+    cb_binaryop_new,
     cb_if_new,
 };
 
@@ -38,9 +42,6 @@ CodeBlock *CodeBlock_new(CodeBlockType type, void *data, size_t dataSize) {
 
     this->type = type;
     this->blocks = List_new(10, CodeBlock_clone, CodeBlock_delete);
-    List_resize(this->blocks, this->typeData.numArgs, NULL);
-    for (unsigned i = 0; i < this->blocks->size; i++)
-        this->blocks->items[i] = CodeBlock_new(CB_EMPTY, NULL, 0);
     if (data) {
         this->data = malloc(dataSize);
         memcpy(this->data, data, dataSize);
@@ -64,12 +65,14 @@ CodeBlock *CodeBlock_clone(CodeBlock *this) {
 
     new->type = this->type;
     new->blocks = List_copy(this->blocks);
-    new->data = malloc(this->dataSize);
-    memcpy(new->data, this->data, this->dataSize);
-    new->dataSize = this->dataSize;
+    if (!new->typeData.ignData) {
+        new->data = malloc(this->dataSize);
+        memcpy(new->data, this->data, this->dataSize);
+        new->dataSize = this->dataSize;
+    }
 
     if (new->typeData.clone)
-        new->typeData.clone(new);
+        new->typeData.clone(new, this);
 
     return new;
 }
@@ -84,7 +87,8 @@ void CodeBlock_delete(CodeBlock *this) {
     if (this->typeData.delete)
         this->typeData.delete(this);
     List_delete(this->blocks);
-    free(this->data);
+    if (!this->typeData.ignData)
+        free(this->data);
     free(this);
 }
 
