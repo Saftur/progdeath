@@ -26,7 +26,7 @@ typedef struct CBStrFocus {
 #define FOCUS(block)     ((CBStrFocus*)((List*)block->data)->items[0])
 #define STR(block)       ((char*)((List*)block->data)->items[1])
 
-#define STR_OFFSET (ARG_RND_PADD + TEXT_W(1))
+#define STR_OFFSET (TEXT_ARG_RND_PADD + TEXT_W(1))
 #define STR_SIZE(block) block->dataSize
 
 static void addchar(CodeBlock *block, char c) {
@@ -152,16 +152,18 @@ static CBGrabResult grab(CodeBlock *block, vec2_t p, int test) {
 
 static vec2_t draw(CodeBlock *block, vec2_t pos) {
     vec2_t size = getsize(block);
-    noStroke();
+    //noStroke();
+    strokeColor(COLOR_ARG_STROKE);
+    strokeWeight(1);
     fillColor(COLOR_ARG);
     rectRounded(pos.x, pos.y, size.x, size.y, size.y / 2);
     fillColor(COLOR_EMPTY);
     rectRounded(pos.x + STR_OFFSET, pos.y + PADD, size.x - STR_OFFSET * 2, size.y - PADD * 2, RECT_RADIUS);
     textSize(TEXT_SIZE);
     fillColor(COLOR_TEXT);
-    text("\"", pos.x + ARG_RND_PADD, pos.y + TEXT_YOFFSET(size.y));
+    text("\"", pos.x + TEXT_ARG_RND_PADD, pos.y + TEXT_YOFFSET(size.y));
     text(STR(block), pos.x + STR_OFFSET, pos.y + TEXT_YOFFSET(size.y));
-    text("\"", pos.x + size.x - TEXT_W(1) - ARG_RND_PADD, pos.y + TEXT_YOFFSET(size.y));
+    text("\"", pos.x + size.x - TEXT_W(1) - TEXT_ARG_RND_PADD, pos.y + TEXT_YOFFSET(size.y));
     return size;
 }
 

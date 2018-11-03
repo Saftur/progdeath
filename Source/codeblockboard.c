@@ -127,7 +127,8 @@ void _CodeBlockBoard_draw(CodeBlockBoard *this) {
 void CodeBlockBoard_addBlock(CodeBlockBoard *this, CodeBlock *block, vec2_t pos) {
     pos = vec2_sub(pos, cb_offset);
     pos = vec2_scale(pos, 1 / cb_scale);
-    vec2_t dropOffset = vec2_scale(CodeBlock_getsize(block), 0.1);
+    vec2_t bSize = CodeBlock_getsize(block);
+    vec2_t dropOffset = (vec2_t){ min(10, bSize.x * 0.5f), min(10, bSize.y * 0.5f) };//vec2_scale(CodeBlock_getsize(block), 0.1);
     vec2_t offPos = pos;
     pos = vec2_add(pos, dropOffset);
     for (unsigned i = 0; i < this->blocks->size; i++) {

@@ -16,6 +16,7 @@
 #include "cb_num.h"
 #include "cb_str.h"
 #include "cb_binaryop.h"
+#include "cb_unaryop.h"
 #include "cb_if.h"
 
 static CodeBlock_newfunc new_funcs[] = {
@@ -25,6 +26,7 @@ static CodeBlock_newfunc new_funcs[] = {
     cb_num_new,
     cb_str_new,
     cb_binaryop_new,
+    cb_unaryop_new,
     cb_if_new,
 };
 

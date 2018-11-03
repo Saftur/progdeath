@@ -29,7 +29,7 @@ typedef struct CBNumFocus {
 #define PERIOD(block)    (*PERIODPTR(block))
 #define STR(block)       ((char*)((List*)block->data)->items[2])
 
-#define STR_OFFSET (ARG_RND_PADD + TEXT_W(1))
+#define STR_OFFSET (TEXT_ARG_RND_PADD + TEXT_W(1))
 #define STR_SIZE(block) block->dataSize - sizeof(void*)
 
 static void addchar(CodeBlock *block, char c) {
@@ -63,7 +63,7 @@ static void backspace(CodeBlock *block) {
 
 static vec2_t getsize(CodeBlock *block) {
     float height = max(INNER_HEIGHT, TEXT_H());
-    return (vec2_t){ ARG_RND_PADD * 2 + max(TEXT_W(3), TEXT_W(strlen(STR(block)))), height };
+    return (vec2_t){ TEXT_ARG_RND_PADD * 2 + max(TEXT_W(3), TEXT_W(strlen(STR(block)))), height };
 }
 
 static int focusCheck(CBNumFocus *focus) {
@@ -144,7 +144,7 @@ static vec2_t draw(CodeBlock *block, vec2_t pos) {
     rectRounded(pos.x, pos.y, size.x, size.y, size.y / 2);
     textSize(TEXT_SIZE);
     fillColor(COLOR_TEXT);
-    text(STR(block), pos.x + ARG_RND_PADD, pos.y + TEXT_YOFFSET(size.y));
+    text(STR(block), pos.x + TEXT_ARG_RND_PADD, pos.y + TEXT_YOFFSET(size.y));
     return size;
 }
 

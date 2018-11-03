@@ -15,6 +15,7 @@
 #include "codeblock.h"
 #include "editorscreen.h"
 #include "cb_binaryop.h"
+#include "cb_unaryop.h"
 
 #define BORDER 20
 
@@ -54,6 +55,10 @@ CodeBlockList *CodeBlockList_new() {
             break;
         case CB_BINARYOP:
             for (CB_binaryop_type t = 0; t < CB_BOP_NUMOPS; t++)
+                CodeBlockList_addBlock(this, CodeBlock_new(type, &t, sizeof(unsigned)));
+            break;
+        case CB_UNARYOP:
+            for (CB_unaryop_type t = 0; t < CB_UOP_NUMOPS; t++)
                 CodeBlockList_addBlock(this, CodeBlock_new(type, &t, sizeof(unsigned)));
             break;
         default:

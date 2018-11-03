@@ -27,15 +27,3 @@ void addTabs(char *txt) {
 #endif
     }
 }
-
-int is_directive(CodeBlock *block) {
-    return block->typeData.isDir;
-}
-
-int is_arg(CodeBlock *block) {
-    return block->typeData.isArg;
-}
-
-CodeBlock *empty_new() {
-    return CodeBlock_new(CB_EMPTY, NULL, 0);
-}

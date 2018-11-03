@@ -26,6 +26,7 @@ typedef enum CodeBlockType {
     CB_NUM,
     CB_STR,
     CB_BINARYOP,
+    CB_UNARYOP,
 
     CB_IF,
 
@@ -58,6 +59,7 @@ typedef char*(*CodeBlock_textfunc)(CodeBlock*);
 typedef struct CodeBlockTypeData {
     int isDir;
     int isArg;
+    int isLValue;
     int ignData;
     CodeBlock_initfunc init;
     CodeBlock_clonefunc clone;
@@ -74,13 +76,6 @@ typedef struct CodeBlockTypeData {
  * @brief CodeBlock Component
  */
 typedef struct CodeBlock {
-    /*size_t numArgs;
-    CodeBlock_updatefunc update;
-    CodeBlock_getsizefunc getsize;
-    CodeBlock_grabfunc grab;
-    CodeBlock_dropfunc drop;
-    CodeBlock_drawfunc draw;
-    CodeBlock_textfunc totext;*/
     CodeBlockTypeData typeData;
 
     CodeBlockType type; ///< @brief CodeBlock type
@@ -97,6 +92,7 @@ typedef struct CodeBlock {
  * @return New CodeBlock
  */
 CodeBlock *CodeBlock_new(CodeBlockType type, void *data, size_t dataSize);
+#define CodeBlock_new_nodata(type) CodeBlock_new(type, NULL, 0)
 
 /**
  * @brief Clone CodeBlock
