@@ -6,6 +6,8 @@
  */
 #include "cb_unaryop.h"
 
+#include <stdio.h>
+
 #include "cbtypedata.h"
 #include "cb_op.h"
 
@@ -98,15 +100,8 @@ static char *totext(CodeBlock *block) {
     size_t arglen = strlen(arg);
     size_t len = OP_CODELEN(block) + arglen + 2;
     char *txt = malloc((len+1) * sizeof(char));
-    char *t = txt;
 
-    *(t++) = '(';
-    strncpy(t, OP_CODESTR(block), OP_CODELEN(block));
-    t += OP_CODELEN(block);
-    strncpy(t, arg, arglen);
-    t += arglen;
-    *(t++) = ')';
-    *t = 0;
+    sprintf(txt, "(%s%s)", OP_CODESTR(block), arg);
 
     free(arg);
 

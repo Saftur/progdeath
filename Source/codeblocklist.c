@@ -18,8 +18,10 @@
 #include "cb_unaryop.h"
 
 #define BORDER 20
+#define SCROLLSPD 20
 
 static void mouseCallback(MouseButton button, KeyState state, CodeBlockList *this);
+static void wheelCallback(float xoffset, float yoffset, CodeBlockList *this);
 
 /**
  * @brief Create new CodeBlockList
@@ -36,6 +38,8 @@ CodeBlockList *CodeBlockList_new() {
     this->comp.collides = false;
     this->comp.coll_resolve = NULL;
     this->comp.owner = NULL;
+
+    this->yscroll = 0;
 
     this->size = (vec2_t){ 0, 0 };
     this->blocks = List_new(CB_NUM_TYPES, CodeBlock_clone, CodeBlock_delete);
@@ -69,6 +73,7 @@ CodeBlockList *CodeBlockList_new() {
     }
 
     Engine_addMouseCallback(mouseCallback, this);
+    Engine_addWheelCallback(wheelCallback, this);
 
     return this;
 }
@@ -92,6 +97,7 @@ CodeBlockList *_CodeBlockList_clone(CodeBlockList *this) {
  */
 void _CodeBlockList_delete(CodeBlockList *this) {
     Engine_removeMouseCallback(mouseCallback, this);
+    Engine_removeWheelCallback(wheelCallback, this);
     List_delete(this->blocks);
     List_delete(this->blockPos);
     List_delete(this->blockSize);
@@ -116,12 +122,23 @@ static void mouseCallback(MouseButton button, KeyState state, CodeBlockList *thi
             CodeBlock **block = this->blocks->items+i;
             vec2_t pos = *(vec2_t*)this->blockPos->items[i];
             vec2_t sPos = vec2_sub(mPos, pos);
+            sPos.y += this->yscroll;
             if (CodeBlock_grab_test(*block, sPos, 1).parent) {
                 //*block = CodeBlock_clone(*block);
                 setGrabbed(CodeBlock_clone(*block), sPos);
             }
         }
     }
+}
+
+static void wheelCallback(float xoffset, float yoffset, CodeBlockList *this) {
+    if (mouseX >= this->size.x)
+        return;
+    this->yscroll -= yoffset * SCROLLSPD;
+    if (this->yscroll < 0)
+        this->yscroll = 0;
+    if (this->yscroll > this->size.y - canvasHeight + BORDER)
+        this->yscroll = this->size.y - canvasHeight + BORDER;
 }
 
 /**
@@ -131,6 +148,7 @@ static void mouseCallback(MouseButton button, KeyState state, CodeBlockList *thi
 void _CodeBlockList_draw(CodeBlockList *this) {
     for (int i = 0; i < this->blocks->size; i++) {
         vec2_t pos = *(vec2_t*)this->blockPos->items[i];
+        pos.y -= this->yscroll;
         CodeBlock_draw(this->blocks->items[i], pos);
     }
 }

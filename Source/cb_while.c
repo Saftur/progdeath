@@ -1,10 +1,10 @@
 /**
- * @file cb_if.c
+ * @file cb_while.c
  * @author Arthur Bouvier (a.bouvier)
  * @date 10/31/18
  * 
  */
-#include "cb_if.h"
+#include "cb_while.h"
 
 #include <stdio.h>
 
@@ -23,7 +23,7 @@ static void init(CodeBlock *block) {
 static vec2_t gettopsize(CodeBlock *block) {
     CodeBlock *cond = block->blocks->items[0];
     vec2_t condSize = CodeBlock_getsize(cond);
-    vec2_t size = (vec2_t){ TEXT_W(2.75) + condSize.x + PADD * 2, max(HEIGHT, condSize.y + PADD * 2) };
+    vec2_t size = (vec2_t){ TEXT_W(5.75) + condSize.x + PADD * 2, max(HEIGHT, condSize.y + PADD * 2) };
     return size;
 }
 
@@ -39,7 +39,7 @@ static vec2_t getsize(CodeBlock *block) {
 }
 
 static vec2_t condpos() {
-    return (vec2_t){ TEXT_W(2.75) + PADD, PADD };
+    return (vec2_t){ TEXT_W(5.75) + PADD, PADD };
 }
 
 static void update(CodeBlock *block, vec2_t pos) {
@@ -167,7 +167,7 @@ static vec2_t draw(CodeBlock *block, vec2_t pos) {
 
     textSize(TEXT_SIZE);
     fillColor(COLOR_TEXT);
-    text("if", pos.x + PADD + TEXT_W(1/4), pos.y + TEXT_YOFFSET(topSize.y));
+    text("while", pos.x + PADD + TEXT_W(1/4), pos.y + TEXT_YOFFSET(topSize.y));
     CodeBlock_draw(block->blocks->items[0], vec2_add(pos, condpos()));
     size.y += BORDER;
     return size;
@@ -187,16 +187,16 @@ static char *totext(CodeBlock *block) {
 
     for (unsigned i = 0; i < block->blocks->size; i++) {
         subLen = strlen(subText = CodeBlock_totext(block->blocks->items[i]));
-        line = malloc((lineLen = subLen + 1 + (i == 0 ? 8 : CURR_TABSIZE)) * sizeof(char));
+        line = malloc((lineLen = subLen + 1 + (i == 0 ? 9 : CURR_TABSIZE)) * sizeof(char));
         len += lineLen;
         if (i == 0) {
             /*strncpy(
                 strncpy(
                     strncpy(
-                        line, "if ", 3)
+                        line, "while ", 3)
                     +3, subText, subLen)
-                +subLen, " then", 5);*/
-            sprintf(line, "if %s then", subText);
+                +subLen, " do", 5);*/
+            sprintf(line, "while %s do", subText);
             incTab();
         } else {
             addTabs(line);
@@ -229,7 +229,7 @@ static char *totext(CodeBlock *block) {
     return txt;
 }
 
-void cb_if_new(CodeBlock *block) {
+void cb_while_new(CodeBlock *block) {
     block->typeData.isDir = 1;
     block->typeData.isArg = 0;
     block->typeData.init = init;

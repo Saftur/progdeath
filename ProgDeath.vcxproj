@@ -127,6 +127,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     <ClCompile Include="Source\cb_str.c" />
     <ClCompile Include="Source\cb_unaryop.c" />
     <ClCompile Include="Source\cb_var.c" />
+    <ClCompile Include="Source\cb_while.c" />
     <ClCompile Include="Source\codeblock.c">
       <SubType>
       </SubType>
@@ -208,6 +209,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     <ClInclude Include="Source\cb_str.h" />
     <ClInclude Include="Source\cb_unaryop.h" />
     <ClInclude Include="Source\cb_var.h" />
+    <ClInclude Include="Source\cb_while.h" />
     <ClInclude Include="Source\codeblock.h">
       <SubType>
       </SubType>

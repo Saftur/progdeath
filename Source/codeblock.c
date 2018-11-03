@@ -18,6 +18,7 @@
 #include "cb_binaryop.h"
 #include "cb_unaryop.h"
 #include "cb_if.h"
+#include "cb_while.h"
 
 static CodeBlock_newfunc new_funcs[] = {
     cb_empty_new,
@@ -28,6 +29,7 @@ static CodeBlock_newfunc new_funcs[] = {
     cb_binaryop_new,
     cb_unaryop_new,
     cb_if_new,
+    cb_while_new,
 };
 
 /**

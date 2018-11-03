@@ -6,22 +6,33 @@
  */
 #include "cb_binaryop.h"
 
+#include <stdio.h>
+
 #include "cbtypedata.h"
 #include "cb_op.h"
 
 static CB_Op ops[] = {
     {"and", 3},
     {"or", 2},
+    {"==", 2},
+    {"~=", 2},
+    {"<", 1},
+    {">", 1},
+    {"<=", 2},
+    {">=", 2},
     {"+", 1},
     {"-", 1},
     {"*", 1},
     {"/", 1},
     {"%", 1},
+    {",", 1},
 };
 
 static void init(CodeBlock *block) {
     List_push_back(block->blocks, CodeBlock_new(CB_NUM, NULL, 0));
     List_push_back(block->blocks, CodeBlock_new(CB_NUM, NULL, 0));
+    if (OP_ID(block) == CB_BOP_CMA)
+        block->typeData.isLValue = 1;
 }
 
 static vec2_t getsize(CodeBlock *block) {
@@ -135,21 +146,12 @@ static char *totext(CodeBlock *block) {
     char *arg2 = CodeBlock_totext(block->blocks->items[1]);
     size_t arg1len = strlen(arg1);
     size_t arg2len = strlen(arg2);
-    size_t len = arg1len + OP_CODELEN(block) + arg2len + 4;
+    int isComma = OP_ID(block) == CB_BOP_CMA;
+    size_t xLen = isComma ? 1 : 4;
+    size_t len = arg1len + OP_CODELEN(block) + arg2len + xLen;
     char *txt = malloc((len+1) * sizeof(char));
-    char *t = txt;
 
-    *(t++) = '(';
-    strncpy(t, arg1, arg1len);
-    t += arg1len;
-    *(t++) = ' ';
-    strncpy(t, OP_CODESTR(block), OP_CODELEN(block));
-    t += OP_CODELEN(block);
-    *(t++) = ' ';
-    strncpy(t, arg2, arg2len);
-    t += arg2len;
-    *(t++) = ')';
-    *t = 0;
+    sprintf(txt, isComma ? "%s%s %s" : "(%s %s %s)", arg1, OP_CODESTR(block), arg2);
 
     free(arg1);
     free(arg2);

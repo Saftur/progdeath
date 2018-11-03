@@ -82,6 +82,9 @@
     <ClCompile Include="Source\cb_unaryop.c">
       <Filter>Game\Components\Code Block\Types\Arguments\Operators</Filter>
     </ClCompile>
+    <ClCompile Include="Source\cb_while.c">
+      <Filter>Game\Components\Code Block\Types\Control\While</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -170,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="Source\cb_op.h">
       <Filter>Game\Components\Code Block\Types\Arguments\Operators</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\cb_while.h">
+      <Filter>Game\Components\Code Block\Types\Control\While</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +268,9 @@
     </Filter>
     <Filter Include="Game\Components\Code Block\Types\Arguments\Num">
       <UniqueIdentifier>{29f3aa79-d47c-4565-a257-35f58f1c9503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Control\While">
+      <UniqueIdentifier>{469bc98f-f89a-433f-8139-c3d3f7320807}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

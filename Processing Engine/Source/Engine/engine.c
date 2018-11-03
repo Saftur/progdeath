@@ -18,6 +18,7 @@ Engine *engine = NULL;
 
 static void keyCallback(Key key, KeyState state);
 static void mouseCallback(MouseButton button, KeyState state);
+static void wheelCallback(float xoffset, float yoffset);
 
 typedef struct KeyCallback {
     KeyCallbackFunc func;
@@ -43,6 +44,18 @@ static MouseCallback *MouseCallback_new(MouseCallbackFunc func, void *upvalue) {
     return new;
 }
 
+typedef struct WheelCallback {
+    WheelCallbackFunc func;
+    void *upvalue;
+} WheelCallback;
+
+static WheelCallback *WheelCallback_new(WheelCallbackFunc func, void *upvalue) {
+    WheelCallback *new = malloc(sizeof(WheelCallback));
+    new->func = func;
+    new->upvalue = upvalue;
+    return new;
+}
+
 /**
  * @brief Initialize the Engine
  * @param numLayers Starting number of layers
@@ -61,9 +74,11 @@ void Engine_init(unsigned numLayers) {
 
     engine->keyCallbacks = List_new(10, NULL, free);
     engine->mouseCallbacks = List_new(10, NULL, free);
+    engine->wheelCallbacks = List_new(10, NULL, free);
 
     setKeyboardInputCallback(keyCallback);
     setMouseInputCallback(mouseCallback);
+    setMouseWheelCallback(wheelCallback);
 
     initFocus();
 }
@@ -289,6 +304,20 @@ void Engine_removeMouseCallback(MouseCallbackFunc func, void *upvalue) {
     }
 }
 
+void Engine_addWheelCallback(WheelCallbackFunc func, void *upvalue) {
+    List_push_back(engine->wheelCallbacks, WheelCallback_new(func, upvalue));
+}
+
+void Engine_removeWheelCallback(WheelCallbackFunc func, void *upvalue) {
+    for (unsigned i = 0; i < engine->wheelCallbacks->size; i++) {
+        WheelCallback *callback = engine->wheelCallbacks->items[i];
+        if (callback->func == func && callback->upvalue) {
+            List_remove(engine->wheelCallbacks, i);
+            return;
+        }
+    }
+}
+
 static void keyCallback(Key key, KeyState state) {
     for (unsigned i = 0; i < engine->keyCallbacks->size; i++) {
         KeyCallback *callback = engine->keyCallbacks->items[i];
@@ -300,6 +329,13 @@ static void mouseCallback(MouseButton button, KeyState state) {
     for (unsigned i = 0; i < engine->mouseCallbacks->size; i++) {
         MouseCallback *callback = engine->mouseCallbacks->items[i];
         callback->func(button, state, callback->upvalue);
+    }
+}
+
+static void wheelCallback(float xoffset, float yoffset) {
+    for (unsigned i = 0; i < engine->wheelCallbacks->size; i++) {
+        WheelCallback *callback = engine->wheelCallbacks->items[i];
+        callback->func(xoffset, yoffset, callback->upvalue);
     }
 }
 

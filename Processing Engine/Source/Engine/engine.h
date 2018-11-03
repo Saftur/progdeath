@@ -19,6 +19,7 @@ typedef void (*CollResolveFunc)(Component*, Component*); ///< @brief Collision r
 
 typedef void (*KeyCallbackFunc)(Key, KeyState, void*);
 typedef void (*MouseCallbackFunc)(MouseButton, KeyState, void*);
+typedef void (*WheelCallbackFunc)(float, float);
 
 /**
  * @brief Contains Engine data
@@ -40,6 +41,7 @@ typedef struct Engine {
 
     List *keyCallbacks;
     List *mouseCallbacks;
+    List *wheelCallbacks;
 } Engine;
 
 extern Engine *engine; ///< @brief The primary game Engine object (must be initialized & deleted)
@@ -116,5 +118,7 @@ void Engine_addKeyCallback(KeyCallbackFunc func, void *upvalue);
 void Engine_removeKeyCallback(KeyCallbackFunc func, void *upvalue);
 void Engine_addMouseCallback(MouseCallbackFunc func, void *upvalue);
 void Engine_removeMouseCallback(MouseCallbackFunc func, void *upvalue);
+void Engine_addWheelCallback(WheelCallbackFunc func, void *upvalue);
+void Engine_removeWheelCallback(WheelCallbackFunc func, void *upvalue);
 
 /// @}

@@ -15,7 +15,8 @@ typedef struct CB_Op {
     size_t codeLen;
 } CB_Op;
 
-#define OP(block) (ops[*(unsigned*)block->data])
+#define OP_ID(block) (*(unsigned*)block->data)
+#define OP(block) (ops[OP_ID(block)])
 #define OP_STR(block) (OP(block).str)
 #define OP_LEN(block) (OP(block).len)
 #define OP_CODESTR(block) (OP(block).codeStr ? OP(block).codeStr : OP(block).str)

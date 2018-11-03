@@ -29,6 +29,7 @@ typedef enum CodeBlockType {
     CB_UNARYOP,
 
     CB_IF,
+    CB_WHILE,
 
     CB_NUM_TYPES
 } CodeBlockType;

@@ -19,6 +19,8 @@ typedef struct CodeBlock CodeBlock; ///< @brief CodeBlock forward declaration
 typedef struct CodeBlockList {
     Component comp; ///< @brief Component data
 
+    float yscroll;
+
     List *blocks;    ///< @brief List of CodeBlock s
     List *blockPos;  ///< @brief CodeBlock positions in CodeBlockList
     List *blockSize; ///< @brief CodeBlock sizes in CodeBlockList
