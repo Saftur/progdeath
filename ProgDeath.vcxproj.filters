@@ -85,6 +85,9 @@
     <ClCompile Include="Source\cb_while.c">
       <Filter>Game\Components\Code Block\Types\Control\While</Filter>
     </ClCompile>
+    <ClCompile Include="Source\cb_for.c">
+      <Filter>Game\Components\Code Block\Types\Control\For</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -176,6 +179,9 @@
     </ClInclude>
     <ClInclude Include="Source\cb_while.h">
       <Filter>Game\Components\Code Block\Types\Control\While</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\cb_for.h">
+      <Filter>Game\Components\Code Block\Types\Control\For</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +277,9 @@
     </Filter>
     <Filter Include="Game\Components\Code Block\Types\Control\While">
       <UniqueIdentifier>{469bc98f-f89a-433f-8139-c3d3f7320807}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Control\For">
+      <UniqueIdentifier>{75c4ae69-810c-483a-88be-86bb3bb903de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

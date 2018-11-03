@@ -19,6 +19,7 @@
 #include "cb_unaryop.h"
 #include "cb_if.h"
 #include "cb_while.h"
+#include "cb_for.h"
 
 static CodeBlock_newfunc new_funcs[] = {
     cb_empty_new,
@@ -30,6 +31,7 @@ static CodeBlock_newfunc new_funcs[] = {
     cb_unaryop_new,
     cb_if_new,
     cb_while_new,
+    cb_for_new,
 };
 
 /**

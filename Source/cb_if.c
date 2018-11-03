@@ -7,6 +7,7 @@
 #include "cb_if.h"
 
 #include <stdio.h>
+#include <string.h>
 
 #include "cbtypedata.h"
 
@@ -167,16 +168,13 @@ static vec2_t draw(CodeBlock *block, vec2_t pos) {
 
     textSize(TEXT_SIZE);
     fillColor(COLOR_TEXT);
-    text("if", pos.x + PADD + TEXT_W(1/4), pos.y + TEXT_YOFFSET(topSize.y));
+    text("if", pos.x + PADD + TEXT_W(0.25f), pos.y + TEXT_YOFFSET(topSize.y));
     CodeBlock_draw(block->blocks->items[0], vec2_add(pos, condpos()));
     size.y += BORDER;
     return size;
 }
 
 static char *totext(CodeBlock *block) {
-    if (block->blocks->size < 1)
-        return NULL;
-
     size_t len = 0;
     char *line;
     size_t lineLen;
