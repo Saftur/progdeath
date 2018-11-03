@@ -20,6 +20,7 @@
 #include "cb_if.h"
 #include "cb_while.h"
 #include "cb_for.h"
+#include "cb_foreach.h"
 
 static CodeBlock_newfunc new_funcs[] = {
     cb_empty_new,
@@ -32,6 +33,7 @@ static CodeBlock_newfunc new_funcs[] = {
     cb_if_new,
     cb_while_new,
     cb_for_new,
+    cb_foreach_new,
 };
 
 /**

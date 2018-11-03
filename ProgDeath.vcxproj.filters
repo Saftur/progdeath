@@ -88,6 +88,9 @@
     <ClCompile Include="Source\cb_for.c">
       <Filter>Game\Components\Code Block\Types\Control\For</Filter>
     </ClCompile>
+    <ClCompile Include="Source\cb_foreach.c">
+      <Filter>Game\Components\Code Block\Types\Control\For</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -181,6 +184,9 @@
       <Filter>Game\Components\Code Block\Types\Control\While</Filter>
     </ClInclude>
     <ClInclude Include="Source\cb_for.h">
+      <Filter>Game\Components\Code Block\Types\Control\For</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\cb_foreach.h">
       <Filter>Game\Components\Code Block\Types\Control\For</Filter>
     </ClInclude>
   </ItemGroup>
