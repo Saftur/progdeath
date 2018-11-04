@@ -4,29 +4,25 @@
  * @date 10/31/18
  * @brief Keeps track of how many players will be spawned
  * @addtogroup Components
- * @TODO: dynamically determine max players based on spawn padding
  * @{
  */
 #pragma once
 
-#define MIN_PLAYERS 2  // Includes the main player
-#define MAX_PLAYERS 16 // ^
-
  /**
-  * @brief Adds another player - wraps around MIN_PLAYERS and MAX_PLAYERS
+  * @brief Adds another player - wraps around MAP_MIN_PLAYERS and MAX_PLAYERS
   * @return New player count
   */
 int addPlayer();
 
 /**
- * @brief Removes a player - wraps around MIN_PLAYERS and MAX_PLAYERS
+ * @brief Removes a player - wraps around MAP_MIN_PLAYERS and MAX_PLAYERS
  * @return New player count
  */
 int removePlayer();
 
 /**
  * @brief Directly sets the amount of players
- * @param amount Amount of players to set - clamps between MIN_PLAYERS and MAX_PLAYERS
+ * @param amount Amount of players to set - clamps between MAP_MIN_PLAYERS and MAX_PLAYERS
  * @return New player count - used in case of clamp
  */
 int setPlayers(int amount);
@@ -36,3 +32,22 @@ int setPlayers(int amount);
  * @return Player count
  */
 int getPlayerCount();
+
+/**
+ * @brief Sets the maximum amount of players that can be spawned - caps based on map size and padding
+ * @param players The amount of players to be spawned
+ * @return maximum player count
+ */
+int setMaxPlayers(int players);
+
+/**
+ * @brief Gets the maximum amount of players that can be spawned - automatically calculates max players on FIRST call
+ * @return maximum player count
+ */
+int getMaxPlayers();
+
+/**
+ * @brief Calculates/Updates the maximum amount of players that can be spawned
+ */
+void calcMaxPlayers();
+/// @}

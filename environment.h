@@ -16,6 +16,7 @@ typedef enum EnvironmentType
     WATER,
     TREE,
     ENVIRONMENT_COUNT,
+    ENVIRONMENT_FIRST = MOUNTAIN,
 }EnvironmentType;
 
 /// @}

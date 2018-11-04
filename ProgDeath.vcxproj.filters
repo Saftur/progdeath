@@ -52,6 +52,18 @@
     <ClCompile Include="Source\codeblocklist.c">
       <Filter>Game\Components\Code Block</Filter>
     </ClCompile>
+    <ClCompile Include="playercount.c">
+      <Filter>Game\Components\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="spawnpadding.c">
+      <Filter>Game\Components\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="mapsize.c">
+      <Filter>Game\Components\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="map.c">
+      <Filter>Game\Components\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -117,11 +129,17 @@
     <ClInclude Include="mapitems.h">
       <Filter>Game\Components\Map</Filter>
     </ClInclude>
-    <ClInclude Include="enemyspawns.h">
-      <Filter>Game\Components\Map</Filter>
-    </ClInclude>
     <ClInclude Include="playercount.h">
       <Filter>Game\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="mapsize.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="spawnpadding.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="enemytype.h">
+      <Filter>Game\Components\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
