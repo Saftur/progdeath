@@ -52,6 +52,9 @@
     <ClCompile Include="Source\codeblocklist.c">
       <Filter>Game\Components\Code Block</Filter>
     </ClCompile>
+    <ClCompile Include="Source\entactions.c">
+      <Filter>Game\Components\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -106,6 +109,9 @@
       <Filter>Game\Components\Code Block</Filter>
     </ClInclude>
     <ClInclude Include="Source\enemylua.h">
+      <Filter>Game\Components\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\entactions.h">
       <Filter>Game\Components\Entity</Filter>
     </ClInclude>
   </ItemGroup>

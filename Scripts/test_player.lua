@@ -13,4 +13,9 @@ function update()
         dir.x = dir.x + 1
     end
     SetVel(dir * GetMaxVel())
+
+	local ent = GetNearest(ENT_ENEMY)
+	if ent then
+		StartAction(ACTION_THROW, ent, 0)
+	end
 end

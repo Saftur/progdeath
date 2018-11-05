@@ -13,6 +13,8 @@
 
 #include <lua.h>
 
+#include "entactions.h"
+
 #define INVENTORY_SIZE 5 //Maximum amount of items the players can hold (not including main hand and offhand)
 
 typedef struct Entity Entity;
@@ -29,14 +31,10 @@ typedef enum ScriptType {
 
 typedef struct Entity Entity; ///< @brief Entity forward declaration
 
-typedef enum Items{
-    NONE,
 
-
-    ITEMCOUNT, //How many different types of items there are
-} Items;
 
 typedef struct Inventory {
+    //TODO change entity to item
     Entity *mainHand, *offHand, *stored[INVENTORY_SIZE];
 } Inventory;
 
@@ -58,6 +56,9 @@ typedef struct Entity {
     float maxHp; ///< @brief Maximum Health 
 
     Inventory inventory; ///< @brief Entity's stored items
+
+    EntAction currAction; ///< @brief the current action the entity is in
+    List *actionData;     ///< @brief holds date for the current action
 } Entity;
 
 /**

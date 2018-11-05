@@ -53,11 +53,17 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
     this->hp = maxHp;
     this->maxHp = maxHp;
 
-    this->inventory.mainHand = NONE;
-    this->inventory.offHand = NONE;
+    //TODO remove definition and make items enum
+#define ITEM_NONE 0
+    this->inventory.mainHand = ITEM_NONE;
+    this->inventory.offHand = ITEM_NONE;
 
     for (int i = 0; i < INVENTORY_SIZE; i++)
-        this->inventory.stored[i] = NONE;
+        this->inventory.stored[i] = ITEM_NONE;
+#undef ITEM_NONE
+
+    this->currAction = EA_NONE;
+    this->actionData = List_new(3, NULL, free);
 
     return this;
 }
@@ -107,6 +113,8 @@ void _Entity_update(Entity *this) {
     if (List_find(this->types, ENT_PLAYER, NULL) && (trs = Object_getComp(this->comp.owner, TRANSFORM))) {
         translate(canvasWidth / 2 - trs->pos.x, canvasHeight / 2 - trs->pos.y);
     }
+
+    entActionFuncs[this->currAction](this);
 }
 
 /**
