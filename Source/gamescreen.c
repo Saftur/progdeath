@@ -18,6 +18,9 @@
 #include "entity.h"
 
 #include "enemylua.h"
+#include "Engine/emptycomp.h"
+#include <stdio.h>
+#include "../map.h"
 
 //  MENU LISTENER
 
@@ -30,6 +33,13 @@ static void menuEffect(Listener *listener) {
 }
 
 //  LEVEL INIT
+
+Map mainMap = {0};
+
+void tempDrawFunction(Component* comp)
+{
+    renderMap(&mainMap, 50);
+}
 
 /**
  * @brief Initialize Game Screen
@@ -48,6 +58,14 @@ void gameScreenInit(ObjectMngr *objMngr) {
     Transform *entTrs;
     Physics *entPhys;
     Entity *ent;
+
+    Object *obj = Object_new("Temp Draw");
+    EmptyComp *comp = EmptyComp_new();
+    comp->comp.draw = tempDrawFunction;
+    Object_addComp(obj, comp);
+    ObjectMngr_addObj(objMngr, obj);
+
+    createMap(&mainMap, 0);
 
     entObj = Object_new("Test Player");
     entTrs = Transform_new();

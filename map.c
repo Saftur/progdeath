@@ -22,11 +22,11 @@ static struct EnvObj
 };
 
 static struct EnvObj envObjs[] = {
-    {.size = 1,.color = {128,255,128, 128}},
+    {.size = 1,.color = {64,128,64, 255}},
     {.chance = 4,.spawnPadding = 2, .size = 4, .color = {139,141,122, 255}}, // Mountain
     {.chance = 2,.spawnPadding = 3, .size = 3,.color = {226,88,34, 255}}, // Fire
     {.chance = 3,.spawnPadding = 1,.size = 2,.color = {79,66,181, 255}}, // Water
-    {.chance = 8,.spawnPadding = 0, .size = 1,.color = {83, 49, 24, 200}}, // Tree
+    {.chance = 8,.spawnPadding = 0, .size = 1,.color = {83, 49, 24, 255}}, // Tree
 };
 
 /*static void _placeEnemies(Map* map);
@@ -205,8 +205,9 @@ static void _renderEnvironment(const Map* map, const int size)
         {
             const struct EnvObj curObj = envObjs[map->environment[y][x]];
 
+            noStroke();
             fill(curObj.color.r, curObj.color.g, curObj.color.b, curObj.color.a);
-            rect(x*size, y*size, size, size);
+            rect(x*size - 0.5, y*size - 0.5, size + 1, size + 1);
         }
     }
 }
