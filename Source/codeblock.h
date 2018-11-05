@@ -19,6 +19,7 @@ typedef struct CodeBlock CodeBlock; ///< @brief CodeBlock forward declaration
 
 typedef enum CodeBlockType {
     CB_EMPTY,
+    CB_SEQUENCE,
 
     CB_SETVAR,
 

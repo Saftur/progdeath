@@ -91,6 +91,9 @@
     <ClCompile Include="Source\cb_foreach.c">
       <Filter>Game\Components\Code Block\Types\Control\For</Filter>
     </ClCompile>
+    <ClCompile Include="Source\cb_sequence.c">
+      <Filter>Game\Components\Code Block\Types\Other\Sequence</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -189,6 +192,9 @@
     <ClInclude Include="Source\cb_foreach.h">
       <Filter>Game\Components\Code Block\Types\Control\For</Filter>
     </ClInclude>
+    <ClInclude Include="Source\cb_sequence.h">
+      <Filter>Game\Components\Code Block\Types\Other\Sequence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -286,6 +292,9 @@
     </Filter>
     <Filter Include="Game\Components\Code Block\Types\Control\For">
       <UniqueIdentifier>{75c4ae69-810c-483a-88be-86bb3bb903de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Other\Sequence">
+      <UniqueIdentifier>{55a229ec-b50b-492c-8a43-99484a699c36}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "cb_empty.h"
+#include "cb_sequence.h"
 #include "cb_setvar.h"
 #include "cb_var.h"
 #include "cb_num.h"
@@ -24,6 +25,7 @@
 
 static CodeBlock_newfunc new_funcs[] = {
     cb_empty_new,
+    cb_sequence_new,
     cb_setvar_new,
     cb_var_new,
     cb_num_new,

@@ -146,8 +146,9 @@ void CodeBlockBoard_addBlock(CodeBlockBoard *this, CodeBlock *block, vec2_t pos)
         CodeBlock_delete(block);
         return;
     }
-    List_push_back(this->blocks, block);
-    //offPos = vec2_sub(pos, halfSize);
+    CodeBlock *sequence = CodeBlock_new_nodata(CB_SEQUENCE);
+    List_push_back(sequence->blocks, block);
+    List_push_back(this->blocks, sequence);
     vec2_t *newPos = malloc(sizeof(vec2_t));
     *newPos = offPos;
     List_push_back(this->blockPos, newPos);

@@ -27,3 +27,10 @@ void addTabs(char *txt) {
 #endif
     }
 }
+
+char *getTabs() {
+    char *tabs = malloc((CURR_TABSIZE+1) * sizeof(char));
+    addTabs(tabs);
+    tabs[CURR_TABSIZE] = 0;
+    return tabs;
+}

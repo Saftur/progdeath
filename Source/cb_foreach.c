@@ -12,23 +12,19 @@
 #include "cbtypedata.h"
 
 #define BORDER (HEIGHT / 5)
-#define XSPACING (HEIGHT / 15)
-#define YSPACING (HEIGHT / 5)
-#define BD_XSP (BORDER + XSPACING)
-#define BD_YSP (BORDER + YSPACING)
-#define FIRSTNONARG 2
+#define FOR_TEXT_W TEXT_W(3.75f)
+#define NUMARGS 2
 
 static void init(CodeBlock *block) {
     List_push_back(block->blocks, empty_new());
     List_push_back(block->blocks, empty_new());
+    List_push_back(block->blocks, CodeBlock_new(CB_SEQUENCE, NULL, 0));
 }
 
 static vec2_t gettopsize(CodeBlock *block) {
-    CodeBlock *var = block->blocks->items[0];
-    vec2_t varSize = CodeBlock_getsize(var);
-    vec2_t size = (vec2_t){ TEXT_W(3.75f + 3) + varSize.x + PADD * 2, max(HEIGHT, varSize.y + PADD * 2) };
-    for (unsigned i = 1; i < FIRSTNONARG; i++) {
-        vec2_t argSize = CodeBlock_getsize(block->blocks->items[i]);
+    vec2_t size = (vec2_t){ FOR_TEXT_W + TEXT_W(2 + 2 * 2) + PADD * 2, HEIGHT };
+    for (unsigned i = 0; i < NUMARGS; i++) {
+        vec2_t argSize = CodeBlock_getsize(sub_block(i));
         size.y = max(size.y, argSize.y + PADD * 2);
         size.x += argSize.x;
     }
@@ -36,84 +32,65 @@ static vec2_t gettopsize(CodeBlock *block) {
 }
 
 static vec2_t getsize(CodeBlock *block) {
-    vec2_t size = gettopsize(block);
-    for (unsigned i = FIRSTNONARG; i < block->blocks->size; i++) {
-        vec2_t innSize = CodeBlock_getsize(block->blocks->items[i]);
-        size.x = max(size.x, innSize.x + BD_XSP);
-        size.y += innSize.y + YSPACING;
-    }
-    size.y += BD_YSP;
-    return size;
+    vec2_t topSize = gettopsize(block);
+    vec2_t seqSize = vec2_add(CodeBlock_getsize(sub_block(NUMARGS)), (vec2_t){ BORDER, BORDER });
+    return (vec2_t){ max(topSize.x, BORDER + seqSize.x), topSize.y + seqSize.y + BORDER };
 }
 
 static vec2_t varpos() {
-    return (vec2_t){ PADD + TEXT_W(3.75f), PADD };
+    return (vec2_t){ PADD + FOR_TEXT_W, PADD };
 }
 
 static vec2_t argpos(vec2_t varSize) {
-    vec2_t pos = (vec2_t){ PADD + TEXT_W(3.75f + 3) + varSize.x, PADD };
+    vec2_t pos = (vec2_t){ PADD + FOR_TEXT_W + TEXT_W(3) + varSize.x, PADD };
     return pos;
 }
 
+static vec2_t seqpos(CodeBlock *block) {
+    return (vec2_t){ BORDER, gettopsize(block).y };
+}
+
 static void update(CodeBlock *block, vec2_t pos) {
-    CodeBlock *var = block->blocks->items[0];
+    CodeBlock *var = sub_block(0);
     vec2_t varPos = varpos();
     CodeBlock_update(var, vec2_add(pos, varPos));
     vec2_t varSize = CodeBlock_getsize(var);
 
-    CodeBlock *arg = block->blocks->items[1];
+    CodeBlock *arg = sub_block(1);
     CodeBlock_update(arg, vec2_add(pos, argpos(varSize)));
 
-    vec2_t topsize = gettopsize(block);
-    float y = topsize.y;
-    for (unsigned i = FIRSTNONARG; i < block->blocks->size; i++) {
-        CodeBlock *b = block->blocks->items[i];
-        y += YSPACING;
-        vec2_t bPos = (vec2_t){ BD_XSP, y };
-        vec2_t bSize = CodeBlock_getsize(b);
-        CodeBlock_update(b, vec2_add(pos, bPos));
-        y += bSize.y;
-    }
+    CodeBlock *sequence = sub_block(NUMARGS);
+    vec2_t seqPos = vec2_add(pos, seqpos(block));
+    CodeBlock_update(sequence, seqPos);
 }
 
 static CBGrabResult grab(CodeBlock *block, vec2_t p, int test) {
     CBGrabResult res;
-    CodeBlock *var = block->blocks->items[0];
+    CodeBlock *var = sub_block(0);
     vec2_t varPos = varpos();
     res = CodeBlock_grab_test(var, vec2_sub(p, varPos), test);
     if (res.either) {
         if (res.parent && !test)
-            block->blocks->items[0] = empty_new();
+            sub_block(0) = empty_new();
         return GRABRES_CHILD;
     }
     vec2_t varSize = CodeBlock_getsize(var);
     
-    CodeBlock *arg = block->blocks->items[1];
+    CodeBlock *arg = sub_block(1);
     vec2_t argPos = argpos(varSize);
     res = CodeBlock_grab_test(arg, vec2_sub(p, argPos), test);
     if (res.either) {
         if (res.parent && !test)
-            block->blocks->items[1] = empty_new();
+            sub_block(1) = empty_new();
         return GRABRES_CHILD;
     }
 
-    vec2_t topsize = gettopsize(block);
-    float y = topsize.y;
-    for (unsigned i = FIRSTNONARG; i < block->blocks->size; i++) {
-        CodeBlock *b = block->blocks->items[i];
-        y += YSPACING;
-        vec2_t bPos = (vec2_t){ BD_XSP, y };
-        vec2_t bSize = CodeBlock_getsize(b);
-        res = CodeBlock_grab_test(b, vec2_sub(p, bPos), test);
-        if (res.either) {
-            if (res.parent && !test)
-                List_remove_nodelete(block->blocks, i);
-            return GRABRES_CHILD;
-        }
-        y += bSize.y;
+    CodeBlock *sequence = sub_block(NUMARGS);
+    res = CodeBlock_grab_test(sequence, vec2_sub(p, seqpos(block)), test);
+    if (res.either) {
+        return GRABRES_CHILD;
     }
-    vec2_t size = getsize(block);
-    if (vec2_in_range(p, vec2_zero(), (vec2_t){ size.x, topsize.y })) {
+    if (vec2_in_range(p, vec2_zero(), (vec2_t){ getsize(block).x, gettopsize(block).y })) {
         if (!test) setGrabbed(block, p);
         return GRABRES_PARENT;
     }
@@ -121,7 +98,7 @@ static CBGrabResult grab(CodeBlock *block, vec2_t p, int test) {
 }
 
 static int drop(CodeBlock *block, CodeBlock *dropped, vec2_t p) {
-    CodeBlock *var = block->blocks->items[0];
+    CodeBlock *var = sub_block(0);
     vec2_t varPos = varpos();
     vec2_t varSize = CodeBlock_getsize(var);
     vec2_t subP = vec2_sub(p, varPos);
@@ -129,11 +106,11 @@ static int drop(CodeBlock *block, CodeBlock *dropped, vec2_t p) {
         return 1;
     } else if (is_lvalue(dropped) && vec2_in_range(subP, vec2_zero(), varSize)) {
         CodeBlock_delete(var);
-        block->blocks->items[0] = dropped;
+        sub_block(0) = dropped;
         return 1;
     }
 
-    CodeBlock *arg = block->blocks->items[1];
+    CodeBlock *arg = sub_block(1);
     vec2_t argPos = argpos(varSize);
     vec2_t argSize = CodeBlock_getsize(arg);
     subP = vec2_sub(p, argPos);
@@ -141,141 +118,57 @@ static int drop(CodeBlock *block, CodeBlock *dropped, vec2_t p) {
         return 1;
     } else if (is_arg(dropped) && vec2_in_range(subP, vec2_zero(), argSize)) {
         CodeBlock_delete(arg);
-        block->blocks->items[1] = dropped;
+        sub_block(1) = dropped;
         return 1;
     }
 
-    vec2_t topsize = gettopsize(block);
-    vec2_t size = getsize(block);
-    float y = topsize.y;
-    float insY = topsize.y - PADD;
-    float prevInsAdd = PADD;
-    float nextInsY = 0;
-    for (unsigned i = FIRSTNONARG; i < block->blocks->size; i++) {
-        CodeBlock *b = block->blocks->items[i];
-        y += YSPACING;
-        vec2_t bPos = (vec2_t){ BD_XSP, y };
-        float bHeight = CodeBlock_getsize(b).y;
-        nextInsY = insY + YSPACING + prevInsAdd + (bHeight / 2);
-        prevInsAdd = bHeight / 2;
-        vec2_t subP = vec2_sub(p, bPos);
-        if (CodeBlock_drop(b, dropped, subP)) {
-            return 1;
-        } else if (is_directive(dropped) && vec2_in_range(p, (vec2_t){ BD_XSP, insY }, (vec2_t){ size.x - BD_XSP, nextInsY })) {
-            List_insert(block->blocks, i, dropped);
-            return 1;
-        }
-        y += bHeight;
-        insY = nextInsY;
-    }
-    nextInsY = insY + BD_YSP + prevInsAdd;
-    if (is_directive(dropped) && vec2_in_range(p, (vec2_t){ BD_XSP, insY }, (vec2_t){ size.x - BD_XSP, nextInsY })) {
-        List_push_back(block->blocks, dropped);
+    CodeBlock *sequence = sub_block(NUMARGS);
+    vec2_t seqSize = CodeBlock_getsize(sequence);
+    if (CodeBlock_drop(sequence, dropped, vec2_sub(p, seqpos(block))))
         return 1;
-    }
     return 0;
 }
 
 static vec2_t draw(CodeBlock *block, vec2_t pos) {
-    vec2_t size = gettopsize(block);
-    vec2_t topSize = size;
-    vec2_t innPos = vec2_add(pos, (vec2_t){ BD_XSP, topSize.y });
-    vec2_t innSize;
-
-    size.y += YSPACING;
-    noStroke();
-    fillColor(COLOR_CONTROL);
-    rect(pos.x, innPos.y, BORDER, YSPACING);
-    innPos.y += YSPACING;
-
-    for (unsigned i = FIRSTNONARG; i < block->blocks->size; i++) {
-        innSize = CodeBlock_draw(block->blocks->items[i], innPos);
-        innSize.y += YSPACING;
-        size.y += innSize.y;
-        if (innSize.x + BD_XSP > size.x)
-            size.x = innSize.x + BD_XSP;
-        noStroke();
-        fillColor(COLOR_CONTROL);
-        rect(pos.x, innPos.y, BORDER, innSize.y);
-        innPos.y += innSize.y;
-    }
-
+    vec2_t topSize = gettopsize(block);
+    vec2_t seqSize = CodeBlock_draw(sub_block(NUMARGS), vec2_add(pos, seqpos(block)));
+    vec2_t size = (vec2_t){ max(topSize.x, BORDER + seqSize.x), topSize.y + seqSize.y + BORDER };
     noStroke();
     fillColor(COLOR_CONTROL);
     rectRounded(pos.x, pos.y, size.x, topSize.y, RECT_RADIUS);
-    rectRounded(pos.x, innPos.y, size.x, BORDER, RECT_RADIUS);
-    rect(pos.x, pos.y + topSize.y - RECT_RADIUS, RECT_RADIUS, RECT_RADIUS);
-    rect(pos.x, innPos.y, RECT_RADIUS, RECT_RADIUS);
+    rectRounded(pos.x, pos.y + size.y - BORDER, size.x, BORDER, RECT_RADIUS);
+    rect(pos.x, pos.y + topSize.y - RECT_RADIUS, BORDER, seqSize.y + RECT_RADIUS * 2);
 
+    vec2_t varSize = CodeBlock_draw(sub_block(0), vec2_add(pos, varpos()));
     textSize(TEXT_SIZE);
     fillColor(COLOR_TEXT);
     text("for", pos.x + PADD + TEXT_W(0.25f), pos.y + TEXT_YOFFSET(topSize.y));
-    vec2_t varSize = CodeBlock_getsize(block->blocks->items[0]);
-    text("in", pos.x + PADD + TEXT_W(3.75f + 0.5f) + varSize.x, pos.y + TEXT_YOFFSET(topSize.y));
-    CodeBlock_draw(block->blocks->items[0], vec2_add(pos, varpos()));
-    
-    CodeBlock *arg = block->blocks->items[1];
-    vec2_t argPos = vec2_add(pos, argpos(varSize));
-    CodeBlock_draw(arg, argPos);
+    text("in", pos.x + PADD + FOR_TEXT_W + TEXT_W(0.5f) + varSize.x, pos.y + TEXT_YOFFSET(topSize.y));
+    CodeBlock_draw(sub_block(1), vec2_add(pos, argpos(varSize)));
 
-    size.y += BORDER;
     return size;
 }
 
 static char *totext(CodeBlock *block) {
-    size_t len = 0;
-    char *line;
-    size_t lineLen;
-    List *lines = List_new(20, NULL, free);
-    List *lineLens = List_new(20, NULL, NULL);
-    char *subText;
-    size_t subLen;
+    size_t len = 16 + CURR_TABSIZE;
 
-    char *argTexts[FIRSTNONARG];
-    size_t argLens[FIRSTNONARG];
-    lineLen = 12;
-    for (unsigned i = 0; i < FIRSTNONARG; i++) {
-        lineLen += (argLens[i] = strlen(argTexts[i] = CodeBlock_totext(block->blocks->items[i])));
-    }
-    line = malloc(lineLen * sizeof(char));
-    len += lineLen;
-    snprintf(line, lineLen, "for %s in %s do", argTexts[0], argTexts[1]);
-    line[lineLen-1] = '\n';
-    for (unsigned i = 0; i < FIRSTNONARG; i++)
-        free(argTexts[i]);
-    List_push_back(lines, line);
-    List_push_back(lineLens, lineLen);
+    char *argTexts[NUMARGS];
+    for (unsigned i = 0; i < NUMARGS; i++)
+        len += strlen(argTexts[i] = CodeBlock_totext(sub_block(i)));
+
     incTab();
-
-    for (unsigned i = FIRSTNONARG; i < block->blocks->size; i++) {
-        subLen = strlen(subText = CodeBlock_totext(block->blocks->items[i]));
-        line = malloc((lineLen = subLen + 1 + CURR_TABSIZE) * sizeof(char));
-        len += lineLen;
-        addTabs(line);
-        strncpy(line+CURR_TABSIZE, subText, subLen);
-        strncpy(line+lineLen-1, "\n", 1);
-        free(subText);
-        List_push_back(lines, line);
-        List_push_back(lineLens, lineLen);
-    }
+    char *seq = CodeBlock_totext(sub_block(NUMARGS));
     decTab();
-    line = malloc((lineLen = CURR_TABSIZE + 3) * sizeof(char));
-    len += lineLen;
-    addTabs(line);
-    strncpy(line+CURR_TABSIZE, "end", 3);
-    List_push_back(lines, line);
-    List_push_back(lineLens, lineLen);
+    len += strlen(seq);
 
     char *txt = malloc((len+1) * sizeof(char));
-    char *txtPos = txt;
-    for (unsigned i = 0; i < lines->size; i++) {
-        strncpy(txtPos, lines->items[i], (size_t)lineLens->items[i]);
-        txtPos += (size_t)lineLens->items[i];
-    }
-    txt[len] = 0;
+    char *tabs = getTabs();
+    sprintf(txt, "for %s in %s do\n%s\n%send", argTexts[0], argTexts[1], seq, tabs);
 
-    List_delete(lines);
-    List_delete(lineLens);
+    for (unsigned i = 0; i < NUMARGS; i++)
+        free(argTexts[i]);
+    free(seq);
+    free(tabs);
 
     return txt;
 }

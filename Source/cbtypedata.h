@@ -10,8 +10,8 @@
 #include "codeblock.h"
 #include "editorscreen.h"
 
-#define PADD 2
-#define HEIGHT 40
+#define PADD 4
+#define HEIGHT 50
 #define INNER_HEIGHT (HEIGHT - PADD * 2)
 #define RECT_RADIUS 4
 #define ARG_RND_BOX_PADD(height) ((height) * 0.40)
@@ -49,6 +49,8 @@ void decTab();
 
 void addTabs(char *txt);
 
+char *getTabs();
+
 #define GRABRES(parent, child) (CBGrabResult){ parent || child, parent, child }
 #define GRABRES_NEITHER GRABRES(0, 0)
 #define GRABRES_PARENT  GRABRES(1, 0)
@@ -60,3 +62,5 @@ void addTabs(char *txt);
 
 #define empty_new() CodeBlock_new(CB_EMPTY, NULL, 0)
 #define num_new() CodeBlock_new(CB_NUM, NULL, 0)
+
+#define sub_block(i) block->blocks->items[i]
