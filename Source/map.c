@@ -11,6 +11,9 @@
 #include <C_Processing.h>
 #include "map.h"
 #include <time.h>
+#include <Engine/objectmngr.h>
+#include <Engine/object.h>
+#include "entity.h"
 #include "mapsize.h"
 
 static struct EnvObj
@@ -32,7 +35,7 @@ static struct EnvObj envObjs[] = {
 /*static void _placeEnemies(Map* map);
 static void _placeItems(Map* map);*/
 
-static void _placeEnvironment(Map* map);
+static void _placeEnvironment(Map* map, ObjectMngr *objMngr);
 static enum SEARCHTYPE
 {
     ENVIRONMENT,
@@ -54,7 +57,7 @@ static void _renderEnemies(Map* map);*/
  * @param[out] map  address to store the map at
  * @param seed Seeds random numbers - set to 0 for no seed.
  */
-void createMap(Map* map, int seed)
+void createMap(Map* map, int seed, ObjectMngr *objMngr)
 {
     if (seed)
         randomSeed(seed);
@@ -62,7 +65,7 @@ void createMap(Map* map, int seed)
         randomSeed(time(0));
 
     /*_placeEnemies(map);*/
-    _placeEnvironment(map);
+    _placeEnvironment(map, objMngr);
     /*_placeItems(map);*/
 }
 
@@ -82,7 +85,7 @@ void renderMap(Map* map, int size)
  * @brief Declares where certain environment objects shall be placed on render
  * @param[out] map address to store the map at
  */
-static void _placeEnvironment(Map * map)
+static void _placeEnvironment(Map * map, ObjectMngr *objMngr)
 {
 #define PROTECTED_GRASS -1
     for (int y = 0; y < getMapHeight(); y++)
@@ -116,7 +119,12 @@ static void _placeEnvironment(Map * map)
                         _replaceNodes(map->environment, (vec2_t) { x + offsetX, y + offsetY }, envObjs[i].spawnPadding, PROTECTED_GRASS, GRASS);
                     }
                 }
-                
+
+                Object *obj = Object_new("EnvObject");
+                Entity *ent = Entity_new("", ST_NONE, ENT_ENV, 100);
+                Entity_addType(ent, i + ENT_ENV + 1);
+                Object_addComp(obj, ent);
+                ObjectMngr_addObj(objMngr, obj);
             }
         }
     }

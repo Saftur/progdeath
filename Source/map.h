@@ -11,6 +11,7 @@
 #include "mapitems.h"
 #include "enemytype.h"
 #include "spawnpadding.h"
+#include "Engine/object.h"
 
 #define MAP_TILE_SIZE 50
 #define MAP_DRAW_OFFSET_X 0
@@ -45,7 +46,7 @@ typedef struct Map
  * @param[out] map  address to store the map at
  * @param seed Seeds random numbers - set to 0 for no seed.
  */
-void createMap(Map* map, int seed);
+void createMap(Map* map, int seed, ObjectMngr *objMngr);
 
 /**
  * @brief Draw a map on the screen

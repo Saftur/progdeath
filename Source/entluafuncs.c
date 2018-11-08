@@ -409,7 +409,7 @@ static const luaL_Reg funcs[] = {
 
     {"GetNearby", l_getnearby},
     {"GetNearest", l_getnearest},
-
+    
     {"GetTypes", l_gettypes},
     {"IsType", l_istype},
     {"GetTypeName", l_gettypename},

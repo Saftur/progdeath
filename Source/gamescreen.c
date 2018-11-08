@@ -20,7 +20,7 @@
 #include "enemylua.h"
 #include "Engine/emptycomp.h"
 #include <stdio.h>
-#include "../map.h"
+#include "map.h"
 
 //  MENU LISTENER
 
@@ -65,7 +65,7 @@ void gameScreenInit(ObjectMngr *objMngr) {
     Object_addComp(obj, comp);
     ObjectMngr_addObj(objMngr, obj);
 
-    createMap(&game_map, 0);
+    createMap(&game_map, 0, objMngr);
 
     entObj = Object_new("Test Player");
     entTrs = Transform_new();

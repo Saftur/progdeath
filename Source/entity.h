@@ -22,6 +22,13 @@ typedef struct Entity Entity;
 typedef enum EntityType {
     ENT_PLAYER,
     ENT_ENEMY,
+
+    ENT_ENV,
+    ENT_GRASS,
+    ENT_MOUNTAIN,
+    ENT_FIRE,
+    ENT_WATER,
+    ENT_TREE,
 } EntityType;
 
 typedef enum ScriptType {

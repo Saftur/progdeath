@@ -108,10 +108,6 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="map.c" />
-    <ClCompile Include="mapsearching.c" />
-    <ClCompile Include="mapsize.c" />
-    <ClCompile Include="playercount.c" />
     <ClCompile Include="Source\codeblock.c">
       <SubType>
       </SubType>
@@ -150,6 +146,10 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       </SubType>
     </ClCompile>
     <ClCompile Include="Source\gamescreen.c" />
+    <ClCompile Include="Source\map.c" />
+    <ClCompile Include="Source\mapsearching.c" />
+    <ClCompile Include="Source\mapsize.c" />
+    <ClCompile Include="Source\playercount.c" />
     <ClCompile Include="Source\screens.c" />
     <ClCompile Include="Source\luafuncs.c">
       <SubType>
@@ -161,6 +161,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       </SubType>
     </ClCompile>
     <ClCompile Include="Source\main.c" />
+    <ClCompile Include="Source\spawnpadding.c" />
     <ClCompile Include="Source\splashscreen.c">
       <SubType>
       </SubType>
@@ -169,16 +170,8 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="spawnpadding.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="enemytype.h" />
-    <ClInclude Include="environment.h" />
-    <ClInclude Include="map.h" />
-    <ClInclude Include="mapitems.h" />
-    <ClInclude Include="mapsearching.h" />
-    <ClInclude Include="mapsize.h" />
-    <ClInclude Include="playercount.h" />
     <ClInclude Include="Source\codeblock.h">
       <SubType>
       </SubType>
@@ -200,6 +193,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       </SubType>
     </ClInclude>
     <ClInclude Include="Source\enemylua.h" />
+    <ClInclude Include="Source\enemytype.h" />
     <ClInclude Include="Source\entactions.h" />
     <ClInclude Include="Source\entity.h">
       <SubType>
@@ -209,6 +203,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Source\environment.h" />
     <ClInclude Include="Source\gamebuttons.h">
       <SubType>
       </SubType>
@@ -219,6 +214,11 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </ClInclude>
     <ClInclude Include="Source\gamecomps.h" />
     <ClInclude Include="Source\gamescreen.h" />
+    <ClInclude Include="Source\map.h" />
+    <ClInclude Include="Source\mapitems.h" />
+    <ClInclude Include="Source\mapsearching.h" />
+    <ClInclude Include="Source\mapsize.h" />
+    <ClInclude Include="Source\playercount.h" />
     <ClInclude Include="Source\screens.h" />
     <ClInclude Include="Source\luafuncs.h">
       <SubType>
@@ -229,6 +229,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Source\spawnpadding.h" />
     <ClInclude Include="Source\splashscreen.h">
       <SubType>
       </SubType>
@@ -237,7 +238,6 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="spawnpadding.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\test_entity.lua" />
