@@ -14,10 +14,12 @@ static void attack(Entity* ent)
 
 static void block(Entity* ent) {}
 
+#define RANGE 25
+#define VELOCITY 500
+#define INCAPACITATE 1.125
+#define DELAY 0.5
 static void throw(Entity* ent) 
 {
-#define RANGE 100
-#define VELOCITY 1000
     Entity *target = *(Entity**)ent->actionData->items[0];
 
     Transform *tarTrs = Object_getComp(target->comp.owner, TRANSFORM);
@@ -33,11 +35,15 @@ static void throw(Entity* ent)
 
     if (!physics) return;
 
-    physics->vel = vec2_scale((vec2_t) {cos(direction), sin(direction)}, VELOCITY);
+    physics->vel = vec2_scale((vec2_t) { cos(direction), sin(direction) }, VELOCITY);
 
+    target->incapacitated = INCAPACITATE;
+    ent->actionDelay = DELAY;
+}
 #undef RANGE
 #undef VELOCITY
-}
+#undef INCAPACITATE
+#undef COOLDOWN
 
 static void push(Entity* ent) {}
 

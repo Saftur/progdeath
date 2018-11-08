@@ -59,6 +59,10 @@ typedef struct Entity {
 
     EntAction currAction; ///< @brief the current action the entity is in
     List *actionData;     ///< @brief holds date for the current action
+
+    double incapacitated; ///< @brief if second() < incapacitated the entity script will not be called
+    double actionDelay;   ///< @brief time before switching back to normal state after using an action
+    double actionStartup; ///< @brief time before the action takes place after calling it
 } Entity;
 
 /**

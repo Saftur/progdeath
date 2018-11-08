@@ -151,6 +151,7 @@ static int l_startaction(lua_State *L) {
         {
         case EA_THROW: 
             {
+#define STARTUP 0.125
                 Entity *thrown;
                 luaL_argcheck(L, thrown = lua_touserdata(L, 2), 2, "'Entity' expected");
                 luaL_argcheck(L, lua_isnumber(L, 3), 3, "'number' expected");
@@ -160,6 +161,8 @@ static int l_startaction(lua_State *L) {
                 float *dirData = malloc(sizeof(void*));
                 *dirData = lua_tonumber(L, 3);
                 List_push_back(ent->actionData, dirData);
+                ent->actionStartup = STARTUP;
+#undef STARTUP
             }
             break;
         }

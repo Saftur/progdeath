@@ -65,6 +65,10 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
     this->currAction = EA_NONE;
     this->actionData = List_new(3, NULL, free);
 
+    this->incapacitated = 0.0;
+    this->actionDelay = 0.0;
+    this->actionStartup = 0.0;
+
     return this;
 }
 
@@ -107,14 +111,28 @@ void _Entity_delete(Entity *this) {
 void _Entity_update(Entity *this) {
     resetTimeoutHook(this->script);
     lua_getglobal(this->script, "update");
-    lua_call(this->script, 0, 0);
+
+    if (this->incapacitated > 0)
+        this->incapacitated -= dt();
+    if (this->incapacitated <= 0)
+        lua_call(this->script, 0, 0);
 
     Transform *trs;
     if (List_find(this->types, ENT_PLAYER, NULL) && (trs = Object_getComp(this->comp.owner, TRANSFORM))) {
         translate(canvasWidth / 2 - trs->pos.x, canvasHeight / 2 - trs->pos.y);
     }
 
-    entActionFuncs[this->currAction](this);
+    if (this->actionDelay > 0)
+    {
+        this->actionDelay -= dt();
+        if (this->actionDelay <= 0)
+            this->currAction = EA_NONE;
+    }
+
+    if (this->actionStartup > 0)
+        this->actionStartup -= dt();
+    if (this->actionStartup <= 0 && this->actionDelay <= 0)
+        entActionFuncs[this->currAction](this);
 }
 
 /**

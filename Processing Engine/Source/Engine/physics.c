@@ -87,10 +87,10 @@ void _Physics_update(Physics *this) {
         if ((dec.y > 0.f && this->vel.y > 0.f) || (dec.y < 0.f && this->vel.y < 0.f))
             this->vel.y = 0.f;
     }
-    if (len > this->maxVel) {
+    /*if (len > this->maxVel) {
         // Limit max velocity
         this->vel = vec2_scale(this->vel, this->maxVel / len);
-    }
+    }*/
     this->pVel = this->vel;
     Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
     if (!trs) return;
