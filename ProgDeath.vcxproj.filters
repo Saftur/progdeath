@@ -52,6 +52,21 @@
     <ClCompile Include="Source\codeblocklist.c">
       <Filter>Game\Components\Code Block</Filter>
     </ClCompile>
+    <ClCompile Include="playercount.c">
+      <Filter>Game\Components\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="spawnpadding.c">
+      <Filter>Game\Components\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="mapsize.c">
+      <Filter>Game\Components\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="map.c">
+      <Filter>Game\Components\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="mapsearching.c">
+      <Filter>Game\Components\Map</Filter>
+    </ClCompile>
     <ClCompile Include="Source\entactions.c">
       <Filter>Game\Components\Entity</Filter>
     </ClCompile>
@@ -111,6 +126,30 @@
     <ClInclude Include="Source\enemylua.h">
       <Filter>Game\Components\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="environment.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="mapitems.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="playercount.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="mapsize.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="spawnpadding.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="enemytype.h">
+      <Filter>Game\Components\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="mapsearching.h">
+      <Filter>Game\Components\Map</Filter>
+    </ClInclude>
     <ClInclude Include="Source\entactions.h">
       <Filter>Game\Components\Entity</Filter>
     </ClInclude>
@@ -160,6 +199,9 @@
     </Filter>
     <Filter Include="Game\Components\Code Block">
       <UniqueIdentifier>{fc97b877-ef6c-428a-a978-40d2d3063d93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Map">
+      <UniqueIdentifier>{e8676e4f-4cfb-4a87-a9a1-48bfd6d15b5e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
