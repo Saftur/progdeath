@@ -207,7 +207,7 @@ static void _renderEnvironment(const Map* map, const int size)
 
             noStroke();
             fill(curObj.color.r, curObj.color.g, curObj.color.b, curObj.color.a);
-            rect(x*size - 0.5, y*size - 0.5, size + 1, size + 1);
+            rect(x*size - 0.5 + MAP_DRAW_OFFSET_X, y*size - 0.5 + MAP_DRAW_OFFSET_Y, size + 1, size + 1);
         }
     }
 }

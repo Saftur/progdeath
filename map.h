@@ -12,6 +12,10 @@
 #include "enemytype.h"
 #include "spawnpadding.h"
 
+#define MAP_TILE_SIZE 50
+#define MAP_DRAW_OFFSET_X 0
+#define MAP_DRAW_OFFSET_Y 0
+
 #define MAP_MAX_WIDTH 100
 #define MAP_MAX_HEIGHT 100
 #define MAP_MIN_WIDTH (int)(MAP_MAX_WIDTH / 10)

@@ -109,6 +109,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="map.c" />
+    <ClCompile Include="mapsearching.c" />
     <ClCompile Include="mapsize.c" />
     <ClCompile Include="playercount.c" />
     <ClCompile Include="Source\codeblock.c">
@@ -174,6 +175,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     <ClInclude Include="environment.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="mapitems.h" />
+    <ClInclude Include="mapsearching.h" />
     <ClInclude Include="mapsize.h" />
     <ClInclude Include="playercount.h" />
     <ClInclude Include="Source\codeblock.h">

@@ -64,6 +64,9 @@
     <ClCompile Include="map.c">
       <Filter>Game\Components\Map</Filter>
     </ClCompile>
+    <ClCompile Include="mapsearching.c">
+      <Filter>Game\Components\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -140,6 +143,9 @@
     </ClInclude>
     <ClInclude Include="enemytype.h">
       <Filter>Game\Components\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="mapsearching.h">
+      <Filter>Game\Components\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

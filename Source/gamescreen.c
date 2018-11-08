@@ -34,11 +34,11 @@ static void menuEffect(Listener *listener) {
 
 //  LEVEL INIT
 
-Map mainMap = {0};
+Map game_map = {0};
 
 void tempDrawFunction(Component* comp)
 {
-    renderMap(&mainMap, 50);
+    renderMap(&game_map, MAP_TILE_SIZE);
 }
 
 /**
@@ -65,7 +65,7 @@ void gameScreenInit(ObjectMngr *objMngr) {
     Object_addComp(obj, comp);
     ObjectMngr_addObj(objMngr, obj);
 
-    createMap(&mainMap, 0);
+    createMap(&game_map, 0);
 
     entObj = Object_new("Test Player");
     entTrs = Transform_new();
