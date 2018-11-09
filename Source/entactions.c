@@ -14,8 +14,8 @@ static void attack(Entity* ent)
 
 static void block(Entity* ent) {}
 
-#define RANGE 45
-#define VELOCITY 500
+#define RANGE 60
+#define VELOCITY 800
 #define INCAPACITATE 1.125
 #define DELAY 0.5
 static void throw(Entity* ent) 
@@ -38,7 +38,7 @@ static void throw(Entity* ent)
 
     if (!physics) return;
 
-    physics->vel = vec2_scale((vec2_t) { cos(direction), sin(direction) }, VELOCITY);
+    physics->vel = vec2_scale((vec2_t) { cosf(radians(direction)), sinf(radians(direction)) }, VELOCITY);
 
     target->incapacitated = INCAPACITATE;
     ent->actionDelay = DELAY;

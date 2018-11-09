@@ -1,22 +1,16 @@
 function update()
     local dir = vec2(0, 0)
-		local ent = GetNearest(ENT_ENEMY)
-    if KeyDown(KEY_W) then
-        dir.y = dir.y - 1
-    end
-    if KeyDown(KEY_S) then
-        dir.y = dir.y + 1
-    end
-    if KeyDown(KEY_A) then
-        dir.x = dir.x - 1
-    end
-    if KeyDown(KEY_D) then
-        dir.x = dir.x + 1
-    end
-	if KeyDown(KEY_T) then
+	local ent = GetNearest(ENT_ENEMY)
 	if ent then
-		StartAction(ACTION_THROW, ent, 0)
+		local pos = GetPos()
+		local otherPos = GetPos(ent)
+		dir = (otherPos - pos):norm()
+	
+		local fire = GetNearest(ENT_FIRE)
+		local angle = pos:angle(GetPos(fire) - pos)
+	
+		StartAction(ACTION_THROW, ent, angle)
+
+		SetVel(dir * GetMaxVel())
 	end
-	end
-    SetVel(dir * GetMaxVel())
 end
