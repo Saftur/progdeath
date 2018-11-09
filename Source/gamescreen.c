@@ -69,7 +69,7 @@ void gameScreenInit(ObjectMngr *objMngr) {
 
     entObj = Object_new("Test Player");
     entTrs = Transform_new();
-    entTrs->pos = (vec2_t){ canvasWidth / 2, canvasHeight / 2 };
+    entTrs->pos = (vec2_t){ canvasWidth / 2 + 100, canvasHeight / 2 };
     entPhys = Physics_new(300.f, 900.f);
     ent = Entity_new("Scripts/test_player.lua", ST_FILENAME, ENT_PLAYER, 100, ENTITY_RADIUS);
     Object_addComp(entObj, entTrs);
