@@ -469,6 +469,18 @@ void initEntityLuaState(Entity *ent, const char *script, ScriptType scriptType) 
     lua_setglobal(L, "ENT_PLAYER");
     lua_pushnumber(L, ENT_ENEMY);
     lua_setglobal(L, "ENT_ENEMY");
+    lua_pushnumber(L, ENT_ENV);
+    lua_setglobal(L, "ENT_ENV");
+    lua_pushnumber(L, ENT_GRASS);
+    lua_setglobal(L, "ENT_GRASS");
+    lua_pushnumber(L, ENT_MOUNTAIN);
+    lua_setglobal(L, "ENT_MOUNTAIN");
+    lua_pushnumber(L, ENT_FIRE);
+    lua_setglobal(L, "ENT_FIRE");
+    lua_pushnumber(L, ENT_WATER);
+    lua_setglobal(L, "ENT_WATER");
+    lua_pushnumber(L, ENT_TREE);
+    lua_setglobal(L, "ENT_TREE");
 
     lua_pushnumber(L, EA_NONE);
     lua_setglobal(L, "ACTION_NONE");

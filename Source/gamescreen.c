@@ -65,13 +65,13 @@ void gameScreenInit(ObjectMngr *objMngr) {
     Object_addComp(obj, comp);
     ObjectMngr_addObj(objMngr, obj);
 
-    createMap(&game_map, 0, objMngr);
+    createMap(&game_map, 16, objMngr);
 
     entObj = Object_new("Test Player");
     entTrs = Transform_new();
     entTrs->pos = (vec2_t){ canvasWidth / 2, canvasHeight / 2 };
     entPhys = Physics_new(300.f, 900.f);
-    ent = Entity_new("Scripts/test_player.lua", ST_FILENAME, ENT_PLAYER, 100);
+    ent = Entity_new("Scripts/test_player.lua", ST_FILENAME, ENT_PLAYER, 100, ENTITY_RADIUS);
     Object_addComp(entObj, entTrs);
     Object_addComp(entObj, entPhys);
     Object_addComp(entObj, ent);
@@ -81,9 +81,9 @@ void gameScreenInit(ObjectMngr *objMngr) {
         entObj = Object_new("Test Entity");
         entTrs = Transform_new();
         float angle = map((float)i, 0.f, 100.f, 0.f, TWO_PI);
-        entTrs->pos = (vec2_t){ canvasWidth / 2 + 400 * cosf(angle), canvasHeight / 2 + 400 * sinf(angle) };
+        entTrs->pos = (vec2_t){ canvasWidth / 2 + 600 * cosf(angle), canvasHeight / 2 + 1200 };
         entPhys = Physics_new(200.f, 900.f);
-        ent = Entity_new(enemyScript, ST_CODE, ENT_ENEMY, 100);
+        ent = Entity_new(enemyScript, ST_CODE, ENT_ENEMY, 100, ENTITY_RADIUS);
         Object_addComp(entObj, entTrs);
         Object_addComp(entObj, entPhys);
         Object_addComp(entObj, ent);
