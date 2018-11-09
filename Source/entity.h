@@ -17,6 +17,8 @@
 
 #define INVENTORY_SIZE 5 //Maximum amount of items the players can hold (not including main hand and offhand)
 
+#define ENTITY_RADIUS 20
+
 typedef struct Entity Entity;
 
 typedef enum EntityType {
@@ -32,6 +34,7 @@ typedef enum EntityType {
 } EntityType;
 
 typedef enum ScriptType {
+    ST_NONE,
     ST_FILENAME,
     ST_CODE,
 } ScriptType;

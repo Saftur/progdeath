@@ -14,7 +14,7 @@ static void attack(Entity* ent)
 
 static void block(Entity* ent) {}
 
-#define RANGE 25
+#define RANGE 45
 #define VELOCITY 500
 #define INCAPACITATE 1.125
 #define DELAY 0.5
@@ -27,7 +27,10 @@ static void throw(Entity* ent)
 
     if (!tarTrs || !entTrs) return;
 
-    if (vec2_distance(tarTrs->pos, entTrs->pos) > RANGE) return;
+    if (vec2_distance(tarTrs->pos, entTrs->pos) > RANGE) {
+        ent->actionDelay = DELAY;
+        return;
+    }
 
     float direction = *(float*)ent->actionData->items[1];
 

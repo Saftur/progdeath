@@ -13,6 +13,7 @@
 #include <time.h>
 #include <Engine/objectmngr.h>
 #include <Engine/object.h>
+#include <Engine/transform.h>
 #include "entity.h"
 #include "mapsize.h"
 
@@ -121,8 +122,11 @@ static void _placeEnvironment(Map * map, ObjectMngr *objMngr)
                 }
 
                 Object *obj = Object_new("EnvObject");
+                Transform *trs = Transform_new();
+                trs->pos = (vec2_t){((float)x + (float)envObjs[i].size / 2)*MAP_TILE_SIZE + MAP_DRAW_OFFSET_X, ((float)y + (float)envObjs[i].size / 2)*MAP_TILE_SIZE - 0.5 + MAP_DRAW_OFFSET_Y};
                 Entity *ent = Entity_new("", ST_NONE, ENT_ENV, 100);
                 Entity_addType(ent, i + ENT_ENV + 1);
+                Object_addComp(obj, trs);
                 Object_addComp(obj, ent);
                 ObjectMngr_addObj(objMngr, obj);
             }

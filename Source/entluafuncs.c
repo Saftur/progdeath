@@ -430,6 +430,8 @@ static const luaL_Reg funcs[] = {
  * @param scriptType Lua script type (code or filename)
  */
 void initEntityLuaState(Entity *ent, const char *script, ScriptType scriptType) {
+    if (scriptType == ST_NONE)
+        return;
     lua_State *L = luaL_newstate();
     luaL_requiref(L, "_G", luaopen_base, 1);
     luaL_requiref(L, "string", luaopen_string, 1);
@@ -479,8 +481,6 @@ void initEntityLuaState(Entity *ent, const char *script, ScriptType scriptType) 
     lua_pushnumber(L, EA_PUSH);
     lua_setglobal(L, "ACTION_PUSH");
 
-    ent->scriptStr = script;
-    ent->scriptType = scriptType;
     ent->script = L;
 }
 
