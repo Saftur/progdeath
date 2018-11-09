@@ -73,6 +73,8 @@ typedef struct Entity {
     double incapacitated; ///< @brief if second() < incapacitated the entity script will not be called
     double actionDelay;   ///< @brief time before switching back to normal state after using an action
     double actionStartup; ///< @brief time before the action takes place after calling it
+
+    float radius; ///< @brief radius of the entity (for drawing)
 } Entity;
 
 /**
@@ -81,9 +83,10 @@ typedef struct Entity {
  * @param scriptType Lua script type (code or filename)
  * @param baseType   Entity base type
  * @param maxHp	     Maximum Health
+ * @param radius     radius of the entity
  * @return New Entity
  */
-Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseType, float maxHp);
+Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseType, float maxHp, float radius);
 
 /**
  * @brief Clone Entity

@@ -16,16 +16,19 @@
 #include "luautil.h"
 #include "luafuncs.h"
 #include "entluafuncs.h"
+#include "map.h"
 
-/**
- * @brief Create new Entity
- * @param script     Lua script code or filename
- * @param scriptType Lua script type (code or filename)
- * @param baseType   Entity base type
- * @param maxHp	     Maximum Health
- * @return New Entity
- */
-Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseType, float maxHp) {
+
+ /**
+  * @brief Create new Entity
+  * @param script     Lua script code or filename
+  * @param scriptType Lua script type (code or filename)
+  * @param baseType   Entity base type
+  * @param maxHp	     Maximum Health
+  * @param radius     radius of the entity
+  * @return New Entity
+  */
+Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseType, float maxHp, float radius){
     Entity *this = malloc(sizeof(Entity));
     this->comp.typeName = "Entity";
     this->comp.typeId = ENTITY;
@@ -52,7 +55,7 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
     this->types = List_new(10, NULL, NULL);
     List_push_back(this->types, (void*)baseType);
 
-    this->detectRange = 300.f;
+    this->detectRange = 3000.f;
     this->actualEnt = this;
 
     this->hp = maxHp;
@@ -73,6 +76,8 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
     this->incapacitated = 0.0;
     this->actionDelay = 0.0;
     this->actionStartup = 0.0;
+
+    this->radius = radius;
 
     return this;
 }
@@ -142,6 +147,9 @@ void _Entity_update(Entity *this) {
         this->actionStartup -= dt();
     if (this->actionStartup <= 0 && this->actionDelay <= 0)
         entActionFuncs[this->currAction](this);
+
+    if (this->hp <= 0.0)
+        Object_destroy(this->comp.owner);
 }
 
 /**
@@ -149,11 +157,14 @@ void _Entity_update(Entity *this) {
  * @param this Entity to draw
  */
 void _Entity_draw(Entity *this) {
+
+    if (Entity_isType(this, ENT_ENV))return;
+
     Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
     if (!trs) return;
     fill(0, 0, 0, 255);
     noStroke();
-    circle(trs->pos.x, trs->pos.y, ENTITY_RADIUS);
+    circle(trs->pos.x, trs->pos.y, this->radius);
 }
 
 /**
@@ -171,7 +182,7 @@ void _Entity_coll_resolve(Entity *this, Component *other) {
  * @param type EntityType to add
  */
 void Entity_addType(Entity *this, EntityType type) {
-    if (Entity_isType(this, type))
+    if (!Entity_isType(this, type))
         List_push_back(this->types, (void*)type);
 }
 
