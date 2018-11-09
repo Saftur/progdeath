@@ -16,6 +16,7 @@
 
 #include "luautil.h"
 #include "luavec2.h"
+#include "Engine/util.h"
 
 #define SCRIPT_TIMEOUT 1000
 
@@ -135,6 +136,44 @@ static int l_setvel(lua_State *L) {
 }
 
 /**
+ * @brief Start an action 
+ * @param 1 action type
+ */
+static int l_startaction(lua_State *L) {
+    EntAction type;
+    luaL_argcheck(L, lua_isnumber(L, 1) && inRange(type = lua_tonumber(L, 1), EA_NONE, EA_COUNT), 1, "'EntityAction' expected");
+    Entity *ent = getEntity(L);
+
+    if (ent->currAction == EA_NONE)
+    {
+        List_clear(ent->actionData);
+        switch(type)
+        {
+        case EA_THROW: 
+            {
+#define STARTUP 0.125
+                Entity *thrown;
+                luaL_argcheck(L, thrown = lua_touserdata(L, 2), 2, "'Entity' expected");
+                luaL_argcheck(L, lua_isnumber(L, 3), 3, "'number' expected");
+                void **thrownData = malloc(sizeof(void*));
+                *thrownData = thrown->actualEnt;
+                List_push_back(ent->actionData, thrownData);
+                float *dirData = malloc(sizeof(void*));
+                *dirData = lua_tonumber(L, 3);
+                List_push_back(ent->actionData, dirData);
+                ent->actionStartup = STARTUP;
+#undef STARTUP
+            }
+            break;
+        }
+
+        ent->currAction = type;
+    }
+
+    return 0;
+}
+
+/**
  * @brief Get max velocity
  * @return Max velocity
  */
@@ -167,7 +206,6 @@ static int l_getnearby(lua_State *L) {
         if (!(objEnt = Object_getComp(obj, ENTITY)) || objEnt == ent || !(objTrs = Object_getComp(obj, TRANSFORM)))
             continue;
         if (vec2_distance(trs->pos, objTrs->pos) < ent->detectRange) {
-            //lua_pushlightuserdata(L, objEnt);
             cloneEntity(L, objEnt);
             lua_rawseti(L, -2, ++count);
         }
@@ -255,6 +293,27 @@ static int l_getpos(lua_State *L) {
     return 1;
 }
 
+
+/**
+ * @brief Get the current action of an Entity
+ * @param 1 Entity to get current actuon of (default: self)
+ * @return current action of Entity
+ */
+static int l_getaction(lua_State *L) {
+    Entity *ent;
+    if (lua_isnone(L, 1))
+        ent = getEntity(L);
+    else
+        luaL_argcheck(L, ent = lua_touserdata(L, 1), 1, "'Entity' or 'none' expected");
+    if (!ent)
+        return 0;
+
+    lua_pushnumber(L, ent->currAction);
+
+    return 1;
+}
+
+
 /**
  * @brief Get health of Entity
  * @param 1 Entity to get health of (default: self)
@@ -340,12 +399,7 @@ static const luaL_Reg funcs[] = {
     {"SetAccel", l_setaccel},
     {"SetVel", l_setvel},
 
-    //{"Throw", l_throw},
-    //{"Pickup", l_pickup},
-    //{"Attack", l_attack},
-    //{"Block", l_block},
-    //{"Turn", l_turn},
-    //{"UseItem", l_useitem},
+    {"StartAction", l_startaction},
 
     //{"GetInventory", l_getinventory},
     //{"StoreItem", l_storeitem},
@@ -355,7 +409,7 @@ static const luaL_Reg funcs[] = {
 
     {"GetNearby", l_getnearby},
     {"GetNearest", l_getnearest},
-
+    
     {"GetTypes", l_gettypes},
     {"IsType", l_istype},
     {"GetTypeName", l_gettypename},
@@ -364,7 +418,7 @@ static const luaL_Reg funcs[] = {
     {"GetHp", l_gethp},
     //{"GetMainHand", l_getmainhand},
     //{"GetOffHand", l_getoffhand},
-    //{"GetAction", l_getaction},
+    {"GetAction", l_getaction},
 
     {NULL, NULL}
 };
@@ -376,6 +430,8 @@ static const luaL_Reg funcs[] = {
  * @param scriptType Lua script type (code or filename)
  */
 void initEntityLuaState(Entity *ent, const char *script, ScriptType scriptType) {
+    if (scriptType == ST_NONE)
+        return;
     lua_State *L = luaL_newstate();
     luaL_requiref(L, "_G", luaopen_base, 1);
     luaL_requiref(L, "string", luaopen_string, 1);
@@ -414,8 +470,17 @@ void initEntityLuaState(Entity *ent, const char *script, ScriptType scriptType) 
     lua_pushnumber(L, ENT_ENEMY);
     lua_setglobal(L, "ENT_ENEMY");
 
-    ent->scriptStr = script;
-    ent->scriptType = scriptType;
+    lua_pushnumber(L, EA_NONE);
+    lua_setglobal(L, "ACTION_NONE");
+    lua_pushnumber(L, EA_ATTACK);
+    lua_setglobal(L, "ACTION_ATTACK");
+    lua_pushnumber(L, EA_BLOCK);
+    lua_setglobal(L, "ACTION_BLOCK");
+    lua_pushnumber(L, EA_THROW);
+    lua_setglobal(L, "ACTION_THROW");
+    lua_pushnumber(L, EA_PUSH);
+    lua_setglobal(L, "ACTION_PUSH");
+
     ent->script = L;
 }
 

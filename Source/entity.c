@@ -33,16 +33,21 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
     this->comp.delete = _Entity_delete;
     this->comp.update = _Entity_update;
     this->comp.draw = _Entity_draw;
-    this->comp.collides = false;
+    this->comp.collides = true;
     this->comp.coll_resolve = _Entity_coll_resolve;
     this->comp.owner = NULL;
 
+    this->script = NULL;
+    this->scriptStr = script;
+    this->scriptType = scriptType;
     initEntityLuaState(this, script, scriptType);
-    if (!this->script) {
-        _Entity_delete(this);
-        return NULL;
+    if (this->scriptType != ST_NONE) {
+        if (!this->script) {
+            _Entity_delete(this);
+            return NULL;
+        }
+        register_luafuncs(this->script);
     }
-    register_luafuncs(this->script);
 
     this->types = List_new(10, NULL, NULL);
     List_push_back(this->types, (void*)baseType);
@@ -53,11 +58,21 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
     this->hp = maxHp;
     this->maxHp = maxHp;
 
-    this->inventory.mainHand = NONE;
-    this->inventory.offHand = NONE;
+    //TODO remove definition and make items enum
+#define ITEM_NONE 0
+    this->inventory.mainHand = ITEM_NONE;
+    this->inventory.offHand = ITEM_NONE;
 
     for (int i = 0; i < INVENTORY_SIZE; i++)
-        this->inventory.stored[i] = NONE;
+        this->inventory.stored[i] = ITEM_NONE;
+#undef ITEM_NONE
+
+    this->currAction = EA_NONE;
+    this->actionData = List_new(3, NULL, free);
+
+    this->incapacitated = 0.0;
+    this->actionDelay = 0.0;
+    this->actionStartup = 0.0;
 
     return this;
 }
@@ -89,7 +104,8 @@ Entity *_Entity_clone(Entity *this) {
  * @param this Entity to delete
  */
 void _Entity_delete(Entity *this) {
-    lua_close(this->script);
+    if (this->script)
+        lua_close(this->script);
     List_delete(this->types);
     free(this);
 }
@@ -99,14 +115,33 @@ void _Entity_delete(Entity *this) {
  * @param this Entity to update
  */
 void _Entity_update(Entity *this) {
-    resetTimeoutHook(this->script);
-    lua_getglobal(this->script, "update");
-    lua_call(this->script, 0, 0);
+    if (this->script) {
+        resetTimeoutHook(this->script);
+
+        if (this->incapacitated > 0)
+            this->incapacitated -= dt();
+        if (this->incapacitated <= 0) {
+            lua_getglobal(this->script, "update");
+            lua_call(this->script, 0, 0);
+        }
+    }
 
     Transform *trs;
     if (List_find(this->types, ENT_PLAYER, NULL) && (trs = Object_getComp(this->comp.owner, TRANSFORM))) {
         translate(canvasWidth / 2 - trs->pos.x, canvasHeight / 2 - trs->pos.y);
     }
+
+    if (this->actionDelay > 0)
+    {
+        this->actionDelay -= dt();
+        if (this->actionDelay <= 0)
+            this->currAction = EA_NONE;
+    }
+
+    if (this->actionStartup > 0)
+        this->actionStartup -= dt();
+    if (this->actionStartup <= 0 && this->actionDelay <= 0)
+        entActionFuncs[this->currAction](this);
 }
 
 /**
@@ -118,7 +153,7 @@ void _Entity_draw(Entity *this) {
     if (!trs) return;
     fill(0, 0, 0, 255);
     noStroke();
-    circle(trs->pos.x, trs->pos.y, 20);
+    circle(trs->pos.x, trs->pos.y, ENTITY_RADIUS);
 }
 
 /**

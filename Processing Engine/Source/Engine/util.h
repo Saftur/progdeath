@@ -78,5 +78,6 @@ int vec2_in_range(vec2_t v, vec2_t range1, vec2_t range2);
  * @return If the two vec2_t are equal
  */
 int vec2_equal(vec2_t a, vec2_t b);
+vec2_t vec2_midp(vec2_t a, vec2_t b);
 
 /// @}

@@ -109,4 +109,8 @@ int vec2_equal(vec2_t a, vec2_t b) {
     return a.x == b.x && a.y == b.y;
 }
 
+vec2_t vec2_midp(vec2_t a, vec2_t b) {
+    return (vec2_t){ (b.x - a.x) / 2 + a.x, (b.y - a.y) / 2 + a.y };
+}
+
 /// @}
