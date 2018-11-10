@@ -14,8 +14,8 @@ static void attack(Entity* ent)
 
 static void block(Entity* ent) {}
 
-#define RANGE 45
-#define VELOCITY 600
+#define RANGE 60
+#define VELOCITY 800
 #define INCAPACITATE 1.125
 #define DELAY 0.5
 static void throw(Entity* ent) 
