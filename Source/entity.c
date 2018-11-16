@@ -158,13 +158,28 @@ void _Entity_update(Entity *this) {
  */
 void _Entity_draw(Entity *this) {
 
-    if (Entity_isType(this, ENT_ENV))return;
-
     Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
     if (!trs) return;
-    fill(0, 0, 0, 255);
     noStroke();
-    circle(trs->pos.x, trs->pos.y, this->radius);
+    for (unsigned i = 0; i < this->types->size; i++)
+    {
+        switch ((EntityType)(this->types->items[i]))
+        {
+        case ENT_APPLE:
+            fill(215,30,0,255);
+            circle(trs->pos.x, trs->pos.y, this->radius / 2);
+            break;
+        case ENT_TREE:
+            fill(envObjs[ENV_TREE].color.r, envObjs[ENV_TREE].color.g, envObjs[ENV_TREE].color.b, envObjs[ENV_TREE].color.a);
+            circle(trs->pos.x, trs->pos.y, this->radius);
+            break;
+        case ENT_ITEM:
+            break;
+        default:
+            fill(0, 0, 0, 255);
+            circle(trs->pos.x, trs->pos.y, this->radius);
+        }
+    }
 }
 
 /**

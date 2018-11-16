@@ -16,6 +16,7 @@
 
 #include "entity.h"
 #include <stdio.h>
+#include "../apples.h"
 
 /* Collision Component sorting example:
 static bool CollCheck_Entity_Wall(Component *comp1, Component *comp2) {
@@ -43,16 +44,22 @@ static void CollResolve_Entity_Entity(Component *comp1, Component *comp2) {
 
     if(Entity_isType(ent1, ENT_ENV) || Entity_isType(ent2, ENT_ENV))
     {
-        Entity *player = ent2;
+        Entity *character = ent2;
         Entity *env = ent1;
         if (Entity_isType(ent1, ENT_PLAYER) || Entity_isType(ent1, ENT_ENEMY))
         {
-            player = ent2;
-            env = ent1;
+            character = ent1;
+            env = ent2;
         }
         
-        else if(Entity_isType(env, ENT_FIRE))
-            player->hp -= 100;
+        if(Entity_isType(env, ENT_FIRE))
+            character->hp -= 100;
+        else if(Entity_isType(env, ENT_TREE))
+        {
+            env->hp -= 100;
+            Transform *envTrs = Object_getComp(env->comp.owner, TRANSFORM);
+            spawnApple(envTrs->pos, env->comp.owner->objMngr);
+        }
 
         return;
     }

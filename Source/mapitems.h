@@ -10,6 +10,7 @@
 
 typedef enum MapItemType
 {
+    ITEM_APPLE,
     MAPITEM_COUNT,
 }MapItemType;
 

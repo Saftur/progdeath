@@ -31,6 +31,9 @@ typedef enum EntityType {
     ENT_FIRE,
     ENT_WATER,
     ENT_TREE,
+
+    ENT_ITEM,
+    ENT_APPLE,
 } EntityType;
 
 typedef enum ScriptType {

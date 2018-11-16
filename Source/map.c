@@ -17,16 +17,9 @@
 #include "entity.h"
 #include "mapsize.h"
 
-static struct EnvObj
-{
-    unsigned int chance;
-    unsigned int spawnPadding;
-    unsigned int size;
-    PColor color;
-};
 
-static struct EnvObj envObjs[] = {
-    {.size = 1,.color = {64,128,64, 255}},
+struct EnvObj envObjs[] = {
+    {.size = 1,.color = {64,128,64, 255}}, //grass
     {.chance = 4,.spawnPadding = 2, .size = 4, .color = {139,141,122, 255}}, // Mountain
     {.chance = 2,.spawnPadding = 3, .size = 3,.color = {226,88,34, 255}}, // Fire
     {.chance = 3,.spawnPadding = 1,.size = 2,.color = {79,66,181, 255}}, // Water
@@ -93,7 +86,7 @@ static void _placeEnvironment(Map * map, ObjectMngr *objMngr)
     {
         for (int x = 0; x < getMapWidth(); x++)
         {
-            map->environment[y][x] = GRASS;
+            map->environment[y][x] = ENV_GRASS;
         }
     }
 
@@ -108,7 +101,7 @@ static void _placeEnvironment(Map * map, ObjectMngr *objMngr)
                 int BREAK = 0;
                 for (int offsetX = 0; offsetX < envObjs[i].size; offsetX++)
                     for (int offsetY = 0; offsetY < envObjs[i].size; offsetY++)
-                        if (map->environment[y + offsetY][x + offsetX] != GRASS) BREAK = 1;
+                        if (map->environment[y + offsetY][x + offsetX] != ENV_GRASS) BREAK = 1;
                 
                 if (BREAK)break;
 
@@ -117,7 +110,7 @@ static void _placeEnvironment(Map * map, ObjectMngr *objMngr)
                     for (int offsetY = 0; offsetY < envObjs[i].size; offsetY++)
                     {
                         map->environment[y + offsetY][x + offsetX] = i;
-                        _replaceNodes(map->environment, (vec2_t) { x + offsetX, y + offsetY }, envObjs[i].spawnPadding, PROTECTED_GRASS, GRASS);
+                        _replaceNodes(map->environment, (vec2_t) { x + offsetX, y + offsetY }, envObjs[i].spawnPadding, PROTECTED_GRASS, ENV_GRASS);
                     }
                 }
 
@@ -138,7 +131,7 @@ static void _placeEnvironment(Map * map, ObjectMngr *objMngr)
         for (int x = 0; x < getMapWidth(); x++)
         {
             if (map->environment[y][x] == PROTECTED_GRASS)
-                map->environment[y][x] = GRASS;
+                map->environment[y][x] = ENV_GRASS;
         }
     }
 
@@ -211,17 +204,9 @@ static int _nodeDist(vec2_t node, vec2_t target)
  */
 static void _renderEnvironment(const Map* map, const int size)
 {
-    for(int y = 0; y < getMapHeight(); y++)
-    {
-        for(int x = 0; x < getMapWidth(); x++)
-        {
-            const struct EnvObj curObj = envObjs[map->environment[y][x]];
-
-            noStroke();
-            fill(curObj.color.r, curObj.color.g, curObj.color.b, curObj.color.a);
-            rect(x*size - 0.5 + MAP_DRAW_OFFSET_X, y*size - 0.5 + MAP_DRAW_OFFSET_Y, size + 1, size + 1);
-        }
-    }
+    noStroke();
+    fill(envObjs[0].color.r, envObjs[0].color.g, envObjs[0].color.b, envObjs[0].color.a);
+    rect(MAP_DRAW_OFFSET_X, MAP_DRAW_OFFSET_Y, size * getMapWidth(), size * getMapHeight());
 }
 
 /// @}

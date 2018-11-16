@@ -54,10 +54,11 @@ void ObjectMngr_update(ObjectMngr *objMngr) {
         } else Object_update(obj);
     }
     // Check collisions
-    for (unsigned o1 = 0; o1 < objMngr->objs->size; o1++) {
+    size_t numObjs = objMngr->objs->size;
+    for (unsigned o1 = 0; o1 < numObjs; o1++) {
         Object *obj1 = objMngr->objs->items[o1];
         if (obj1->collComps->size == 0 || Object_isDestroyed(obj1)) continue;
-        for (unsigned o2 = o1+1; o2 < objMngr->objs->size; o2++) {
+        for (unsigned o2 = o1+1; o2 < numObjs; o2++) {
             Object *obj2 = objMngr->objs->items[o2];
             if (obj2->collComps->size == 0 || Object_isDestroyed(obj2)) continue;
             for (unsigned c1 = 0; c1 < obj1->collComps->size; c1++) {

@@ -12,6 +12,7 @@
 #include "enemytype.h"
 #include "spawnpadding.h"
 #include "Engine/object.h"
+#include <C_Processing.h>
 
 #define MAP_TILE_SIZE 50
 #define MAP_DRAW_OFFSET_X 0
@@ -30,6 +31,15 @@
 #define MAP_MIN_PADDING 1
 #define MAP_DEFAULT_PADDING MAP_PADDING_FORMULA(MAP_DEFAULT_HEIGHT, MAP_DEFAULT_WIDTH, MAP_DEFAULT_PLAYER_COUNT)
 
+struct EnvObj
+{
+    unsigned int chance;
+    unsigned int spawnPadding;
+    unsigned int size;
+    PColor color;
+};
+
+extern struct EnvObj envObjs[];
 
  /**
   * @brief Entity Component
@@ -54,5 +64,4 @@ void createMap(Map* map, int seed, ObjectMngr *objMngr);
  * @param size size of the map
  */
 void renderMap(Map* map, int size);
-
 /// @}

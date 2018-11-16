@@ -10,13 +10,13 @@
 
 typedef enum EnvironmentType
 {
-    GRASS,
-    MOUNTAIN,
-    FIRE,
-    WATER,
-    TREE,
+    ENV_GRASS,
+    ENV_MOUNTAIN,
+    ENV_FIRE,
+    ENV_WATER,
+    ENV_TREE,
     ENVIRONMENT_COUNT,
-    ENVIRONMENT_FIRST = MOUNTAIN,
+    ENVIRONMENT_FIRST = ENV_MOUNTAIN,
 }EnvironmentType;
 
 /// @}
