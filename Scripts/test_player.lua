@@ -1,7 +1,22 @@
 function update()
     local dir = vec2(0, 0)
 	local ent = GetNearest(ENT_ENEMY)
-	if ent then
+
+	if KeyDown(KEY_W) then
+		dir.y = -1;
+	end
+	if KeyDown(KEY_S) then
+		dir.y = 1;
+	end
+	if KeyDown(KEY_A) then
+		dir.x = -1;
+	end
+	if KeyDown(KEY_D) then
+		dir.x = 1;
+	end
+	
+	SetVel(dir * GetMaxVel())
+	--[[if ent then
 		local pos = GetPos()
 		local otherPos = GetPos(ent)
 		dir = (otherPos - pos):norm()
@@ -12,5 +27,5 @@ function update()
 		StartAction(ACTION_THROW, ent, angle)
 
 		SetVel(dir * GetMaxVel())
-	end
+	end--]]
 end

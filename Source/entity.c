@@ -17,7 +17,9 @@
 #include "luafuncs.h"
 #include "entluafuncs.h"
 #include "map.h"
+#include "mapsize.h"
 
+static vec2_t camPos = { 0,0 };
 
  /**
   * @brief Create new Entity
@@ -79,6 +81,7 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
 
     this->radius = radius;
 
+
     return this;
 }
 
@@ -131,9 +134,24 @@ void _Entity_update(Entity *this) {
         }
     }
 
-    Transform *trs;
-    if (List_find(this->types, ENT_PLAYER, NULL) && (trs = Object_getComp(this->comp.owner, TRANSFORM))) {
-        translate(canvasWidth / 2 - trs->pos.x, canvasHeight / 2 - trs->pos.y);
+    Transform *trs; 
+    if (Entity_isType(this, ENT_PLAYER) && (trs = Object_getComp(this->comp.owner, TRANSFORM))) 
+    {   
+        vec2_t target = trs->pos;
+
+        if (target.x - canvasWidth / 2 < 0)
+            target.x = canvasWidth / 2;
+        else if (target.x + canvasWidth / 2 > MAP_TILE_SIZE * getMapWidth())
+            target.x = MAP_TILE_SIZE * getMapWidth() - canvasWidth / 2;
+        if (target.y - canvasHeight / 2 < 0)
+            target.y = canvasHeight / 2;
+        else if (target.y + canvasHeight / 2 > MAP_TILE_SIZE * getMapHeight())
+            target.y = MAP_TILE_SIZE * getMapHeight() - canvasHeight / 2;
+
+
+        camPos.x = lerp_i(camPos.x, target.x, 0.1);
+        camPos.y = lerp_i(camPos.y, target.y, 0.1);
+        translate(canvasWidth / 2 - camPos.x, canvasHeight / 2 - camPos.y);
     }
 
     if (this->actionDelay > 0)
