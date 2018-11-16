@@ -21,6 +21,7 @@ typedef enum CodeBlockType {
     CB_EMPTY,
     CB_SEQUENCE,
 
+    CB_FUNCTION,
     CB_SETVAR,
 
     CB_VAR,
