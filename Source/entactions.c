@@ -9,10 +9,13 @@ static void none(Entity* ent){}
 
 static void attack(Entity* ent)
 {
-
+    //TODO
 }
 
-static void block(Entity* ent) {}
+static void block(Entity* ent)
+{
+    
+}
 
 #define RANGE 60
 #define VELOCITY 800
@@ -48,15 +51,6 @@ static void throw(Entity* ent)
 #undef INCAPACITATE
 #undef COOLDOWN
 
-static void push(Entity* ent) {}
-
-static void pickup(Entity* ent) {}
-
-static void turn(Entity* ent) {}
-
-static void useitem(Entity* ent) {}
-
-
 
 void(*entActionFuncs[])(Entity*) = 
 {
@@ -64,8 +58,4 @@ void(*entActionFuncs[])(Entity*) =
     attack,
     block,
     throw,
-    push,
-    pickup,
-    turn,
-    useitem,
 };

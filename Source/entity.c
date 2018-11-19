@@ -61,15 +61,6 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
     this->hp = maxHp;
     this->maxHp = maxHp;
 
-    //TODO remove definition and make items enum
-#define ITEM_NONE 0
-    this->inventory.mainHand = ITEM_NONE;
-    this->inventory.offHand = ITEM_NONE;
-
-    for (int i = 0; i < INVENTORY_SIZE; i++)
-        this->inventory.stored[i] = ITEM_NONE;
-#undef ITEM_NONE
-
     this->currAction = EA_NONE;
     this->actionData = List_new(3, NULL, free);
 
@@ -78,6 +69,10 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
     this->actionStartup = 0.0;
 
     this->radius = radius;
+    if (maxHp == 0)
+        this->invincible = 1;
+    else
+        this->invincible = 0;
 
     return this;
 }
