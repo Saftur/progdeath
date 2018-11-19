@@ -41,13 +41,6 @@ typedef enum ScriptType {
 
 typedef struct Entity Entity; ///< @brief Entity forward declaration
 
-
-
-typedef struct Inventory {
-    //TODO change entity to item
-    Entity *mainHand, *offHand, *stored[INVENTORY_SIZE];
-} Inventory;
-
 /**
  * @brief Entity Component
  */
@@ -65,8 +58,6 @@ typedef struct Entity {
     float hp;	 ///< @brief Current Health 
     float maxHp; ///< @brief Maximum Health 
 
-    Inventory inventory; ///< @brief Entity's stored items
-
     EntAction currAction; ///< @brief the current action the entity is in
     List *actionData;     ///< @brief holds date for the current action
 
@@ -75,6 +66,8 @@ typedef struct Entity {
     double actionStartup; ///< @brief time before the action takes place after calling it
 
     float radius; ///< @brief radius of the entity (for drawing)
+
+    int invincible; ///< @brief rather or not the entity can take damage
 } Entity;
 
 /**

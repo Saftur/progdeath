@@ -401,10 +401,6 @@ static const luaL_Reg funcs[] = {
 
     {"StartAction", l_startaction},
 
-    //{"GetInventory", l_getinventory},
-    //{"StoreItem", l_storeitem},
-    //{"RetrieveItem", l_retrieveitem},
-
     {"GetMaxVel", l_getmaxvel},
 
     {"GetNearby", l_getnearby},
@@ -416,8 +412,6 @@ static const luaL_Reg funcs[] = {
 
     {"GetPos", l_getpos},
     {"GetHp", l_gethp},
-    //{"GetMainHand", l_getmainhand},
-    //{"GetOffHand", l_getoffhand},
     {"GetAction", l_getaction},
 
     {NULL, NULL}
@@ -490,8 +484,6 @@ void initEntityLuaState(Entity *ent, const char *script, ScriptType scriptType) 
     lua_setglobal(L, "ACTION_BLOCK");
     lua_pushnumber(L, EA_THROW);
     lua_setglobal(L, "ACTION_THROW");
-    lua_pushnumber(L, EA_PUSH);
-    lua_setglobal(L, "ACTION_PUSH");
 
     ent->script = L;
 }
