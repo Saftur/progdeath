@@ -12,10 +12,14 @@ static void attack(Entity* ent)
     //TODO
 }
 
+#define DELAY 0.5
 static void block(Entity* ent)
 {
-    
+    ent->invincible = 1;
+    ent->incapacitated = DELAY;
+    ent->actionDelay = DELAY;
 }
+#undef DELAY
 
 #define RANGE 60
 #define VELOCITY 800

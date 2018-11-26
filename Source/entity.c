@@ -135,7 +135,10 @@ void _Entity_update(Entity *this) {
     {
         this->actionDelay -= dt();
         if (this->actionDelay <= 0)
+        {
             this->currAction = EA_NONE;
+            this->invincible = 0;
+        }
     }
 
     if (this->actionStartup > 0)

@@ -151,7 +151,7 @@ static int l_startaction(lua_State *L) {
         {
         case EA_THROW: 
             {
-#define STARTUP 0.125
+#define STARTUP 0.15
                 Entity *thrown;
                 luaL_argcheck(L, thrown = lua_touserdata(L, 2), 2, "'Entity' expected");
                 luaL_argcheck(L, lua_isnumber(L, 3), 3, "'number' expected");
@@ -165,11 +165,30 @@ static int l_startaction(lua_State *L) {
 #undef STARTUP
             }
             break;
+        case EA_BLOCK:
+            {
+#define STARTUP 0
+            ent->actionStartup = STARTUP;
+#undef STARTUP    
+            }
+            break;
+        case EA_ATTACK:
+            {
+#define STARTUP 0.2
+                Entity *attacked;
+                luaL_argcheck(L, attacked = lua_touserdata(L, 2), 2, "'Entity' expected");
+                luaL_argcheck(L, lua_isnumber(L, 3), 3, "'number' expected");
+                void **attackData = malloc(sizeof(void*));
+                *attackData = attacked->actualEnt;
+                List_push_back(ent->actionData, attackData);
+                float *dirData = malloc(sizeof(void*));
+                *dirData = lua_tonumber(L, 3);
+                List_push_back(ent->actionData, dirData);
+                ent->actionStartup = STARTUP;
+ #undef STARTUP
+            }
         }
-
         ent->currAction = type;
-    }
-
     return 0;
 }
 
