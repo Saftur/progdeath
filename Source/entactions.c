@@ -41,7 +41,7 @@ static void throw(Entity* ent)
 
     if (!physics) return;
 
-    physics->vel = vec2_scale((vec2_t) { cosf(radians(direction)), sinf(radians(direction)) }, VELOCITY);
+    physics->vel = vec2_scale((vec2_t) { cosf(radians(direction)), -sinf(radians(direction)) }, VELOCITY);
 
     target->incapacitated = INCAPACITATE;
     ent->actionDelay = DELAY;

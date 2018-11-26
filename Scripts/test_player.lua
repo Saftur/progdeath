@@ -15,8 +15,7 @@ function update()
 	end
 	if KeyDown(KEY_T) then
 		local fire = GetNearest(ENT_FIRE)
-		local angle = pos:angle(GetPos(fire) - pos)
-	
+		local angle = vec2(1,0):angle(GetPos(fire) - GetPos())
 		StartAction(ACTION_THROW, ent, angle)
 	end 
 	SetVel(dir * GetMaxVel())
