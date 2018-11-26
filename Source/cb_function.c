@@ -42,7 +42,7 @@ static CBGrabResult grab(CodeBlock *block, vec2_t p, int test) {
     res = CodeBlock_grab_test(var, vec2_sub(p, varPos), test);
     if (res.either) {
         if (res.parent && !test)
-            block->blocks->items[0] = empty_new();
+            block->blocks->items[0] = CodeBlock_new(CB_NUM, NULL, 0);
         return GRABRES_CHILD;
     }
     if (vec2_in_range(p, vec2_zero(), getsize(block))) {
@@ -61,7 +61,7 @@ static int drop(CodeBlock *block, CodeBlock *dropped, vec2_t p) {
     subP = vec2_sub(p, varPos);
     if (CodeBlock_drop(var, dropped, subP)) {
         return 1;
-    } else if (is_lvalue(dropped) && vec2_in_range(subP, vec2_zero(), varSize)) {
+    } else if (is_arg(dropped) && vec2_in_range(subP, vec2_zero(), varSize)) {
         CodeBlock_delete(var);
         block->blocks->items[0] = dropped;
         return 1;

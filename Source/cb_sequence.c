@@ -69,7 +69,7 @@ static int drop(CodeBlock *block, CodeBlock *dropped, vec2_t p) {
             List_insert(block->blocks, i, dropped);
             return 1;
         }
-        subP.y += bHeight;
+        subP.y -= bHeight;
         ins.y = nextIns.y;
     }
     nextIns.y = ins.y + prevInsAdd + EXTRA_DROP_AREA;
