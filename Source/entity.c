@@ -146,7 +146,7 @@ void _Entity_update(Entity *this) {
     if (this->actionStartup <= 0 && this->actionDelay <= 0)
         entActionFuncs[this->currAction](this);
 
-    if (this->hp <= 0.0)
+    if (!this->invincible && this->hp <= 0.0 )
         Object_destroy(this->comp.owner);
 }
 
