@@ -13,6 +13,11 @@ function update()
 	if KeyDown(KEY_D) then
 		dir.x = 1
 	end
+	if KeyDown(KEY_T) then
+		local fire = GetNearest(ENT_FIRE)
+		local angle = pos:angle(GetPos(fire) - pos)
+		StartAction(ACTION_THROW, ent, angle)
+	end
 	SetVel(dir * GetMaxVel())
 	--[[if ent then
 		local pos = GetPos()
