@@ -6,6 +6,8 @@
  */
 #include "entluafuncs.h"
 
+#include <string.h>
+
 #include <lauxlib.h>
 #include <lualib.h>
 
@@ -193,6 +195,31 @@ static int l_startaction(lua_State *L) {
     return 0;
 }
 
+static int l_angleto(lua_State *L) {
+    vec2_t p1;
+    vec2_t p2;
+    int t = luaL_getmetafield(L, 1, "__name");
+    if (t == LUA_TSTRING && strcmp(lua_tostring(L, -1), "vec2") == 0)
+        p2 = *(vec2_t*)lua_touserdata(L, 1);
+    else p2 = ((Transform*)Object_getComp(((Entity*)lua_touserdata(L, 1))->comp.owner, TRANSFORM))->pos;
+    if (!lua_isnone(L, 2)) {
+        p1 = p2;
+        t = luaL_getmetafield(L, 2, "__name");
+        if (t == LUA_TSTRING && strcmp(lua_tostring(L, -1), "vec2") == 0)
+            p2 = *(vec2_t*)lua_touserdata(L, 2);
+        else p2 = ((Transform*)Object_getComp(((Entity*)lua_touserdata(L, 2))->comp.owner, TRANSFORM))->pos;
+    } else {
+        Entity *ent = getEntity(L);
+        p1 = ((Transform*)Object_getComp(ent->comp.owner, TRANSFORM))->pos;
+    }
+    vec2_t v = vec2_sub(p2, p1);
+    float a = vec2_angle((vec2_t){ 1, 0 }, v);
+    if (v.y > 0)
+        a = 360 - a;
+    lua_pushnumber(L, a);
+    return 1;
+}
+
 /**
  * @brief Get max velocity
  * @return Max velocity
@@ -280,6 +307,7 @@ static int l_getnearest(lua_State *L) {
         float dist = vec2_distance(trs->pos, objTrs->pos);
         if (dist < ent->detectRange && (!nearest || dist < nearestDist)) {
             nearest = objEnt;
+            nearestDist = dist;
         }
     }
     if (nearest)
@@ -421,6 +449,7 @@ static const luaL_Reg funcs[] = {
 
     {"StartAction", l_startaction},
 
+    {"AngleTo", l_angleto},
     {"GetMaxVel", l_getmaxvel},
 
     {"GetNearby", l_getnearby},
