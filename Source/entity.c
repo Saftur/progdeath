@@ -171,6 +171,9 @@ void _Entity_draw(Entity *this) {
             fill(envObjs[ENV_TREE].color.r, envObjs[ENV_TREE].color.g, envObjs[ENV_TREE].color.b, envObjs[ENV_TREE].color.a);
             circle(trs->pos.x, trs->pos.y, this->radius);
             break;
+        case ENT_FIRE:
+            fill(255, 0, 0, 255);
+            circle(trs->pos.x, trs->pos.y, this->radius);
         case ENT_ITEM:
             break;
         default:
