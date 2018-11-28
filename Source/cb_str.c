@@ -21,10 +21,8 @@ typedef struct CBStrFocus {
     vec2_t pos;
 } CBStrFocus;
 
-//#define FOCUS(block) (*(CBStrFocus**)block->data)
-//#define STR(block) ((char*)block->data+sizeof(void*))
-#define FOCUS(block)     ((CBStrFocus*)((List*)block->data)->items[0])
-#define STR(block)       ((char*)((List*)block->data)->items[1])
+#define FOCUS(block) ((CBStrFocus*)((List*)block->data)->items[0])
+#define STR(block)   ((char*)((List*)block->data)->items[1])
 
 #define STR_OFFSET (TEXT_ARG_RND_PADD + TEXT_W(1))
 #define STR_SIZE(block) block->dataSize

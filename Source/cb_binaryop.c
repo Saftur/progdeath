@@ -25,7 +25,8 @@ static CB_Op ops[] = {
     {"*", 1},
     {"/", 1},
     {"%", 1},
-    {",", 1},
+    {", ", 2, .noSp = 1},
+    {".", 1, .noSp = 1},
 };
 
 static void init(CodeBlock *block) {
@@ -146,12 +147,11 @@ static char *totext(CodeBlock *block) {
     char *arg2 = CodeBlock_totext(block->blocks->items[1]);
     size_t arg1len = strlen(arg1);
     size_t arg2len = strlen(arg2);
-    int isComma = OP_ID(block) == CB_BOP_CMA;
-    size_t xLen = isComma ? 1 : 4;
+    size_t xLen = OP_NOSP(block) ? 0 : 4;
     size_t len = arg1len + OP_CODELEN(block) + arg2len + xLen;
     char *txt = malloc((len+1) * sizeof(char));
 
-    sprintf(txt, isComma ? "%s%s %s" : "(%s %s %s)", arg1, OP_CODESTR(block), arg2);
+    sprintf(txt, OP_NOSP(block) ? "%s%s%s" : "(%s %s %s)", arg1, OP_CODESTR(block), arg2);
 
     free(arg1);
     free(arg2);
