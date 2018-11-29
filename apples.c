@@ -26,7 +26,7 @@ void spawnApple(vec2_t worldPos, ObjectMngr *objMngr)
     Transform *entTrs;
     Physics *entPhys;
     Entity *ent;
-    entObj = Object_new("Test Entity");
+    entObj = Object_new("APPLE");
     entTrs = Transform_new();
     entTrs->pos = worldPos;
     entPhys = Physics_new(50.f, 900.f);

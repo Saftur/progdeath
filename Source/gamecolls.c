@@ -60,7 +60,30 @@ static void CollResolve_Entity_Entity(Component *comp1, Component *comp2) {
             Transform *envTrs = Object_getComp(env->comp.owner, TRANSFORM);
             spawnApple(envTrs->pos, env->comp.owner->objMngr);
         }
+        else if(Entity_isType(env, ENT_APPLE))
+        {
+            env->hp -= 100;
+            character->hp = max(character->maxHp, character->hp + 10);
+        }
+        return;
+    }
 
+    if (Entity_isType(ent1, ENT_ITEM) || Entity_isType(ent2, ENT_ITEM))
+    {
+        Entity *character = ent2;
+        Entity *item = ent1;
+        if (Entity_isType(ent1, ENT_PLAYER) || Entity_isType(ent1, ENT_ENEMY))
+        {
+            character = ent1;
+            item = ent2;
+        }
+
+        
+        if (Entity_isType(item, ENT_APPLE))
+        {
+            item->hp -= 100;
+            character->hp = max(character->maxHp, character->hp + 10);
+        }
         return;
     }
 
