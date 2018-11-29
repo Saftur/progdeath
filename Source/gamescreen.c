@@ -21,6 +21,8 @@
 #include "Engine/emptycomp.h"
 #include <stdio.h>
 #include "map.h"
+#include "Engine/engine.h"
+#include "mapsize.h"
 
 //  MENU LISTENER
 
@@ -65,17 +67,33 @@ void gameScreenInit(ObjectMngr *objMngr) {
     Object_addComp(obj, comp);
     ObjectMngr_addObj(objMngr, obj);
 
-    createMap(&game_map, 16, objMngr);
+    createMap(&game_map, 0, objMngr);
 
     entObj = Object_new("Test Player");
-    entTrs = Transform_new();
-    entTrs->pos = (vec2_t){ canvasWidth / 2 + 100, canvasHeight / 2 };
-    entPhys = Physics_new(300.f, 900.f);
     ent = Entity_new("Scripts/test_player.lua", ST_FILENAME, ENT_PLAYER, 100, ENTITY_RADIUS);
+    entTrs = Transform_new();
+    entTrs->pos = (vec2_t) { randomRangeInt(ent->radius, getMapWidth() * MAP_TILE_SIZE - ent->radius) + MAP_DRAW_OFFSET_X,
+                             randomRangeInt(ent->radius, getMapHeight() * MAP_TILE_SIZE - ent->radius) + MAP_DRAW_OFFSET_Y };
+    entPhys = Physics_new(300.f, 900.f);
     Object_addComp(entObj, entTrs);
     Object_addComp(entObj, entPhys);
     Object_addComp(entObj, ent);
     ObjectMngr_addObj(objMngr, entObj);
+    CollCheckFunc check = Engine_getCollCheckFunc(ENTITY, ENTITY);
+    for (int i = 0; i < objMngr->objs->size; i++)
+    {
+        Object *obj = objMngr->objs->items[i];
+        Entity *ent2 = Object_getComp(obj, ENTITY);
+        if (ent2 && ent2 != ent)
+        {
+            if (check(ent, ent2))
+            {
+                entTrs->pos = (vec2_t) { randomRangeInt(ent->radius, getMapWidth() * MAP_TILE_SIZE - ent->radius) + MAP_DRAW_OFFSET_X,
+                                         randomRangeInt(ent->radius, getMapHeight() * MAP_TILE_SIZE - ent->radius) + MAP_DRAW_OFFSET_Y };
+                i = -1;
+            }
+        }
+    }
 
     for (unsigned i = 0; i < 1; i++) {
         entObj = Object_new("Test Entity");

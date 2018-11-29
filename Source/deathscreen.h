@@ -10,8 +10,7 @@
 
 typedef struct ObjectMngr ObjectMngr; ///< @brief ObjectMngr forward declaration
 
-extern int end_score; ///< @brief End score
-extern int end_time;  ///< @brief End time
+extern int has_won;  
 
 /**
  * @brief Initialize Death Screen

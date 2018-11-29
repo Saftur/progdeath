@@ -14,9 +14,9 @@
 #include <Engine/emptycomp.h>
 
 #include "gamebuttons.h"
+#include <stdio.h>
 
-int end_score = 0;
-int end_time = 0;
+int has_won = 0;
 
 //  FROWNY FACE
 
@@ -54,6 +54,40 @@ static void drawFrownyFace(Component *comp) {
     circle(pos.x - cos(rad) * 75, pos.y + 80 - sin(rad) * 45, 5.f);
 }
 
+/**
+ * @brief Draw frowny face
+ * @param comp Component to draw on
+ */
+static void drawSmileyFace(Component *comp) {
+    Transform *trs = Object_getComp(comp->owner, TRANSFORM);
+    if (!trs) return;
+
+    vec2_t pos = trs->pos;
+
+    stroke(127, 127, 127, 255);
+    fill(255, 255, 0, 255);
+    circle(pos.x, pos.y, 150);
+
+    noStroke();
+    fill(0, 0, 0, 255);
+    circle(pos.x - 50, pos.y - 35, 20);
+    circle(pos.x + 50, pos.y - 35, 20);
+
+    beginShape();
+    for (int i = 1; i <= 19; i++) {
+        float rad = (float)i * PI / 20.f;
+        vertex(pos.x + cos(rad) * 80, pos.y + 40 + sin(rad) * 50);
+    }
+    for (int i = 19; i >= 1; i--) {
+        float rad = (float)i * PI / 20.f;
+        vertex(pos.x + cos(rad) * 70, pos.y + 40 + sin(rad) * 40);
+    }
+    endShape();
+    float rad = PI / 20.f;
+    circle(pos.x + cos(rad) * 75, pos.y + 40 + sin(rad) * 45, 5.f);
+    circle(pos.x - cos(rad) * 75, pos.y + 40 + sin(rad) * 45, 5.f);
+}
+
 //  LEVEL INIT
 
 /**
@@ -65,34 +99,14 @@ void deathScreenInit(ObjectMngr *objMngr) {
     Transform *trs;
     Text *text;
 
-    obj = Object_new("You Lost Text");
+    obj = Object_new("Result Text");
     trs = Transform_new();
     trs->pos = (vec2_t){ canvasWidth / 2 - 175, 200.f };
-    text = Text_new("You Lost", 100);
+    text = Text_new(has_won ? "You Won" : "You Lost", 100);
     Object_addComp(obj, trs);
     Object_addComp(obj, text);
     ObjectMngr_addObj(objMngr, obj);
 
-    char str[20];
-    sprintf(str, "Score: %i", end_score);
-
-    obj = Object_new("Score Text");
-    trs = Transform_new();
-    trs->pos = (vec2_t){ canvasWidth / 2 - 140, 300.f };
-    text = Text_new(str, 75);
-    Object_addComp(obj, trs);
-    Object_addComp(obj, text);
-    ObjectMngr_addObj(objMngr, obj);
-
-    sprintf(str, "Time: %i", end_time / 1000);
-
-    obj = Object_new("Time Text");
-    trs = Transform_new();
-    trs->pos = (vec2_t){ canvasWidth / 2 - 140, 400.f };
-    text = Text_new(str, 75);
-    Object_addComp(obj, trs);
-    Object_addComp(obj, text);
-    ObjectMngr_addObj(objMngr, obj);
 
     Object *buttonObj;
     Transform *buttonTrs;
@@ -126,7 +140,7 @@ void deathScreenInit(ObjectMngr *objMngr) {
     trs = Transform_new();
     trs->pos = (vec2_t){ canvasWidth / 2, 800 };
     EmptyComp *comp = EmptyComp_new();
-    comp->comp.draw = drawFrownyFace;
+    comp->comp.draw = has_won ? drawSmileyFace : drawFrownyFace;
     Object_addComp(obj, trs);
     Object_addComp(obj, comp);
     ObjectMngr_addObj(objMngr, obj);

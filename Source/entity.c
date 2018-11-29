@@ -12,14 +12,16 @@
 #include <lualib.h>
 
 #include <Engine/transform.h>
+#include <Engine/gamelayer.h>
 
 #include "luautil.h"
 #include "luafuncs.h"
 #include "entluafuncs.h"
 #include "map.h"
+#include "Engine/screenmngr.h"
+#include "deathscreen.h"
 
-
- /**
+/**
   * @brief Create new Entity
   * @param script     Lua script code or filename
   * @param scriptType Lua script type (code or filename)
@@ -144,7 +146,32 @@ void _Entity_update(Entity *this) {
         entActionFuncs[this->currAction](this);
 
     if (this->hp <= 0.0)
-        Object_destroy(this->comp.owner);
+    {
+        if (Entity_isType(this, ENT_PLAYER))
+        {
+            has_won = 0;
+            ScreenMngr_setNextScreen(this->comp.owner->objMngr->gLayer->scrMngr, "Death Screen");
+        }
+        else
+        {
+            Object_destroy(this->comp.owner);
+            List *objs = this->comp.owner->objMngr->objs;
+            int count = 0;
+            for (unsigned i = 0; i < objs->size; i++) {
+                Object *obj = objs->items[i];
+                Entity *objEnt;
+                if (!(objEnt = Object_getComp(obj, ENTITY)) || objEnt == this)
+                    continue;
+                if (Entity_isType(objEnt, ENT_ENEMY))
+                    count++;
+            }
+            if (!count)
+            {
+                has_won = 1;
+                ScreenMngr_setNextScreen(this->comp.owner->objMngr->gLayer->scrMngr, "Death Screen");
+            }
+        }
+    }
 }
 
 /**

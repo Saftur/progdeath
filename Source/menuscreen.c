@@ -23,11 +23,13 @@
  */
 void menuScreenInit(ObjectMngr *objMngr) {
     const char *tutorialText[] ={
-        "Move using mouse",
-        "Change color using num keys",
-        "Collect orbs of changing colors",
-        "Touching lines of different color hurts",
-        "For each orb collected, there is a new node in play",
+        "                               Welcome to the Programmable Death Match.",
+        "Enter the editor, we have preloaded an example script",
+        "for you to mess around with and understand the basics.",
+        "It is your responsibility to learn the ropes around here.",
+        "There are 20 enemies waiting for you in the arena, try",
+        "and defeat them all without crashing the game. You are",
+        "in control now. Don't let us down programmer."
     };
 
     for (unsigned i = 0; i < sizeof(tutorialText) / sizeof(const char*); i++) {
@@ -75,7 +77,7 @@ void menuScreenInit(ObjectMngr *objMngr) {
     textObj = Object_new("Author Text");
     textTrs = Transform_new();
     textTrs->pos = (vec2_t){ 0, canvasHeight - 120 };
-    text = Text_new("Programmer & Designer: Arthur Bouvier", 50);
+    text = Text_new("Programmers: Arthur Bouvier and Connor Meyers", 50);
     Object_addComp(textObj, textTrs);
     Object_addComp(textObj, text);
     ObjectMngr_addObj(objMngr, textObj);
