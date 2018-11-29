@@ -123,6 +123,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </ClCompile>
     <ClCompile Include="Source\cb_for.c" />
     <ClCompile Include="Source\cb_foreach.c" />
+    <ClCompile Include="Source\cb_funcdef.c" />
     <ClCompile Include="Source\cb_function.c" />
     <ClCompile Include="Source\cb_if.c" />
     <ClCompile Include="Source\cb_num.c" />
@@ -211,6 +212,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </ClInclude>
     <ClInclude Include="Source\cb_for.h" />
     <ClInclude Include="Source\cb_foreach.h" />
+    <ClInclude Include="Source\cb_funcdef.h" />
     <ClInclude Include="Source\cb_function.h" />
     <ClInclude Include="Source\cb_if.h" />
     <ClInclude Include="Source\cb_num.h" />

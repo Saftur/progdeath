@@ -115,6 +115,9 @@
     <ClCompile Include="Source\cb_function.c">
       <Filter>Game\Components\Code Block\Types\Directives\Function</Filter>
     </ClCompile>
+    <ClCompile Include="Source\cb_funcdef.c">
+      <Filter>Game\Components\Code Block\Types\Directives\Function</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -244,6 +247,9 @@
       <Filter>Game\Components\Map</Filter>
     </ClInclude>
     <ClInclude Include="Source\cb_function.h">
+      <Filter>Game\Components\Code Block\Types\Directives\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\cb_funcdef.h">
       <Filter>Game\Components\Code Block\Types\Directives\Function</Filter>
     </ClInclude>
   </ItemGroup>

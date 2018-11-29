@@ -13,7 +13,7 @@ typedef struct CB_Op {
     size_t len;
     const char *codeStr;
     size_t codeLen;
-    int noSp;
+    int noParen;
 } CB_Op;
 
 #define OP_ID(block) (*(unsigned*)block->data)
@@ -22,4 +22,4 @@ typedef struct CB_Op {
 #define OP_LEN(block) (OP(block).len)
 #define OP_CODESTR(block) (OP(block).codeStr ? OP(block).codeStr : OP(block).str)
 #define OP_CODELEN(block) (OP(block).codeStr ? OP(block).codeLen : OP(block).len)
-#define OP_NOSP(block) (OP(block).noSp)
+#define OP_NOPAREN(block) (OP(block).noParen)
