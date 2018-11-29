@@ -33,7 +33,7 @@ static bool CollCheck_Entity_Entity(Component *comp1, Component *comp2) {
     Transform *trs1 = Object_getComp(ent1->comp.owner, TRANSFORM);
     Transform *trs2 = Object_getComp(ent2->comp.owner, TRANSFORM);
 
-    return vec2_distance(trs1->pos, trs2->pos) < ENTITY_RADIUS * 2;
+    return vec2_distance(trs1->pos, trs2->pos) < ent1->radius + ent2->radius;
 }
 
 static void CollResolve_Entity_Entity(Component *comp1, Component *comp2) {

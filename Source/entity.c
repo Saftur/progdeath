@@ -165,15 +165,24 @@ void _Entity_draw(Entity *this) {
         {
         case ENT_APPLE:
             fill(215,30,0,255);
-            circle(trs->pos.x, trs->pos.y, this->radius / 2);
+            circle(trs->pos.x, trs->pos.y, this->radius);
             break;
         case ENT_TREE:
             fill(envObjs[ENV_TREE].color.r, envObjs[ENV_TREE].color.g, envObjs[ENV_TREE].color.b, envObjs[ENV_TREE].color.a);
             circle(trs->pos.x, trs->pos.y, this->radius);
             break;
         case ENT_FIRE:
-            fill(255, 0, 0, 255);
+            fill(226, 88, 34, 255);
             circle(trs->pos.x, trs->pos.y, this->radius);
+            break;
+        case ENT_MOUNTAIN:
+            fill(139, 141, 122, 255);
+            circle(trs->pos.x, trs->pos.y, this->radius);
+            break;
+        case ENT_WATER:
+            fill(79, 66, 181, 255);
+            circle(trs->pos.x, trs->pos.y, this->radius);
+            break;
         case ENT_ITEM:
             break;
         default:

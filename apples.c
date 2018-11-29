@@ -30,7 +30,7 @@ void spawnApple(vec2_t worldPos, ObjectMngr *objMngr)
     entTrs = Transform_new();
     entTrs->pos = worldPos;
     entPhys = Physics_new(50.f, 900.f);
-    ent = Entity_new(NULL, ST_NONE, ENT_ITEM, 100, ENTITY_RADIUS);
+    ent = Entity_new(NULL, ST_NONE, ENT_ITEM, 100, ENTITY_RADIUS / 2);
     Entity_addType(ent, ENT_APPLE);
     Object_addComp(entObj, entTrs);
     Object_addComp(entObj, entPhys);
