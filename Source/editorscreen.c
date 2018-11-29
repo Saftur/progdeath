@@ -131,9 +131,7 @@ void editorScreenUpdate(Screen *screen) {
 void editorScreenEnd(ObjectMngr *objMngr) {
     textFont(getDefaultFont(), 12);
 
-    char *text = CodeBlockBoard_totext(board);
-    printf(text);
-    free(text);
+    CodeBlockBoard_save(board, "Scripts/player.lua");
 }
 
 /// @}

@@ -73,4 +73,8 @@ void CodeBlockBoard_addBlock(CodeBlockBoard *this, CodeBlock *block, vec2_t pos)
  */
 char *CodeBlockBoard_totext(CodeBlockBoard *this);
 
+void CodeBlockBoard_load(CodeBlockBoard *this, const char *script);
+
+void CodeBlockBoard_save(CodeBlockBoard *this, const char *script);
+
 /// @}
