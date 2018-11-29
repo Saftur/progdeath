@@ -30,6 +30,10 @@ static bool CollCheck_Entity_Wall(Component *comp1, Component *comp2) {
 static bool CollCheck_Entity_Entity(Component *comp1, Component *comp2) {
     Entity *ent1 = comp1;
     Entity *ent2 = comp2;
+
+    if (ent1->equipment == ent2 || ent2->equipment == ent1)
+        return 0;
+
     Transform *trs1 = Object_getComp(ent1->comp.owner, TRANSFORM);
     Transform *trs2 = Object_getComp(ent2->comp.owner, TRANSFORM);
 
@@ -40,6 +44,8 @@ static void CollResolve_Entity_Entity(Component *comp1, Component *comp2) {
     Entity *ent1 = comp1;
     Entity *ent2 = comp2;
 
+    if (Entity_isType(ent1, ENT_EQUIPMENT) || Entity_isType(ent2, ENT_EQUIPMENT))
+        return;
 
 
     if(Entity_isType(ent1, ENT_ENV) || Entity_isType(ent2, ENT_ENV))

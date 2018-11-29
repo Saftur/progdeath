@@ -68,11 +68,15 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
     this->actionDelay = 0.0;
     this->actionStartup = 0.0;
 
+    this->direction = 0;
+
     this->radius = radius;
     if (maxHp == 0)
         this->invincible = 1;
     else
         this->invincible = 0;
+
+    this->equipment = NULL;
 
     return this;
 }
@@ -115,6 +119,14 @@ void _Entity_delete(Entity *this) {
  * @param this Entity to update
  */
 void _Entity_update(Entity *this) {
+    Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
+
+    if (this->equipment) {
+        this->equipment->direction = this->direction;
+        Transform *eqTrs = Object_getComp(this->equipment->comp.owner, TRANSFORM);
+        eqTrs->pos = vec2_add(trs->pos, vec2_scale((vec2_t){ cos(radians(this->direction)), -sin(radians(this->direction)) }, this->radius));
+    }
+
     if (this->script) {
         resetTimeoutHook(this->script);
 
@@ -126,8 +138,7 @@ void _Entity_update(Entity *this) {
         }
     }
 
-    Transform *trs;
-    if (List_find(this->types, ENT_PLAYER, NULL) && (trs = Object_getComp(this->comp.owner, TRANSFORM))) {
+    if (List_find(this->types, ENT_PLAYER, NULL)) {
         translate(canvasWidth / 2 - trs->pos.x, canvasHeight / 2 - trs->pos.y);
     }
 
@@ -163,6 +174,11 @@ void _Entity_draw(Entity *this) {
     {
         switch ((EntityType)(this->types->items[i]))
         {
+        case ENT_SPEAR:
+            fill(0, 0, 0, 255);
+            float w = this->radius, h = this->radius / 16;
+            rectRotated(trs->pos.x - w / 2, trs->pos.y - h / 2, w, h, -this->direction);
+            break;
         case ENT_APPLE:
             fill(215,30,0,255);
             circle(trs->pos.x, trs->pos.y, this->radius / 2);
@@ -174,7 +190,8 @@ void _Entity_draw(Entity *this) {
         case ENT_FIRE:
             fill(255, 0, 0, 255);
             circle(trs->pos.x, trs->pos.y, this->radius);
-        case ENT_ITEM:
+            break;
+        case ENT_ITEM: case ENT_EQUIPMENT: case ENT_ENV:
             break;
         default:
             fill(0, 0, 0, 255);

@@ -138,6 +138,17 @@ static int l_setvel(lua_State *L) {
 }
 
 /**
+ * @brief Set direction
+ * @param 1 Degree direction
+ */
+static int l_setdir(lua_State *L) {
+    luaL_argcheck(L, lua_isnumber(L, 1), 1, "'number' expected");
+    Entity *ent = getEntity(L);
+    ent->direction = lua_tonumber(L, 1);
+    return 0;
+}
+
+/**
  * @brief Start an action 
  * @param 1 action type
  */
@@ -446,6 +457,7 @@ static const luaL_Reg funcs[] = {
     {"Move", l_move},
     {"SetAccel", l_setaccel},
     {"SetVel", l_setvel},
+    {"SetDir", l_setdir},
 
     {"StartAction", l_startaction},
 

@@ -77,6 +77,21 @@ void gameScreenInit(ObjectMngr *objMngr) {
     Object_addComp(entObj, ent);
     ObjectMngr_addObj(objMngr, entObj);
 
+    Entity *playerEnt = ent;
+
+    entObj = Object_new("Spear");
+    entTrs = Transform_new();
+    entTrs->pos = (vec2_t){ 0, 0 };
+    entPhys = Physics_new(300.f, 900.f);
+    ent = Entity_new(NULL, ST_NONE, ENT_EQUIPMENT, 0, ENTITY_RADIUS * 4);
+    Entity_addType(ent, ENT_SPEAR);
+    Object_addComp(entObj, entTrs);
+    Object_addComp(entObj, entPhys);
+    Object_addComp(entObj, ent);
+    ObjectMngr_addObj(objMngr, entObj);
+
+    playerEnt->equipment = ent;
+
     for (unsigned i = 0; i < 1; i++) {
         entObj = Object_new("Test Entity");
         entTrs = Transform_new();

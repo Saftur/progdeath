@@ -13,6 +13,7 @@ function update()
 	if KeyDown(KEY_D) then
 		dir.x = 1
 	end
+    SetDir(math.atan2(-dir.y, dir.x) / math.pi * 180)
 	if KeyDown(KEY_T) then
 		local fire = GetNearest(ENT_FIRE)
 		local angle = AngleTo(ent, fire)
