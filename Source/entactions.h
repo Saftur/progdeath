@@ -6,8 +6,10 @@ typedef enum EntAction
     EA_ATTACK,
     EA_BLOCK,
     EA_THROW,
-    EA_COUNT,
 
+    EA_WPN_ATTACK,
+
+    EA_COUNT,
 }EntAction;
 
 typedef struct Entity Entity; 

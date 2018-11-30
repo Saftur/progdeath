@@ -22,8 +22,12 @@
 typedef struct Entity Entity;
 
 typedef enum EntityType {
+    ENT_FIGHTER,
     ENT_PLAYER,
     ENT_ENEMY,
+
+    ENT_EQUIPMENT,
+    ENT_SPEAR,
 
     ENT_ENV,
     ENT_GRASS,
@@ -68,9 +72,15 @@ typedef struct Entity {
     double actionDelay;   ///< @brief time before switching back to normal state after using an action
     double actionStartup; ///< @brief time before the action takes place after calling it
 
+    float direction;
+
     float radius; ///< @brief radius of the entity (for drawing)
 
     int invincible; ///< @brief rather or not the entity can take damage
+
+    Entity *equipment;
+    vec2_t equipOffset;
+    float equipRotate;
 } Entity;
 
 /**

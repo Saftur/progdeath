@@ -6,6 +6,8 @@
  */
 #include "entluafuncs.h"
 
+#include <string.h>
+
 #include <lauxlib.h>
 #include <lualib.h>
 
@@ -136,6 +138,17 @@ static int l_setvel(lua_State *L) {
 }
 
 /**
+ * @brief Set direction
+ * @param 1 Degree direction
+ */
+static int l_setdir(lua_State *L) {
+    luaL_argcheck(L, lua_isnumber(L, 1), 1, "'number' expected");
+    Entity *ent = getEntity(L);
+    ent->direction = lua_tonumber(L, 1);
+    return 0;
+}
+
+/**
  * @brief Start an action 
  * @param 1 action type
  */
@@ -146,31 +159,75 @@ static int l_startaction(lua_State *L) {
 
     if (ent->currAction == EA_NONE)
     {
-        List_clear(ent->actionData);
-        switch(type)
+        switch (type)
         {
-        case EA_THROW: 
-            {
-#define STARTUP 0.125
-                Entity *thrown;
-                luaL_argcheck(L, thrown = lua_touserdata(L, 2), 2, "'Entity' expected");
-                luaL_argcheck(L, lua_isnumber(L, 3), 3, "'number' expected");
-                void **thrownData = malloc(sizeof(void*));
-                *thrownData = thrown->actualEnt;
-                List_push_back(ent->actionData, thrownData);
-                float *dirData = malloc(sizeof(void*));
-                *dirData = lua_tonumber(L, 3);
-                List_push_back(ent->actionData, dirData);
-                ent->actionStartup = STARTUP;
+        case EA_THROW:
+        {
+#define STARTUP 0.15
+            Entity *thrown;
+            luaL_argcheck(L, thrown = lua_touserdata(L, 2), 2, "'Entity' expected");
+            luaL_argcheck(L, lua_isnumber(L, 3), 3, "'number' expected");
+            void **thrownData = malloc(sizeof(void*));
+            *thrownData = thrown->actualEnt;
+            List_push_back(ent->actionData, thrownData);
+            float *dirData = malloc(sizeof(float));
+            *dirData = lua_tonumber(L, 3);
+            List_push_back(ent->actionData, dirData);
+            ent->actionStartup = STARTUP;
 #undef STARTUP
-            }
-            break;
         }
-
+        break;
+        case EA_BLOCK:
+        {
+#define STARTUP 0
+            ent->actionStartup = STARTUP;
+#undef STARTUP    
+        }
+        break;
+        case EA_ATTACK:
+        {
+#define STARTUP 0.2
+            /*Entity *attacked;
+            luaL_argcheck(L, attacked = lua_touserdata(L, 2), 2, "'Entity' expected");
+            luaL_argcheck(L, lua_isnumber(L, 3), 3, "'number' expected");
+            void **attackData = malloc(sizeof(void*));
+            *attackData = attacked->actualEnt;
+            List_push_back(ent->actionData, attackData);
+            float *dirData = malloc(sizeof(void*));
+            *dirData = lua_tonumber(L, 3);
+            List_push_back(ent->actionData, dirData);*/
+            ent->actionStartup = STARTUP;
+#undef STARTUP
+        }
+        }
         ent->currAction = type;
     }
-
     return 0;
+}
+
+static int l_angleto(lua_State *L) {
+    vec2_t p1;
+    vec2_t p2;
+    int t = luaL_getmetafield(L, 1, "__name");
+    if (t == LUA_TSTRING && strcmp(lua_tostring(L, -1), "vec2") == 0)
+        p2 = *(vec2_t*)lua_touserdata(L, 1);
+    else p2 = ((Transform*)Object_getComp(((Entity*)lua_touserdata(L, 1))->comp.owner, TRANSFORM))->pos;
+    if (!lua_isnone(L, 2)) {
+        p1 = p2;
+        t = luaL_getmetafield(L, 2, "__name");
+        if (t == LUA_TSTRING && strcmp(lua_tostring(L, -1), "vec2") == 0)
+            p2 = *(vec2_t*)lua_touserdata(L, 2);
+        else p2 = ((Transform*)Object_getComp(((Entity*)lua_touserdata(L, 2))->comp.owner, TRANSFORM))->pos;
+    } else {
+        Entity *ent = getEntity(L);
+        p1 = ((Transform*)Object_getComp(ent->comp.owner, TRANSFORM))->pos;
+    }
+    vec2_t v = vec2_sub(p2, p1);
+    float a = vec2_angle((vec2_t){ 1, 0 }, v);
+    if (v.y > 0)
+        a = 360 - a;
+    lua_pushnumber(L, a);
+    return 1;
 }
 
 /**
@@ -260,6 +317,7 @@ static int l_getnearest(lua_State *L) {
         float dist = vec2_distance(trs->pos, objTrs->pos);
         if (dist < ent->detectRange && (!nearest || dist < nearestDist)) {
             nearest = objEnt;
+            nearestDist = dist;
         }
     }
     if (nearest)
@@ -398,9 +456,11 @@ static const luaL_Reg funcs[] = {
     {"Move", l_move},
     {"SetAccel", l_setaccel},
     {"SetVel", l_setvel},
+    {"SetDir", l_setdir},
 
     {"StartAction", l_startaction},
 
+    {"AngleTo", l_angleto},
     {"GetMaxVel", l_getmaxvel},
 
     {"GetNearby", l_getnearby},

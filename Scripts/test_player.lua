@@ -13,11 +13,17 @@ function update()
 	if KeyDown(KEY_D) then
 		dir.x = 1
 	end
+    if (dir.x ~= 0 or dir.y ~= 0) then
+        SetDir(math.atan2(-dir.y, dir.x) / math.pi * 180)
+    end
 	if KeyDown(KEY_T) then
 		local fire = GetNearest(ENT_FIRE)
-		local angle = vec2(1,0):angle(GetPos(fire) - GetPos())
+		local angle = AngleTo(ent, fire)
 		StartAction(ACTION_THROW, ent, angle)
-	end 
+	end
+    if KeyDown(KEY_E) then
+        StartAction(ACTION_ATTACK)
+    end
 	SetVel(dir * GetMaxVel())
 	--[[if ent then
 		local pos = GetPos()

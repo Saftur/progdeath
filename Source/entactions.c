@@ -7,15 +7,34 @@
 
 static void none(Entity* ent){}
 
+#define TIME (*(float*)ent->actionData->items[0])
 static void attack(Entity* ent)
 {
     //TODO
+    if (ent->actionData->size == 0) {
+        float *time = malloc(sizeof(float));
+        *time = 2.f;
+        List_push_back(ent->actionData, time);
+        ent->equipment->currAction = EA_WPN_ATTACK;
+        ent->equipOffset.x += 30;
+    }
+    TIME -= dt();
+    if (TIME <= 0) {
+        ent->equipment->currAction = EA_NONE;
+        ent->actionDelay = 1.f;
+        ent->equipOffset.x -= 30;
+    }
 }
+#undef TIME
 
+#define DELAY 0.5
 static void block(Entity* ent)
 {
-    
+    ent->invincible = 1;
+    ent->incapacitated = DELAY;
+    ent->actionDelay = DELAY;
 }
+#undef DELAY
 
 #define RANGE 60
 #define VELOCITY 800
@@ -58,4 +77,6 @@ void(*entActionFuncs[])(Entity*) =
     attack,
     block,
     throw,
+
+    none,
 };

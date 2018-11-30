@@ -70,11 +70,17 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
     this->actionDelay = 0.0;
     this->actionStartup = 0.0;
 
+    this->direction = 0;
+
     this->radius = radius;
     if (maxHp == 0)
         this->invincible = 1;
     else
         this->invincible = 0;
+
+    this->equipment = NULL;
+    this->equipOffset = (vec2_t){ this->radius, 0 };
+    this->equipRotate = 0;
 
     return this;
 }
@@ -117,6 +123,14 @@ void _Entity_delete(Entity *this) {
  * @param this Entity to update
  */
 void _Entity_update(Entity *this) {
+    Transform *trs = Object_getComp(this->comp.owner, TRANSFORM);
+
+    if (this->equipment) {
+        this->equipment->direction = this->direction;
+        Transform *eqTrs = Object_getComp(this->equipment->comp.owner, TRANSFORM);
+        eqTrs->pos = vec2_add(trs->pos, mat3_mult_vec2(mat3_rotate(-(this->direction + this->equipRotate)), this->equipOffset)/*vec2_scale((vec2_t){ cos(radians(this->direction)), -sin(radians(this->direction)) }, this->radius)*/);
+    }
+
     if (this->script) {
         resetTimeoutHook(this->script);
 
@@ -128,8 +142,7 @@ void _Entity_update(Entity *this) {
         }
     }
 
-    Transform *trs;
-    if (List_find(this->types, ENT_PLAYER, NULL) && (trs = Object_getComp(this->comp.owner, TRANSFORM))) {
+    if (List_find(this->types, ENT_PLAYER, NULL)) {
         translate(canvasWidth / 2 - trs->pos.x, canvasHeight / 2 - trs->pos.y);
     }
 
@@ -137,7 +150,11 @@ void _Entity_update(Entity *this) {
     {
         this->actionDelay -= dt();
         if (this->actionDelay <= 0)
+        {
+            List_clear(this->actionData);
             this->currAction = EA_NONE;
+            this->invincible = 0;
+        }
     }
 
     if (this->actionStartup > 0)
@@ -145,7 +162,7 @@ void _Entity_update(Entity *this) {
     if (this->actionStartup <= 0 && this->actionDelay <= 0)
         entActionFuncs[this->currAction](this);
 
-    if (this->hp <= 0.0)
+    if (!this->invincible && this->hp <= 0.0)
     {
         if (Entity_isType(this, ENT_PLAYER))
         {
@@ -187,18 +204,32 @@ void _Entity_draw(Entity *this) {
     {
         switch ((EntityType)(this->types->items[i]))
         {
+        case ENT_SPEAR:
+            fill(0, 0, 0, 255);
+            float w = this->radius, h = this->radius / 16;
+            rectRotated(trs->pos.x - w / 2, trs->pos.y - h / 2, w, h, -this->direction);
+            break;
         case ENT_APPLE:
             fill(215,30,0,255);
-            circle(trs->pos.x, trs->pos.y, this->radius / 2);
+            circle(trs->pos.x, trs->pos.y, this->radius);
             break;
         case ENT_TREE:
             fill(envObjs[ENV_TREE].color.r, envObjs[ENV_TREE].color.g, envObjs[ENV_TREE].color.b, envObjs[ENV_TREE].color.a);
             circle(trs->pos.x, trs->pos.y, this->radius);
             break;
         case ENT_FIRE:
-            fill(255, 0, 0, 255);
+            fill(226, 88, 34, 255);
             circle(trs->pos.x, trs->pos.y, this->radius);
-        case ENT_ITEM:
+            break;
+        case ENT_MOUNTAIN:
+            fill(139, 141, 122, 255);
+            circle(trs->pos.x, trs->pos.y, this->radius);
+            break;
+        case ENT_WATER:
+            fill(79, 66, 181, 255);
+            circle(trs->pos.x, trs->pos.y, this->radius);
+            break;
+        case ENT_ITEM: case ENT_EQUIPMENT: case ENT_ENV:
             break;
         default:
             fill(0, 0, 0, 255);

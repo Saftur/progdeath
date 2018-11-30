@@ -36,6 +36,7 @@ struct EnvObj
     unsigned int chance;
     unsigned int spawnPadding;
     unsigned int size;
+    unsigned int health;
     PColor color;
 };
 
