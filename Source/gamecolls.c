@@ -70,7 +70,7 @@ static void CollResolve_Entity_Entity(Component *comp1, Component *comp2) {
     if (Entity_isType(ent1, ENT_FIGHTER)) {
         if (Entity_isType(ent2, ENT_EQUIPMENT)) {
             if (ent2->currAction == EA_WPN_ATTACK)
-                ent1->hp -= 100;
+                ent1->hp -= 40;
             return;
         } else if (Entity_isType(ent2, ENT_FIRE)) {
             ent1->hp -= 100;
