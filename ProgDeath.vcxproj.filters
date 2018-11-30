@@ -252,6 +252,8 @@
     <ClInclude Include="Source\apples.h">
       <Filter>Game\Components\Map</Filter>
     </ClInclude>
+    <ClInclude Include="Source\cb_funcdef.h" />
+    <ClInclude Include="Source\cb_function.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -365,6 +367,9 @@
       <Filter>Game\Scripts</Filter>
     </None>
     <None Include="Scripts\test_player.lua">
+      <Filter>Game\Scripts</Filter>
+    </None>
+    <None Include="Scripts\player.lua">
       <Filter>Game\Scripts</Filter>
     </None>
   </ItemGroup>

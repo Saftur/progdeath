@@ -13,16 +13,16 @@ static void attack(Entity* ent)
     //TODO
     if (ent->actionData->size == 0) {
         float *time = malloc(sizeof(float));
-        *time = 2.f;
+        *time = 0.25f;
         List_push_back(ent->actionData, time);
         ent->equipment->currAction = EA_WPN_ATTACK;
-        ent->equipOffset.x += 30;
+        ent->equipOffset.x += 20;
     }
     TIME -= dt();
     if (TIME <= 0) {
         ent->equipment->currAction = EA_NONE;
         ent->actionDelay = 1.f;
-        ent->equipOffset.x -= 30;
+        ent->equipOffset.x -= 20;
     }
 }
 #undef TIME

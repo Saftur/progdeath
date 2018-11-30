@@ -146,7 +146,19 @@ void _Entity_update(Entity *this) {
         }
     }
 
-    if (Entity_isType(this, ENT_PLAYER) && (trs = Object_getComp(this->comp.owner, TRANSFORM))) 
+    if (trs->pos.x - this->radius  < 0)
+        trs->pos.x = this->radius;
+
+    if (trs->pos.y - this->radius < 0)
+        trs->pos.y = this->radius;
+
+    if (trs->pos.x + this->radius > MAP_TILE_SIZE * getMapWidth())
+        trs->pos.x = MAP_TILE_SIZE * getMapWidth() - this->radius;
+
+    if (trs->pos.y + this->radius > MAP_TILE_SIZE * getMapHeight())
+        trs->pos.y = MAP_TILE_SIZE * getMapHeight() - this->radius;
+
+    if (Entity_isType(this, ENT_PLAYER)) 
     {   
         vec2_t target = trs->pos;
 

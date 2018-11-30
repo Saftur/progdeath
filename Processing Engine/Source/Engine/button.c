@@ -9,8 +9,10 @@
 #include "button.h"
 
 #include "transform.h"
+#include "util.h"
 
-#define BUTTON_TEXT_OFFSET 12 ///< @brief Offset from edges of button to text
+#define BUTTON_TEXT_OFFSET_X 12 ///< @brief Offset from edges of button to text
+#define BUTTON_TEXT_OFFSET_Y 24 ///< @brief Offset from edges of button to text
 
 /**
  * @brief Create new Button
@@ -108,9 +110,9 @@ void _Button_draw(Button *this) {
     vec2_t halfSize = vec2_scale(this->buttonSize, 0.5f);
     rect(pos->x - halfSize.x, pos->y - halfSize.y, this->buttonSize.x, this->buttonSize.y);
 
-    *pos = (vec2_t){ pos->x - halfSize.x + BUTTON_TEXT_OFFSET, pos->y + halfSize.y - BUTTON_TEXT_OFFSET };
+    *pos = (vec2_t){ pos->x - halfSize.x + BUTTON_TEXT_OFFSET_X, pos->y + halfSize.y - BUTTON_TEXT_OFFSET_Y };
     _Text_draw(this->text);
-    *pos = (vec2_t){ pos->x + halfSize.x - BUTTON_TEXT_OFFSET, pos->y - halfSize.y + BUTTON_TEXT_OFFSET };
+    *pos = (vec2_t){ pos->x + halfSize.x - BUTTON_TEXT_OFFSET_X, pos->y - halfSize.y + BUTTON_TEXT_OFFSET_Y };
 }
 
 /// @}

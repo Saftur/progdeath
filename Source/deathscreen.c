@@ -144,6 +144,7 @@ void deathScreenInit(ObjectMngr *objMngr) {
     Object_addComp(obj, trs);
     Object_addComp(obj, comp);
     ObjectMngr_addObj(objMngr, obj);
+
 }
 
 /// @}

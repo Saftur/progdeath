@@ -116,7 +116,7 @@ static void _placeEnvironment(Map * map, ObjectMngr *objMngr)
 
                 Object *obj = Object_new("EnvObject");
                 Transform *trs = Transform_new();
-                trs->pos = (vec2_t){((float)x + (float)envObjs[i].size / 2)*MAP_TILE_SIZE + MAP_DRAW_OFFSET_X, ((float)y + (float)envObjs[i].size / 2)*MAP_TILE_SIZE - 0.5 + MAP_DRAW_OFFSET_Y};
+                trs->pos = (vec2_t){((float)x + (float)envObjs[i].size / 2)*MAP_TILE_SIZE, ((float)y + (float)envObjs[i].size / 2)*MAP_TILE_SIZE - 0.5};
                 Entity *ent = Entity_new("", ST_NONE, ENT_ENV, envObjs[i].health, (envObjs[i].size * MAP_TILE_SIZE)/2);
                 Entity_addType(ent, i + ENT_ENV + 1);
                 Object_addComp(obj, trs);
@@ -206,7 +206,7 @@ static void _renderEnvironment(const Map* map, const int size)
 {
     noStroke();
     fill(envObjs[0].color.r, envObjs[0].color.g, envObjs[0].color.b, envObjs[0].color.a);
-    rect(MAP_DRAW_OFFSET_X, MAP_DRAW_OFFSET_Y, size * getMapWidth(), size * getMapHeight());
+    rect(0, 0, size * getMapWidth(), size * getMapHeight());
 }
 
 /// @}

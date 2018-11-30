@@ -18,7 +18,7 @@
 */
 vec2_t MapPosToWorldPos(vec2_t mapPos)
 {
-    return (vec2_t) { MAP_DRAW_OFFSET_X + MAP_TILE_SIZE / 2 * mapPos.x, MAP_DRAW_OFFSET_Y + MAP_TILE_SIZE / 2 * mapPos.y };
+    return (vec2_t) { 0 + MAP_TILE_SIZE / 2 * mapPos.x, 0 + MAP_TILE_SIZE / 2 * mapPos.y };
 }
 
 /**
@@ -28,7 +28,7 @@ vec2_t MapPosToWorldPos(vec2_t mapPos)
  */
 vec2_t WorldPosToMapPos(vec2_t worldPos)
 {
-    return (vec2_t) { ceil((double)(worldPos.x + MAP_DRAW_OFFSET_X) / MAP_TILE_SIZE), ceil((double)(worldPos.y + MAP_DRAW_OFFSET_Y) / MAP_TILE_SIZE)};
+    return (vec2_t) { ceil((double)(worldPos.x) / MAP_TILE_SIZE), ceil((double)(worldPos.y) / MAP_TILE_SIZE)};
 }
 
 /**
