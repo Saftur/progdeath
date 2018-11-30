@@ -93,65 +93,12 @@ static void CollResolve_Entity_Entity(Component *comp1, Component *comp2) {
         return;
     }
 
-    /*if(Entity_isType(ent1, ENT_ENV) || Entity_isType(ent2, ENT_ENV))
-    {
-        Entity *character = ent2;
-        Entity *env = ent1;
-        if (Entity_isType(ent1, ENT_PLAYER) || Entity_isType(ent1, ENT_ENEMY))
-        {
-            character = ent1;
-            env = ent2;
-        }
-        
-        if(Entity_isType(env, ENT_FIRE))
-            character->hp -= 100;
-        else if(Entity_isType(env, ENT_TREE))
-        {
-            env->hp -= 100;
-            Transform *envTrs = Object_getComp(env->comp.owner, TRANSFORM);
-            spawnApple(envTrs->pos, env->comp.owner->objMngr);
-        }
-        else if(Entity_isType(env, ENT_APPLE))
-        {
-            env->hp -= 100;
-            character->hp = max(character->maxHp, character->hp + 10);
-        }
-        return;
-    }
-
-    if (Entity_isType(ent1, ENT_ITEM) || Entity_isType(ent2, ENT_ITEM))
-    {
-        Entity *character = ent2;
-        Entity *item = ent1;
-        if (Entity_isType(ent1, ENT_PLAYER) || Entity_isType(ent1, ENT_ENEMY))
-        {
-            character = ent1;
-            item = ent2;
-        }
-
-        
-        if (Entity_isType(item, ENT_APPLE))
-        {
-            item->hp -= 100;
-            character->hp = max(character->maxHp, character->hp + 10);
-        }
-        return;
-    }*/
 
     Transform *trs1 = Object_getComp(ent1->comp.owner, TRANSFORM);
     Transform *trs2 = Object_getComp(ent2->comp.owner, TRANSFORM);
 
     vec2_t *p1 = &trs1->pos;
     vec2_t *p2 = &trs2->pos;
-
-    /*vec2_t half_vec_1to2 = vec2_scale(vec2_sub(*p2, *p1), 0.5f);
-    float half_vec_len = vec2_length(half_vec_1to2);
-    float dist = half_vec_len * 2;
-    vec2_t mid = vec2_add(*p1, half_vec_1to2);
-    vec2_t radius_vec = vec2_scale(half_vec_1to2, (float)ENTITY_RADIUS / half_vec_len);
-
-    *p1 = vec2_sub(mid, radius_vec);
-    *p2 = vec2_add(mid, radius_vec);*/
 
     vec2_t p1_to_p2 = vec2_sub(*p2, *p1);
     float p1_to_p2_len = vec2_length(p1_to_p2);
