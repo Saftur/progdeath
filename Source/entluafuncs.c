@@ -65,6 +65,25 @@ static void cloneEntity(lua_State *L, Entity *ent) {
             newEnt->types = List_copy(ent->types);
             newEnt->detectRange = ent->detectRange;
             newEnt->actualEnt = ent;
+            newEnt->hp = ent->hp;
+            newEnt->maxHp = ent->maxHp;
+            newEnt->currAction = ent->currAction;
+            newEnt->actionData = ent->actionData;
+
+            newEnt->incapacitated = ent->incapacitated;
+            newEnt->actionDelay = ent->actionDelay;
+            newEnt->actionStartup = ent->actionStartup;
+
+            newEnt->direction = ent->direction;
+
+            newEnt->radius = ent->radius;
+
+            newEnt->invincible = ent->invincible;
+
+            newEnt->equipment = ent->equipment;
+            newEnt->equipOffset = ent->equipOffset;
+            newEnt->equipRotate = ent->equipRotate;
+
             newObj->comps->items[i] = newEnt;
         } else {
             comp = Component_clone(comp);
@@ -351,6 +370,23 @@ static int l_getpos(lua_State *L) {
     return 1;
 }
 
+/**
+ * @brief Get size of Entity
+ * @param 1 Entity to get size of (default: self)
+ * @return size of Entity
+ */
+static int l_getsize(lua_State *L) {
+    Entity *ent;
+    if (lua_isnone(L, 1))
+        ent = getEntity(L);
+    else
+        luaL_argcheck(L, ent = lua_touserdata(L, 1), 1, "'Entity' or 'none' expected");
+    if (!ent)
+        return 0;
+    lua_pushnumber(L, ent->radius);
+    return 1;
+}
+
 
 /**
  * @brief Get the current action of an Entity
@@ -471,6 +507,7 @@ static const luaL_Reg funcs[] = {
     {"GetTypeName", l_gettypename},
 
     {"GetPos", l_getpos},
+    {"GetSize", l_getsize},
     {"GetHp", l_gethp},
     {"GetAction", l_getaction},
 

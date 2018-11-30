@@ -14,6 +14,21 @@ function update() \n\
         local pos = GetPos() \n\
         local otherPos = GetPos(nearest) \n\
         dir = (otherPos - pos):norm() \n\
+		local fire = GetNearest(ENT_FIRE) \n\
+        if fire then \n\
+            local angle = AngleTo(nearest, fire) \n\
+            StartAction(ACTION_THROW, nearest, angle) \n\
+            --[[local currPos = GetPos() \n\
+            local firePos = GetPos(fire) \n\
+            local vecToFire = (firePos - currPos) \n\
+            local dist = vecToFire:length() \n\
+            vecToFire = vecToFire:norm() \n\
+            print(dist) \n\
+            print(GetSize() + GetSize(fire) + 10) \n\
+            if dist < GetSize() + GetSize(fire) + 10 then \n\
+                dir = vec2(-vecToFire.x, vecToFire.y) \n\
+            end --]] \n\
+        end \n\
     end \n\
     SetVel(dir * GetMaxVel()) \n\
 end \

@@ -36,10 +36,10 @@ static void block(Entity* ent)
 }
 #undef DELAY
 
-#define RANGE 60
-#define VELOCITY 800
-#define INCAPACITATE 1.125
-#define DELAY 0.5
+#define RANGE (ent->types->items[0] == ENT_PLAYER ? 60 : 50)
+#define VELOCITY (ent->types->items[0] == ENT_PLAYER ? 800 : 600)
+#define INCAPACITATE (ent->types->items[0] == ENT_PLAYER ? 1.125 : 0.5)
+#define DELAY (ent->types->items[0] == ENT_PLAYER ? 0.5 : 1.5)
 static void throw(Entity* ent) 
 {
     Entity *target = *(Entity**)ent->actionData->items[0];

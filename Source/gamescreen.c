@@ -111,11 +111,13 @@ void gameScreenInit(ObjectMngr *objMngr) {
 
     playerEnt->equipment = ent;
 
-    for (unsigned i = 0; i < 1; i++) {
+    for (unsigned i = 0; i < 20; i++) {
         entObj = Object_new("Test Entity");
         entTrs = Transform_new();
         float angle = map((float)i, 0.f, 100.f, 0.f, TWO_PI);
-        entTrs->pos = (vec2_t){ canvasWidth / 2 + 600 * cosf(angle), canvasHeight / 2 + 1200 };
+        entTrs->pos = (vec2_t) { randomRangeInt(ent->radius, getMapWidth() * MAP_TILE_SIZE - ent->radius) + MAP_DRAW_OFFSET_X,
+                                 randomRangeInt(ent->radius, getMapHeight() * MAP_TILE_SIZE - ent->radius) + MAP_DRAW_OFFSET_Y };
+        //entTrs->pos = (vec2_t){ canvasWidth / 2 + 600 * cosf(angle), canvasHeight / 2 + 1200 };
         entPhys = Physics_new(200.f, 900.f);
         ent = Entity_new(enemyScript, ST_CODE, ENT_FIGHTER, 100, ENTITY_RADIUS);
         Entity_addType(ent, ENT_ENEMY);
