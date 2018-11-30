@@ -8,12 +8,14 @@
  */
 
 #include "apples.h"
-#include "Source/mapsearching.h"
-#include "Engine/objectmngr.h"
-#include "Engine/transform.h"
-#include "Source/entactions.h"
-#include "Engine/physics.h"
-#include "Source/entity.h"
+
+#include <Engine/objectmngr.h>
+#include <Engine/transform.h>
+#include <Engine/physics.h>
+
+#include "mapsearching.h"
+#include "entactions.h"
+#include "entity.h"
 
 /**
   * @brief Spawns an apple on the map
@@ -26,11 +28,11 @@ void spawnApple(vec2_t worldPos, ObjectMngr *objMngr)
     Transform *entTrs;
     Physics *entPhys;
     Entity *ent;
-    entObj = Object_new("Test Entity");
+    entObj = Object_new("APPLE");
     entTrs = Transform_new();
     entTrs->pos = worldPos;
     entPhys = Physics_new(50.f, 900.f);
-    ent = Entity_new(NULL, ST_NONE, ENT_ITEM, 100, ENTITY_RADIUS);
+    ent = Entity_new(NULL, ST_NONE, ENT_ITEM, 100, ENTITY_RADIUS / 2);
     Entity_addType(ent, ENT_APPLE);
     Object_addComp(entObj, entTrs);
     Object_addComp(entObj, entPhys);

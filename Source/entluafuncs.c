@@ -159,7 +159,6 @@ static int l_startaction(lua_State *L) {
 
     if (ent->currAction == EA_NONE)
     {
-        List_clear(ent->actionData);
         switch (type)
         {
         case EA_THROW:
@@ -171,7 +170,7 @@ static int l_startaction(lua_State *L) {
             void **thrownData = malloc(sizeof(void*));
             *thrownData = thrown->actualEnt;
             List_push_back(ent->actionData, thrownData);
-            float *dirData = malloc(sizeof(void*));
+            float *dirData = malloc(sizeof(float));
             *dirData = lua_tonumber(L, 3);
             List_push_back(ent->actionData, dirData);
             ent->actionStartup = STARTUP;
@@ -188,7 +187,7 @@ static int l_startaction(lua_State *L) {
         case EA_ATTACK:
         {
 #define STARTUP 0.2
-            Entity *attacked;
+            /*Entity *attacked;
             luaL_argcheck(L, attacked = lua_touserdata(L, 2), 2, "'Entity' expected");
             luaL_argcheck(L, lua_isnumber(L, 3), 3, "'number' expected");
             void **attackData = malloc(sizeof(void*));
@@ -196,7 +195,7 @@ static int l_startaction(lua_State *L) {
             List_push_back(ent->actionData, attackData);
             float *dirData = malloc(sizeof(void*));
             *dirData = lua_tonumber(L, 3);
-            List_push_back(ent->actionData, dirData);
+            List_push_back(ent->actionData, dirData);*/
             ent->actionStartup = STARTUP;
 #undef STARTUP
         }

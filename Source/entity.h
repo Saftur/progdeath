@@ -22,6 +22,7 @@
 typedef struct Entity Entity;
 
 typedef enum EntityType {
+    ENT_FIGHTER,
     ENT_PLAYER,
     ENT_ENEMY,
 
@@ -78,6 +79,8 @@ typedef struct Entity {
     int invincible; ///< @brief rather or not the entity can take damage
 
     Entity *equipment;
+    vec2_t equipOffset;
+    float equipRotate;
 } Entity;
 
 /**

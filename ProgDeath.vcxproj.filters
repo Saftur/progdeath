@@ -112,7 +112,7 @@
     <ClCompile Include="Source\map.c">
       <Filter>Game\Components\Map</Filter>
     </ClCompile>
-    <ClCompile Include="apples.c">
+    <ClCompile Include="Source\apples.c">
       <Filter>Game\Components\Map</Filter>
     </ClCompile>
   </ItemGroup>
@@ -243,7 +243,7 @@
     <ClInclude Include="Source\mapitems.h">
       <Filter>Game\Components\Map</Filter>
     </ClInclude>
-    <ClInclude Include="apples.h">
+    <ClInclude Include="Source\apples.h">
       <Filter>Game\Components\Map</Filter>
     </ClInclude>
   </ItemGroup>

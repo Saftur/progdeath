@@ -7,8 +7,10 @@
  * @{
  */
 #pragma once
-#include "Source/map.h"
+
 #include <CP_Math.h>
+
+#include "map.h"
 
 /**
   * @brief Spawns an apple on the map

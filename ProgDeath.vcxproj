@@ -108,7 +108,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="apples.c" />
+    <ClCompile Include="Source\apples.c" />
     <ClCompile Include="Source\cbgrabcomp.c">
       <SubType>
       </SubType>
@@ -196,7 +196,7 @@ xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="apples.h" />
+    <ClInclude Include="Source\apples.h" />
     <ClInclude Include="Source\cbgrabcomp.h">
       <SubType>
       </SubType>

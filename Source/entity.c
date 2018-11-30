@@ -77,6 +77,8 @@ Entity *Entity_new(const char *script, ScriptType scriptType, EntityType baseTyp
         this->invincible = 0;
 
     this->equipment = NULL;
+    this->equipOffset = (vec2_t){ this->radius, 0 };
+    this->equipRotate = 0;
 
     return this;
 }
@@ -124,7 +126,7 @@ void _Entity_update(Entity *this) {
     if (this->equipment) {
         this->equipment->direction = this->direction;
         Transform *eqTrs = Object_getComp(this->equipment->comp.owner, TRANSFORM);
-        eqTrs->pos = vec2_add(trs->pos, vec2_scale((vec2_t){ cos(radians(this->direction)), -sin(radians(this->direction)) }, this->radius));
+        eqTrs->pos = vec2_add(trs->pos, mat3_mult_vec2(mat3_rotate(-(this->direction + this->equipRotate)), this->equipOffset)/*vec2_scale((vec2_t){ cos(radians(this->direction)), -sin(radians(this->direction)) }, this->radius)*/);
     }
 
     if (this->script) {
@@ -147,6 +149,7 @@ void _Entity_update(Entity *this) {
         this->actionDelay -= dt();
         if (this->actionDelay <= 0)
         {
+            List_clear(this->actionData);
             this->currAction = EA_NONE;
             this->invincible = 0;
         }
@@ -181,14 +184,22 @@ void _Entity_draw(Entity *this) {
             break;
         case ENT_APPLE:
             fill(215,30,0,255);
-            circle(trs->pos.x, trs->pos.y, this->radius / 2);
+            circle(trs->pos.x, trs->pos.y, this->radius);
             break;
         case ENT_TREE:
             fill(envObjs[ENV_TREE].color.r, envObjs[ENV_TREE].color.g, envObjs[ENV_TREE].color.b, envObjs[ENV_TREE].color.a);
             circle(trs->pos.x, trs->pos.y, this->radius);
             break;
         case ENT_FIRE:
-            fill(255, 0, 0, 255);
+            fill(226, 88, 34, 255);
+            circle(trs->pos.x, trs->pos.y, this->radius);
+            break;
+        case ENT_MOUNTAIN:
+            fill(139, 141, 122, 255);
+            circle(trs->pos.x, trs->pos.y, this->radius);
+            break;
+        case ENT_WATER:
+            fill(79, 66, 181, 255);
             circle(trs->pos.x, trs->pos.y, this->radius);
             break;
         case ENT_ITEM: case ENT_EQUIPMENT: case ENT_ENV:
