@@ -115,6 +115,12 @@
     <ClCompile Include="apples.c">
       <Filter>Game\Components\Map</Filter>
     </ClCompile>
+    <ClCompile Include="Source\cb_function.c">
+      <Filter>Game\Components\Code Block\Types\Directives\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\cb_funcdef.c">
+      <Filter>Game\Components\Code Block\Types\Directives\Function</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\gamecolls.h">
@@ -243,9 +249,8 @@
     <ClInclude Include="Source\mapitems.h">
       <Filter>Game\Components\Map</Filter>
     </ClInclude>
-    <ClInclude Include="apples.h">
-      <Filter>Game\Components\Map</Filter>
-    </ClInclude>
+==== BASE ====
+==== BASE ====
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">
@@ -349,6 +354,9 @@
     </Filter>
     <Filter Include="Game\Components\Map">
       <UniqueIdentifier>{e8676e4f-4cfb-4a87-a9a1-48bfd6d15b5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Code Block\Types\Directives\Function">
+      <UniqueIdentifier>{8ee2df33-0636-48b7-ae0c-e208af830e25}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

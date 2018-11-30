@@ -195,5 +195,21 @@ char *CodeBlockBoard_totext(CodeBlockBoard *this) {
     return text;
 }
 
+void CodeBlockBoard_load(CodeBlockBoard *this, const char *script) {
+
+}
+
+void CodeBlockBoard_save(CodeBlockBoard *this, const char *script) {
+    FILE *file = fopen(script, "w");
+    if (!file)
+        return;
+    char *text = CodeBlockBoard_totext(this);
+
+    fwrite(text, sizeof(char), strlen(text), file);
+
+    fclose(file);
+    free(text);
+}
+
 /// @}
 

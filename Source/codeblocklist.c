@@ -50,9 +50,12 @@ CodeBlockList *CodeBlockList_new() {
         switch (type) {
         case CB_EMPTY: case CB_NUM:
             break;
-        case CB_VAR:
+        /*case CB_VAR:
+            //block = CodeBlock_new(type, "test", 5);
+            break;*/
+        /*case CB_FUNCTION:
             block = CodeBlock_new(type, "test", 5);
-            break;
+            break;*/
         case CB_STR:
             block = CodeBlock_new(type, NULL, 0);
             removeFocusObject(*(void**)block->data);

@@ -11,22 +11,32 @@
 #include "cbtypedata.h"
 #include "cb_op.h"
 
+#define PADD_RIGHT(block) (((CodeBlock*)(block->blocks->items[0]))->type == CB_NUM ? PADD : PADD * 4)
+
 static CB_Op ops[] = {
     {"not", 3, "not ", 4},
     {"-", 1},
     {"len", 3, "#", 1},
+    {"local", 5, "local ", 6}
 };
 
 static void init(CodeBlock *block) {
-    List_push_back(block->blocks, CodeBlock_new(CB_NUM, NULL, 0));
-    List_push_back(block->blocks, CodeBlock_new(CB_NUM, NULL, 0));
+    int opid = OP_ID(block);
+    switch (opid) {
+    case CB_UOP_LOCAL:
+        block->typeData.isLValue = 1;
+        List_push_back(block->blocks, CodeBlock_new(CB_EMPTY, NULL, 0));
+        break;
+    }
+    if (block->blocks->size == 0)
+        List_push_back(block->blocks, CodeBlock_new(CB_NUM, NULL, 0));
 }
 
 static vec2_t getsize(CodeBlock *block) {
     CodeBlock *arg = block->blocks->items[0];
     vec2_t argSize = CodeBlock_getsize(arg);
     float height = max(INNER_HEIGHT, argSize.y + PADD * 2);
-    return (vec2_t){ argSize.x + TEXT_W(OP_LEN(block)+1) + PADD * 2, height };
+    return (vec2_t){ argSize.x + TEXT_W(OP_LEN(block)+1) + PADD + PADD_RIGHT(block), height };
 }
 
 static vec2_t argpos(vec2_t size, int opLen, vec2_t argSize) {
@@ -98,10 +108,10 @@ static vec2_t draw(CodeBlock *block, vec2_t pos) {
 static char *totext(CodeBlock *block) {
     char *arg = CodeBlock_totext(block->blocks->items[0]);
     size_t arglen = strlen(arg);
-    size_t len = OP_CODELEN(block) + arglen + 2;
+    size_t len = OP_CODELEN(block) + arglen;
     char *txt = malloc((len+1) * sizeof(char));
 
-    sprintf(txt, "(%s%s)", OP_CODESTR(block), arg);
+    sprintf(txt, "%s%s", OP_CODESTR(block), arg);
 
     free(arg);
 

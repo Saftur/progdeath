@@ -20,6 +20,7 @@
 #define COLOR_EMPTY      (PColor){255, 255, 255, 255}
 #define COLOR_CONTROL    (PColor){255, 255,   0, 255}
 #define COLOR_DIRECTIVE  (PColor){ 47,  47, 255, 255}
+#define COLOR_DIR_STROKE (PColor){  0,   0, 191, 255}
 #define COLOR_ARG        (PColor){255, 191, 127, 255}
 #define COLOR_ARG_STROKE (PColor){191, 127,  63, 255}
 #define COLOR_OP         (PColor){  0, 255,   0, 255}

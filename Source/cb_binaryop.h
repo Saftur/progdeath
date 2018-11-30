@@ -26,6 +26,7 @@ typedef enum CB_binaryop_type {
     CB_BOP_MOD,
 
     CB_BOP_CMA,
+    CB_BOP_PER,
 
     CB_BOP_NUMOPS
 } CB_binaryop_type;

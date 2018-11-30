@@ -14,6 +14,8 @@ typedef enum CB_unaryop_type {
     CB_UOP_NEG,
     CB_UOP_LEN,
 
+    CB_UOP_LOCAL,
+
     CB_UOP_NUMOPS
 } CB_unaryop_type;
 
