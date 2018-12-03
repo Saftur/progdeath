@@ -28,7 +28,7 @@
 //  MENU LISTENER
 
 static bool menuEvent(Listener *listener) {
-    return keyPressed(KEY_M);
+    return (keyIsDown(KEY_RIGHT_CONTRO) || keyIsDown(KEY_LEFT_CONTROL)) && keyPressed(KEY_M);
 }
 
 static void menuEffect(Listener *listener) {
@@ -46,7 +46,7 @@ void tempDrawFunction(Component* comp)
 
 static bool instantWinEvent(Listener * listener)
 {
-    return keyIsDown(KEY_LEFT_CONTROL) && keyPressed(KEY_W);
+    return (keyIsDown(KEY_RIGHT_CONTRO) || keyIsDown(KEY_LEFT_CONTROL)) && keyPressed(KEY_W);
 }
 
 static void instantWinEffect(Listener *listener) {
@@ -56,7 +56,7 @@ static void instantWinEffect(Listener *listener) {
 
 static bool instantLossEvent(Listener * listener)
 {
-    return keyIsDown(KEY_LEFT_CONTROL) && keyPressed(KEY_L);
+    return (keyIsDown(KEY_RIGHT_CONTRO) || keyIsDown(KEY_LEFT_CONTROL))  && keyPressed(KEY_L);
 }
 
 static void instantLossEffect(Listener *listener) {
