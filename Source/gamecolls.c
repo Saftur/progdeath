@@ -73,7 +73,7 @@ static void CollResolve_Entity_Entity(Component *comp1, Component *comp2) {
                 ent1->hp -= 40;
             return;
         }
-        else if (Entity_isType(ent2, ENT_FIRE)) {
+        else if (Entity_isType(ent2, ENT_FIRE) && !ent1->invincible) {
             ent1->hp -= 5;
             return;
         }

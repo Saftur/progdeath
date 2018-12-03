@@ -154,6 +154,9 @@ void _CodeBlockList_draw(CodeBlockList *this) {
         pos.y -= this->yscroll;
         CodeBlock_draw(this->blocks->items[i], pos);
     }
+    noStroke();
+    fill(0, 0, 0, 255);
+    rect(this->size.x - 5, 0, 10, canvasHeight);
 }
 
 /**
@@ -173,7 +176,7 @@ void CodeBlockList_addBlock(CodeBlockList *this, CodeBlock *block) {
     List_push_back(this->blockPos, newPos);
     List_push_back(this->blockSize, newSize);
     if (newSize->x + BORDER > this->size.x)
-        this->size.x = newSize->x + BORDER;
+        this->size.x = newSize->x + BORDER * 2;
     this->size.y += newSize->y + BORDER;
 }
 
