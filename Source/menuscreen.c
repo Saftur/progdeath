@@ -71,6 +71,12 @@ void menuScreenInit(ObjectMngr *objMngr) {
     Object_addComp(obj, ec);
     ObjectMngr_addObj(objMngr, obj);
 
+     obj = Object_new("Rect");
+    ec = EmptyComp_new();
+    ec->comp.draw = drawFirstRect;
+    Object_addComp(obj, ec);
+    ObjectMngr_addObj(objMngr, obj);
+
     const char *tutorialText[] ={
         "                               Welcome to the Programmable Death Match.",
         "Enter the editor, we have preloaded an example script",
@@ -81,11 +87,7 @@ void menuScreenInit(ObjectMngr *objMngr) {
         "in control now. Don't let us down programmer."
     };
 
-    obj = Object_new("Rect");
-    ec = EmptyComp_new();
-    ec->comp.draw = drawFirstRect;
-    Object_addComp(obj, ec);
-    ObjectMngr_addObj(objMngr, obj);
+   
 
     for (unsigned i = 0; i < sizeof(tutorialText) / sizeof(const char*); i++) {
         Object *obj = Object_new("Text");
