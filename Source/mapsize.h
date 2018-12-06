@@ -1,7 +1,6 @@
 /**
  * @file mapsize.h
  * @author Connor Meyers(connor.meyers)
- * @date 11/01/18
  * @brief Handles the size of the map
  * @addtogroup Components
  * @{

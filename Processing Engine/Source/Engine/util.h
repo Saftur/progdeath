@@ -1,7 +1,6 @@
 /**
  * @file util.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/28/18
  * @brief Utilities
  * @addtogroup Util
  * @{

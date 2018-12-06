@@ -1,7 +1,6 @@
 /**
  * @file engine.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
  * @brief Main Engine
  * @addtogroup Util
  * @{

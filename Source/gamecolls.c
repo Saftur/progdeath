@@ -1,7 +1,6 @@
 /**
  * @file gamecolls.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
  * @brief Game colliders implementation
  * @addtogroup Game-Components
  * @{
@@ -42,7 +41,7 @@ static bool CollCheck_Entity_Entity(Component *comp1, Component *comp2) {
         p = vec2_sub(p, p2);
         p = mat3_mult_vec2(mat3_rotate(-ent2->direction), p);
         vec2_t eqSize = (vec2_t){ ent2->radius, ent2->radius / 16 };
-        return vec2_in_range(vec2_add(p, vec2_scale(eqSize, 0.5)), vec2_zero(), eqSize);
+        return vec2_in_range(vec2_add(p, vec2_scale(eqSize, 0.5)), vec2_zero(), eqSize) || vec2_distance(p1, p2) < ent1->radius;
     }
 
     return vec2_distance(p1, p2) < ent1->radius + ent2->radius;
@@ -70,11 +69,11 @@ static void CollResolve_Entity_Entity(Component *comp1, Component *comp2) {
     if (Entity_isType(ent1, ENT_FIGHTER)) {
         if (Entity_isType(ent2, ENT_EQUIPMENT)) {
             if (ent2->currAction == EA_WPN_ATTACK && !ent1->invincible)
-                ent1->hp -= 40;
+                ent1->hp -= 80 * dt();
             return;
         }
         else if (Entity_isType(ent2, ENT_FIRE) && !ent1->invincible) {
-            ent1->hp -= 5;
+            ent1->hp -= 40 * dt();
             return;
         }
         else if (Entity_isType(ent2, ENT_WATER) || Entity_isType(ent2, ENT_TREE)){

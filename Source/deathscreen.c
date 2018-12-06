@@ -1,7 +1,6 @@
 /**
  * @file deathscreen.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
  * @brief Death screen implementation
  * @addtogroup Game-Screens
  * @{

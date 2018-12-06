@@ -1,7 +1,6 @@
 /**
  * @file physics.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/28/18
  * @brief Physics implementation
  * @addtogroup Components
  * @{

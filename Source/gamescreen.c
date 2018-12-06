@@ -1,7 +1,6 @@
 /**
  * @file gamescreen.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/28/18
  * @brief Game screen implementation
  * @addtogroup Game-Screens
  * @{
@@ -72,7 +71,7 @@ void gameScreenInit(ObjectMngr *objMngr) {
     entObj = Object_new("Test Player");
     entTrs = Transform_new();
     entPhys = Physics_new(300.f, 900.f);
-    ent = Entity_new("Scripts/test_player.lua", ST_FILENAME, ENT_FIGHTER, 100, ENTITY_RADIUS);
+    ent = Entity_new("Scripts/player.lua", ST_FILENAME, ENT_FIGHTER, 100, ENTITY_RADIUS);
     entTrs->pos = (vec2_t) { randomRangeInt(ent->radius, getMapWidth() * MAP_TILE_SIZE - ent->radius),
                              randomRangeInt(ent->radius, getMapHeight() * MAP_TILE_SIZE - ent->radius) };
     Entity_addType(ent, ENT_PLAYER);

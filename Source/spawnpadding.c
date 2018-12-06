@@ -1,7 +1,6 @@
 /**
  * @file spawnpadding.c
  * @author Connor Meyers(connor.meyers)
- * @date 11/02/18
  * @brief Handles the spawn padding for map generation and enemy spawning
  * @addtogroup Components
  * @{

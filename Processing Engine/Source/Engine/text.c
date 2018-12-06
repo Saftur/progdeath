@@ -1,7 +1,6 @@
 /**
  * @file text.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/28/18
  * @brief Text implementation
  * @addtogroup Components
  * @{

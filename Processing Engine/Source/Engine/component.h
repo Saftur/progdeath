@@ -1,7 +1,6 @@
 /**
  * @file component.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
  * @brief Object Component
  * @addtogroup Components
  * @{

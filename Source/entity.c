@@ -1,7 +1,6 @@
 /**
  * @file entity.c
  * @author Name (username)
- * @date 10/28/18
  * @brief Entity implementation
  * @addtogroup Components
  * @{

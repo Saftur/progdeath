@@ -1,7 +1,6 @@
 /**
  * @file luafuncs.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/27/18
  * Lua Functions implementation
  */
 #include "luafuncs.h"

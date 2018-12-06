@@ -1,7 +1,6 @@
 /**
  * @file list.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/29/18
  * @brief C++-vector-style array
  * @addtogroup Util
  * @{

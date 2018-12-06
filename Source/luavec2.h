@@ -1,7 +1,6 @@
 /**
  * @file luavec2.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/27/18
  * Lua userdata for vec2_t
  */
 #pragma once

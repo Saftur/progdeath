@@ -1,7 +1,6 @@
 /**
  * @file list.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/29/18
  * @brief List implementation
  * @addtogroup Util
  * @{

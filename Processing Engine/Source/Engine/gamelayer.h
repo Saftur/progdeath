@@ -1,7 +1,6 @@
 /**
  * @file gamelayer.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/17/18
  * @brief Layer in game
  * @addtogroup Util
  * @{

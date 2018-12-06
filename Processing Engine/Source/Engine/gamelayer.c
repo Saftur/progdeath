@@ -1,7 +1,6 @@
 /**
  * @file gamelayer.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/16/18
  * @brief GameLayer implementation
  * @addtogroup Util
  * @{

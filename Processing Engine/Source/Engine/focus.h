@@ -1,7 +1,6 @@
 /**
  * @file focus.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 11/1/18
  * @brief Keyboard focus
  */
 #pragma once

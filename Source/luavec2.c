@@ -1,7 +1,6 @@
 /**
  * @file luavec2.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/28/18
  * Lua vec2_t implementation
  */
 #include "luavec2.h"

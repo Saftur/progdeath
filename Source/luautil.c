@@ -1,7 +1,6 @@
 /**
  * @file luautil.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/27/18
  * Lua Utilities implementation
  */
 #include "luautil.h"

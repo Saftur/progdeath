@@ -1,7 +1,6 @@
 /**
  * @file entluafuncs.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/28/18
  * Entity Lua Functions implementation
  */
 #include "entluafuncs.h"
@@ -310,7 +309,7 @@ static int l_getnearest(lua_State *L) {
         lua_pop(L, 1);
         for (int i = 1; i <= len; i++) {
             lua_geti(L, 1, i);
-            List_push_back(types, (int)lua_tonumber(L, 1));
+            List_push_back(types, (int)lua_tonumber(L, -1));
         }
         break;
     case LUA_TNONE:
@@ -462,7 +461,7 @@ static int l_istype(lua_State *L) {
     }
     luaL_argcheck(L, lua_isnumber(L, typeArg), typeArg, "'number' expected");
     int type = lua_tonumber(L, typeArg);
-    lua_pushboolean(L, Entity_isType(ent, type));
+    lua_pushboolean(L, Entity_isType(ent->actualEnt, type));
     return 1;
 }
 
@@ -572,6 +571,8 @@ void initEntityLuaState(Entity *ent, const char *script, ScriptType scriptType) 
     lua_setglobal(L, "ENT_WATER");
     lua_pushnumber(L, ENT_TREE);
     lua_setglobal(L, "ENT_TREE");
+    lua_pushnumber(L, ENT_APPLE);
+    lua_setglobal(L, "ENT_APPLE");
 
     lua_pushnumber(L, EA_NONE);
     lua_setglobal(L, "ACTION_NONE");

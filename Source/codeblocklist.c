@@ -1,7 +1,6 @@
 /**
  * @file codeblocklist.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/31/18
  * @brief CodeBlockList implementation
  * @addtogroup Components
  * @{

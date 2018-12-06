@@ -1,7 +1,6 @@
 /**
  * @file gamescreen.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/27/18
  * @brief Game screen screen
  * @addtogroup Game-Screens
  * @{

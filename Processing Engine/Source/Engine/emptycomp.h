@@ -1,7 +1,6 @@
 /**
  * @file emptycomp.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
  * @brief Empty Component
  * @addtogroup Components
  * @{

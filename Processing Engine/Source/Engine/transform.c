@@ -1,7 +1,6 @@
 /**
  * @file transform.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
  * @brief Transform implementation
  * @addtogroup Components
  * @{

@@ -1,7 +1,6 @@
 /**
  * @file cb_sequence.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/31/18
  * 
  */
 #include "cb_sequence.h"

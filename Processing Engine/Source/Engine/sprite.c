@@ -1,7 +1,6 @@
 /**
  * @file sprite.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/27/18
  * @brief Sprite implementation
  * @addtogroup Components
  * @{

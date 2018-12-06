@@ -1,7 +1,6 @@
 /**
  * @file menuscreen.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/28/18
  * @brief Menu Screen implementation
  * @addtogroup Game-Screens
  * @{

@@ -1,7 +1,6 @@
 /**
  * @file cbtypedata.c
  * @author Arthur Bouvier
- * @date 
  * 
  */
 #include "cbtypedata.h"

@@ -1,7 +1,6 @@
 /**
  * @file gamebuttons.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/28/18
  * @brief Game Button effects
  * @addtogroup Game-Components
  * @{

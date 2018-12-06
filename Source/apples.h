@@ -1,7 +1,6 @@
 /**
  * @file apples.h
  * @author Connor Meyers(connor.meyers)
- * @date 10/30/18
  * @brief Deals with apple dropping, healing, and tree destruction
  * @addtogroup Components
  * @{

@@ -1,7 +1,6 @@
 /**
  * @file emptycomp.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
  * @brief EmptyComp implementation
  * @addtogroup Components
  * @{

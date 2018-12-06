@@ -1,7 +1,6 @@
 /**
  * @file objectmngr.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
  * @brief ObjectMngr implementation
  * @addtogroup Objects
  * @{

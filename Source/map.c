@@ -1,7 +1,6 @@
 /**
  * @file map.c
  * @author Connor Meyers(connor.meyers)
- * @date 11/02/18
  * @brief Map display and creation
  * @addtogroup Components
  * @{

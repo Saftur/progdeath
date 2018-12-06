@@ -1,7 +1,6 @@
 /**
  * @file cb_op.h
  * @author Arthur Bouvier
- * @date 
  * 
  */
 #pragma once

@@ -1,7 +1,6 @@
 /**
  * @file splashscreen.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/27/18
  * @brief Splash Screen implementation
  * @addtogroup Game-Screens
  * @{

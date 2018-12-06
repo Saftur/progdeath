@@ -1,7 +1,6 @@
 /**
  * @file button.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
  * @brief Button Component
  * @addtogroup Components
  * @{

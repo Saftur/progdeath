@@ -1,7 +1,6 @@
 /**
  * @file codeblockboard.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/31/18
  * @brief CodeBlockBoard implementation
  * @addtogroup Components
  * @{

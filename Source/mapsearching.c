@@ -1,7 +1,6 @@
 /**
  * @file mapsearching.c
  * @author Connor Meyers(connor.meyers)
- * @date 11/02/18
  * @brief Functions to search a map for something specific
  * @addtogroup Components
  * @{

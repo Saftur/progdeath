@@ -1,7 +1,6 @@
 /**
  * @file codeblock.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/31/18
  * @brief CodeBlock Component
  * @addtogroup Components
  * @{

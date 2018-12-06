@@ -1,7 +1,6 @@
 /**
  * @file object.h
  * @author Arthur bouvier
- * @date 10/18/18
  * @brief Game Object
  * @addtogroup Objects
  * @{

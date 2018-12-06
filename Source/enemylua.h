@@ -1,7 +1,6 @@
 /**
  * @file enemylua.h
  * @author Arthur Bouvier
- * @date 
  * 
  */
 #pragma once

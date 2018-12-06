@@ -1,7 +1,6 @@
 /**
  * @file screenmngr.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/26/18
  * @brief Screen manager
  * @addtogroup Engine
  * @{

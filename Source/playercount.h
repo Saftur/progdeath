@@ -1,7 +1,6 @@
 /**
  * @file playercount.h
  * @author Connor Meyers(connor.meyers)
- * @date 10/31/18
  * @brief Keeps track of how many players will be spawned
  * @addtogroup Components
  * @{

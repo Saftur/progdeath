@@ -1,7 +1,6 @@
 /**
  * @file screen.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/26/18
  * @brief Screen implementation
  * @addtogroup Engine
  * @{

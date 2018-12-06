@@ -1,7 +1,6 @@
 /**
  * @file cb_str.c
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/31/18
  * 
  */
 #include "cb_str.h"

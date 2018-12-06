@@ -1,7 +1,6 @@
 /**
  * @file deathscreen.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/18/18
  * @brief Death screen screen
  * @addtogroup Game-Screens
  * @{

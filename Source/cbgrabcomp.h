@@ -1,7 +1,6 @@
 /**
  * @file cbgrabcomp.h
  * @author Arthur Bouvier (a.bouvier)
- * @date 10/31/18
  * @brief CBGrabComp Component
  * @addtogroup Components
  * @{
