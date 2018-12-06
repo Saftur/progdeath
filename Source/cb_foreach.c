@@ -1,7 +1,8 @@
 /**
  * @file cb_foreach.c
  * @author Arthur Bouvier (a.bouvier)
- * 
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  */
 #include "cb_foreach.h"
 

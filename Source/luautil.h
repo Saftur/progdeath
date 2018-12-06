@@ -1,7 +1,9 @@
 /**
  * @file luautil.h
  * @author Arthur Bouvier (a.bouvier)
- * Lua Utilities
+ * @brief Lua Utilities
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  */
 #pragma once
 

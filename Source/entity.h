@@ -2,6 +2,8 @@
  * @file entity.h
  * @author Name (username)
  * @brief Entity Component
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Components
  * @{
  */

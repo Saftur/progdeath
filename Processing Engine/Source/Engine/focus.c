@@ -2,6 +2,8 @@
  * @file focus.c
  * @author Arthur Bouvier (a.bouvier)
  * @brief Keyboard focus implementation
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  */
 #include "focus.h"
 

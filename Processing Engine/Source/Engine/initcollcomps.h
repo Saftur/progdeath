@@ -2,6 +2,8 @@
  * @file initcollcomps.h
  * @author Arthur Bouvier (a.bouvier)
  * @brief Initialize collision Component vars
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Util
  * @{
  */

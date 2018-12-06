@@ -1,7 +1,9 @@
 /**
  * @file luafuncs.h
  * @author Arthur Bouvier (a.bouvier)
- * Lua Functions
+ * @brief Lua Functions
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  */
 #pragma once
 

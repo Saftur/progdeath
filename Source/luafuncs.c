@@ -1,7 +1,9 @@
 /**
  * @file luafuncs.c
  * @author Arthur Bouvier (a.bouvier)
- * Lua Functions implementation
+ * @brief Lua Functions implementation
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  */
 #include "luafuncs.h"
 

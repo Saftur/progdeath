@@ -1,3 +1,9 @@
+/**
+ * @file entactions.c
+ * @author Connor Meyers (connor.meyers)
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
+ */
 #include "entactions.h"
 
 #include <Engine/physics.h>

@@ -2,6 +2,8 @@
  * @file gamelayer.c
  * @author Arthur Bouvier (a.bouvier)
  * @brief GameLayer implementation
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Util
  * @{
  */

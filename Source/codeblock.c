@@ -2,6 +2,8 @@
  * @file codeblock.c
  * @author Arthur Bouvier (a.bouvier)
  * @brief CodeBlock implementation
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Components
  * @{
  */

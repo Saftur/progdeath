@@ -2,6 +2,8 @@
  * @file splashscreen.c
  * @author Arthur Bouvier (a.bouvier)
  * @brief Splash Screen implementation
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Game-Screens
  * @{
  */

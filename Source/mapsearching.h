@@ -2,6 +2,8 @@
  * @file mapsearching.h
  * @author Connor Meyers(connor.meyers)
  * @brief Functions to search a map for something specific
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Components
  * @{
  */

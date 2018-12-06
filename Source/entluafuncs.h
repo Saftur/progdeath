@@ -1,7 +1,9 @@
 /**
  * @file entluafuncs.h
  * @author Arthur Bouvier (a.bouvier)
- * Entity Lua Functions
+ * @brief Entity Lua Functions
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  */
 #pragma once
 

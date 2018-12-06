@@ -2,6 +2,8 @@
  * @file button.h
  * @author Arthur Bouvier (a.bouvier)
  * @brief Button Component
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Components
  * @{
  */

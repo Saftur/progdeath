@@ -2,6 +2,8 @@
  * @file gamebuttons.h
  * @author Arthur Bouvier (a.bouvier)
  * @brief Game Button effects
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Game-Components
  * @{
  */

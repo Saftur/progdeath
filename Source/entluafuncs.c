@@ -1,7 +1,9 @@
 /**
  * @file entluafuncs.c
  * @author Arthur Bouvier (a.bouvier)
- * Entity Lua Functions implementation
+ * @brief Entity Lua Functions implementation
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  */
 #include "entluafuncs.h"
 

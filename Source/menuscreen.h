@@ -2,6 +2,8 @@
  * @file menuscreen.h
  * @author Arthur Bouvier (a.bouvier)
  * @brief Menu Screen screen
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Game-Screens
  * @{
  */

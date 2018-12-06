@@ -1,7 +1,9 @@
 /**
  * @file luavec2.c
  * @author Arthur Bouvier (a.bouvier)
- * Lua vec2_t implementation
+ * @brief Lua vec2_t implementation
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  */
 #include "luavec2.h"
 

@@ -2,6 +2,8 @@
  * @file spawnpadding.h
  * @author Connor Meyers(connor.meyers)
  * @brief Handles the spawn padding for map generation and enemy spawning
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Components
  * @{
  */

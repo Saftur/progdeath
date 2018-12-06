@@ -3,6 +3,8 @@
  * @author Arthur Bouvier (a.bouvier)
  * @course GAM100-F18
  * @brief Game entry point
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Game
  * @{
  */

@@ -2,6 +2,8 @@
  * @file mapsize.h
  * @author Connor Meyers(connor.meyers)
  * @brief Handles the size of the map
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Components
  * @{
  */

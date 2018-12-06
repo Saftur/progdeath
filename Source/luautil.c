@@ -1,7 +1,9 @@
 /**
  * @file luautil.c
  * @author Arthur Bouvier (a.bouvier)
- * Lua Utilities implementation
+ * @brief Lua Utilities implementation
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  */
 #include "luautil.h"
 

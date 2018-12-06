@@ -1,3 +1,9 @@
+/**
+ * @file entactions.h
+ * @author Connor Meyers (connor.meyers)
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
+ */
 #pragma once
 
 typedef enum EntAction

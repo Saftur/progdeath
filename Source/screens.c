@@ -2,6 +2,8 @@
  * @file screens.c
  * @author Arthur Bouvier (a.bouvier)
  * @brief List of game Screen s
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Game-Screens
  * @{
  */

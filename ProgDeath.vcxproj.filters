@@ -252,8 +252,12 @@
     <ClInclude Include="Source\apples.h">
       <Filter>Game\Components\Map</Filter>
     </ClInclude>
-    <ClInclude Include="Source\cb_funcdef.h" />
-    <ClInclude Include="Source\cb_function.h" />
+    <ClInclude Include="Source\cb_funcdef.h">
+      <Filter>Game\Components\Code Block\Types\Directives\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\cb_function.h">
+      <Filter>Game\Components\Code Block\Types\Directives\Function</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Game">

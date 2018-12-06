@@ -1,7 +1,8 @@
 /**
  * @file cbtypedata.c
  * @author Arthur Bouvier
- * 
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  */
 #include "cbtypedata.h"
 

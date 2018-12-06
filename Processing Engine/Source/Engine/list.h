@@ -2,6 +2,8 @@
  * @file list.h
  * @author Arthur Bouvier (a.bouvier)
  * @brief C++-vector-style array
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Util
  * @{
  */

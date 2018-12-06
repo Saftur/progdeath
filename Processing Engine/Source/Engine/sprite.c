@@ -2,6 +2,8 @@
  * @file sprite.c
  * @author Arthur Bouvier (a.bouvier)
  * @brief Sprite implementation
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Components
  * @{
  */

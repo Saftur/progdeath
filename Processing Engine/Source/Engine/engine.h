@@ -2,6 +2,8 @@
  * @file engine.h
  * @author Arthur Bouvier (a.bouvier)
  * @brief Main Engine
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Util
  * @{
  */

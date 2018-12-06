@@ -2,6 +2,8 @@
  * @file listener.h
  * @author Arthur Bouvier (a.bouvier)
  * @brief Simple event listener
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Components
  * @{
  */

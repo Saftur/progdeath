@@ -1,7 +1,9 @@
 /**
  * @file luavec2.h
  * @author Arthur Bouvier (a.bouvier)
- * Lua userdata for vec2_t
+ * @brief Lua userdata for vec2_t
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  */
 #pragma once
 

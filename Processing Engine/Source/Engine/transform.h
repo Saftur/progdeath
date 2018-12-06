@@ -2,6 +2,8 @@
  * @file transform.h
  * @author Arthur Bouvier (a.bouvier)
  * @brief Transform Component
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Components
  * @{
  */

@@ -2,6 +2,8 @@
  * @file playercount.h
  * @author Connor Meyers(connor.meyers)
  * @brief Keeps track of how many players will be spawned
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Components
  * @{
  */

@@ -2,6 +2,8 @@
  * @file object.h
  * @author Arthur bouvier
  * @brief Game Object
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Objects
  * @{
  */

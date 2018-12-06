@@ -2,6 +2,8 @@
  * @file map.c
  * @author Connor Meyers(connor.meyers)
  * @brief Map display and creation
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Components
  * @{
  */

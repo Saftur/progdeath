@@ -2,6 +2,8 @@
  * @file text.h
  * @author Arthur Bouvier (a.bouvier)
  * @brief Text Component
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Components
  * @{
  */

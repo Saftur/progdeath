@@ -2,6 +2,8 @@
  * @file gamelayer.h
  * @author Arthur Bouvier (a.bouvier)
  * @brief Layer in game
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  * @addtogroup Util
  * @{
  */

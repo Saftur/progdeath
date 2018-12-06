@@ -1,7 +1,8 @@
 /**
  * @file cb_op.h
  * @author Arthur Bouvier
- * 
+ * @course GAM100F18
+ * Copyright © 2018 DigiPen (USA) Corporation
  */
 #pragma once
 
