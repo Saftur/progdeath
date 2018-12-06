@@ -46,11 +46,19 @@ int isOnList(vec2_t pos) {
 //  MENU LISTENER
 
 static bool menuEvent(Listener *listener) {
-    return (keyIsDown(KEY_LEFT_CONTROL) || keyIsDown(KEY_LEFT_CONTROL)) && keyPressed(KEY_M);
+    return (keyIsDown(KEY_RIGHT_CONTRO) || keyIsDown(KEY_LEFT_CONTROL)) && keyPressed(KEY_M);
 }
 
 static void menuEffect(Listener *listener) {
     ScreenMngr_setNextScreen(listener->comp.owner->objMngr->gLayer->scrMngr, "Menu");
+}
+
+static bool saveEvent(Listener *listener) {
+    return (keyIsDown(KEY_RIGHT_CONTRO) || keyIsDown(KEY_LEFT_CONTROL)) && keyPressed(KEY_S);
+}
+
+static void saveEffect(Listener *listener) {
+    CodeBlockBoard_save(board, "Scripts/player.lua");
 }
 
 //  LEVEL
@@ -132,7 +140,6 @@ void editorScreenUpdate(Screen *screen) {
 void editorScreenEnd(ObjectMngr *objMngr) {
     textFont(getDefaultFont(), 12);
 
-    CodeBlockBoard_save(board, "Scripts/player.lua");
 }
 
 /// @}

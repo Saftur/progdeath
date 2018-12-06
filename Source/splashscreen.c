@@ -12,6 +12,7 @@
 #include <Engine/gamelayer.h>
 #include <Engine/transform.h>
 #include <Engine/sprite.h>
+#include "Engine/text.h"
 
 static float countdown = 3.f;
 
@@ -37,6 +38,15 @@ static void logoUpdate(Component *comp) {
  * @param objMngr ObjectMngr to load screen on
  */
 void splashScreenInit(ObjectMngr *objMngr) {
+
+    Object *obj = Object_new("Text");
+    Transform *trs = Transform_new();
+    trs->pos = (vec2_t) { 12, canvasHeight - 75 };
+    Text *text = Text_new("Copyright 2018 DigiPen (USA) Corporation", 50);
+    Object_addComp(obj, trs);
+    Object_addComp(obj, text);
+    ObjectMngr_addObj(objMngr, obj);
+
     Object *logoObj = Object_new("Logo");
     Transform *logoTrs = Transform_new();
     logoTrs->pos = (vec2_t){ canvasWidth / 2, canvasHeight / 2 };

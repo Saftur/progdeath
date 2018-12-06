@@ -55,6 +55,41 @@ static void drawFrownyFace(Component *comp) {
     circle(pos.x - cos(rad) * 75, pos.y + 80 - sin(rad) * 45, 5.f);
 }
 
+
+PImage backgroundImage;
+PImage gameLogo;
+
+static void logoDraw(Transform *trs)
+{
+    image(gameLogo, canvasWidth / 2, 250, 915, 500);
+}
+
+
+static void backgroundPosUpdate(Transform *trs)
+{
+    trs->pos.y += 100 * dt();
+    if (trs->pos.y > canvasWidth * 2)
+        trs->pos.y -= canvasWidth * 3;
+}
+
+static void backgroundDraw(Transform *trs)
+{
+    image(backgroundImage, canvasWidth / 2, trs->pos.y, canvasWidth + 100, canvasWidth + 100);
+}
+
+static void drawFirstRect()
+{
+    stroke(0, 0, 0, 255);
+    fill(128, 128, 128, 255);
+    rect(10, 650, 760, 370);
+}
+
+static void drawSecondRect()
+{
+    stroke(0, 0, 0, 255);
+    fill(128, 128, 128, 255);
+    rect(750, 125, 400, 100);
+}
 /**
  * @brief Draw frowny face
  * @param comp Component to draw on
@@ -96,9 +131,56 @@ static void drawSmileyFace(Component *comp) {
  * @param objMngr ObjectMngr to load screen on
  */
 void deathScreenInit(ObjectMngr *objMngr) {
-    Object *obj;
+    backgroundImage = loadImage("Assets/Background.png");
+    gameLogo = loadImage("Assets/GameLogo.png");
+
+
+    for (int i = 0; i < 3; i++) {
+        Object *obj = Object_new("Object");
+        Transform *trs = Transform_new();
+        trs->posUpdate = backgroundPosUpdate;
+        trs->comp.draw = backgroundDraw;
+        trs->pos.y = i * canvasWidth;
+        Object_addComp(obj, trs);
+        ObjectMngr_addObj(objMngr, obj);
+    }
+
     Transform *trs;
     Text *text;
+    Object *obj;
+    EmptyComp *ec;
+
+    obj = Object_new("Rect");
+    ec = EmptyComp_new();
+    ec->comp.draw = drawFirstRect;
+    Object_addComp(obj, ec);
+    ObjectMngr_addObj(objMngr, obj);
+
+    obj = Object_new("Rect");
+    ec = EmptyComp_new();
+    ec->comp.draw = drawSecondRect;
+    Object_addComp(obj, ec);
+    ObjectMngr_addObj(objMngr, obj);
+
+    const char *tutorialText[] = {
+       "President: Claude Comair",
+       "Instructors: Justin Chambers",
+        "Developers:", 
+        "                    Arthur Bouvier (Programmer)",
+        "           and Connor Meyers (Programmer)",
+        "Third-Party Libraries:",
+        "Copyright 2018 Lua.org, PUC-Rio.",
+    };
+
+    for (unsigned i = 0; i < sizeof(tutorialText) / sizeof(const char*); i++) {
+        Object *obj = Object_new("Text");
+        Transform *trs = Transform_new();
+        trs->pos = (vec2_t) { 12.f, 650 + (float)(i + 1) * 50.f };
+        Text *text = Text_new(tutorialText[i], 50);
+        Object_addComp(obj, trs);
+        Object_addComp(obj, text);
+        ObjectMngr_addObj(objMngr, obj);
+    }
 
     obj = Object_new("Result Text");
     trs = Transform_new();

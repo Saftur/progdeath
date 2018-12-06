@@ -24,11 +24,12 @@
 #include "map.h"
 #include "Engine/engine.h"
 #include "mapsize.h"
+#include "deathscreen.h"
 
 //  MENU LISTENER
 
 static bool menuEvent(Listener *listener) {
-    return keyPressed(KEY_M);
+    return (keyIsDown(KEY_RIGHT_CONTRO) || keyIsDown(KEY_LEFT_CONTROL)) && keyPressed(KEY_M);
 }
 
 static void menuEffect(Listener *listener) {
@@ -44,6 +45,26 @@ void tempDrawFunction(Component* comp)
     renderMap(&game_map, MAP_TILE_SIZE);
 }
 
+static bool instantWinEvent(Listener * listener)
+{
+    return (keyIsDown(KEY_RIGHT_CONTRO) || keyIsDown(KEY_LEFT_CONTROL)) && keyPressed(KEY_W);
+}
+
+static void instantWinEffect(Listener *listener) {
+    has_won = 1;
+    ScreenMngr_setNextScreen(listener->comp.owner->objMngr->gLayer->scrMngr, "Death Screen");
+}
+
+static bool instantLossEvent(Listener * listener)
+{
+    return (keyIsDown(KEY_RIGHT_CONTRO) || keyIsDown(KEY_LEFT_CONTROL))  && keyPressed(KEY_L);
+}
+
+static void instantLossEffect(Listener *listener) {
+    has_won = 0;
+    ScreenMngr_setNextScreen(listener->comp.owner->objMngr->gLayer->scrMngr, "Death Screen");
+}
+
 /**
  * @brief Initialize Game Screen
  * @param objMngr ObjectMngr to load screen on
@@ -56,6 +77,18 @@ void gameScreenInit(ObjectMngr *objMngr) {
     listener = Listener_new(menuEvent, menuEffect);
     Object_addComp(listenObj, listener);
     ObjectMngr_addObj(objMngr, listenObj);
+
+    listenObj = Object_new("Instant Win Listener");
+    listener = Listener_new(instantWinEvent, instantWinEffect);
+    Object_addComp(listenObj, listener);
+    ObjectMngr_addObj(objMngr, listenObj);
+
+    listenObj = Object_new("Instant Loss Listener");
+    listener = Listener_new(instantLossEvent, instantLossEffect);
+    Object_addComp(listenObj, listener);
+    ObjectMngr_addObj(objMngr, listenObj);
+
+
 
     Object *entObj;
     Transform *entTrs;
